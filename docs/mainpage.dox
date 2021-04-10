@@ -1,0 +1,23 @@
+namespace ASGE {
+/** @mainpage ASGE
+
+A simple framework for creating 2D games.
+
+This is the official documentation for the AwesomeSauce GameEngine. ASGE is a games framework developed
+by James Huxtable and is specifically targeted at students. It's designed to allow games
+to be quickly and easily prototyped, whilst providing the minimum amount of hand-holding. It specifically **aims** to reduce the complexity of larger game engine and frameworks. 
+
+@section mainpage-whats-new What's new?
+
+Curious about what was added or improved recently? Check out the
+@ref changelog "Changelog".
+
+@section mainpage-getting-started Getting started
+
+The best way to get started is to read the thorough
+@ref getting-started guide. 
+
+@note In the near future, it is hoped to include some examples.
+*/
+}
+

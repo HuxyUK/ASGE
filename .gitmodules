@@ -1,0 +1,22 @@
+[submodule "GameEngine/Libs/Freetype2"]
+	path = engine/libs/freetype2
+	url = git://git.sv.gnu.org/freetype/freetype2.git
+[submodule "GameEngine/Libs/GLM"]
+	path = engine/libs/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "GameEngine/Libs/STB"]
+	path = engine/libs/stb
+	url = https://github.com/nothings/stb.git
+[submodule "GameEngine/Libs/GLFW"]
+	path = engine/libs/glfw
+	url = https://github.com/glfw/glfw.git
+	branch = latest
+[submodule "GameEngine/Libs/PhysFS"]
+	path = engine/libs/physfs
+	url = https://github.com/Didstopia/physfs.git
+[submodule "GameEngine/Libs/PhysFS++"]
+	path = engine/libs/physfs++
+	url = https://github.com/HuxyUK/physfs-cpp
+[submodule "GameEngine/Libs/GLAD"]
+	path = engine/libs/glad
+	url = https://github.com/Dav1dde/glad.git

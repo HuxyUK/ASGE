@@ -1,0 +1,60 @@
+#FOR LLP - YEAR 2 STUDENTS. NOT SUITABLE FOR YEAR 1
+Checks:            '*,readability-identifier-naming,
+                    -android-*,-fuchsia-*,-google-*,-llvm-*,-objc-*,-zircon-*,
+                    -clang-analyzer-alpha.*,-modernize-use-trailing-return-type, -readability-magic-numbers,
+                    -hicpp-special-member-functions, -readability-redundant-access-specifiers,
+                    -cppcoreguidelines-avoid-magic-numbers, -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+                    -readability-convert-member-functions-to-static,-cppcoreguidelines-pro-bounds-constant-array-index,
+                    -cppcoreguidelines-owning-memory, -hicpp-signed-bitwise, llvm-namespace-comment, -llvmlibc-*'
+
+WarningsAsErrors:  '*,
+                    -readability-magic-numbers,-misc-unused-parameters,
+                    -cppcoreguidelines-pro-bounds-constant-array-index'
+
+HeaderFilterRegex: '^.*(gamelib|apps).*(.hpp|.h)'
+AnalyzeTemporaryDtors: true
+FormatStyle:     file
+User:            lintbot
+CheckOptions:
+  - { key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor,      value: '1'         }
+  - { key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions, value: '1'         }
+  - { key: llvm-namespace-comment.ShortNamespaceLines,                           value: '10'        }
+  - { key: llvm-namespace-comment.SpacesBeforeComments,                          value: '2'         }
+  - { key: performance-unnecessary-value-param.AllowedTypes,                     value: 'SharedEventData'  }
+  - { key: readability-braces-around-statements.ShortStatementLines,             value: '0'         }
+  - { key: readability-function-size.BranchThreshold,                            value: '10'        }
+  - { key: readability-function-size.LineThreshold,                              value: '500'       }
+  - { key: readability-function-size.NestingThreshold,                           value: '5'         }
+  - { key: readability-function-size.ParameterThreshold,                         value: '10'        }
+  - { key: readability-function-size.StatementThreshold,                         value: '250'       }
+  - { key: readability-identifier-naming.AbstractClassCase,                      value: CamelCase   }
+  - { key: readability-identifier-naming.ClassCase,                              value: CamelCase   }
+  - { key: readability-identifier-naming.ClassConstantCase,                      value: UPPER_CASE }
+  - { key: readability-identifier-naming.ClassMemberCase,                        value: lower_case  }
+  - { key: readability-identifier-naming.ClassMethodCase,                        value: camelBack   }
+  - { key: readability-identifier-naming.ConstantCase,                           value: UPPER_CASE  }
+  - { key: readability-identifier-naming.ConstantMemberCase,                     value: aNy_CasE    }
+  - { key: readability-identifier-naming.ConstantParameterCase,                  value: lower_case  }
+  - { key: readability-identifier-naming.EnumCase,                               value: CamelCase   }
+  - { key: readability-identifier-naming.NamespaceCase,                          value: aNy_CasE    }
+  - { key: readability-identifier-naming.StructCase,                             value: CamelCase   }
+  - { key: readability-identifier-naming.FunctionCase,                           value: camelBack   }
+  - { key: readability-identifier-naming.VariableCase,                           value: lower_case  }
+  - { key: readability-identifier-naming.GlobalConstantCase,                     value: UPPER_CASE  }
+
+  - key:    misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value:  '1'
+
+# CHANGELOG
+# DISABLED
+# -hicpp-special-member-functions: CREATING A NON-DEFAULT DESTRUCTOR DOES NOT MEAN A CLASS NEEDS CUSTOM EVERYTHING
+# -readability-redundant-access-specifiers: ALLOW MULTIPLE USE OF PUBLIC/PRIVATE IN HEADERS
+# -cppcoreguidelines-avoid-magic-numbers: DUPLICATE OF READABILITY
+#  misc-non-private-member-variables-in-classes; IGNORE ALL PUBLIC DATA CLASSES
+# -cppcoreguidelines-owning-memory: ITS OKAY TO USE RAW POINTERS IMHO
+# -cppcoreguidelines-pro-bounds-constant-array-index: GSL::AT?? REALLY?
+# -hicpp-signed-bitwise: IGNORE THE SIGNED BITMAPPING ERRORS. THIS IS AN ANNOYING INTERPRETATION OF HIC++ STANDARD
+# WARNING ONLY
+# -readability-magic-numbers: SHOULDN'T USE THEM, BUT LETS NOT CRY OVER IT TOO BADLY
+# -misc-unused-parameters: YEAH, BUT HERE WE ARE!
+
