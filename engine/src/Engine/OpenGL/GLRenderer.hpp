@@ -97,7 +97,8 @@ namespace ASGE
     const Font& getFont(int idx) const override;
     void renderText(const Text& string) override;
     void renderText(Text&& string) override;
-    void setProjectionMatrix(float camera_x, float camera_y, float width, float height) override;
+    void setProjectionMatrix(
+      int32_t camera_x, int32_t camera_y, uint32_t width, uint32_t height) override;
     void setProjectionMatrix(const Camera::CameraView& view) override;
     void renderSprite(const Sprite& sprite) override;
     void render(ASGE::Texture2D& texture,  int x, int y) override;
@@ -105,12 +106,13 @@ namespace ASGE
     ASGE::Viewport getViewport() const override;
     void setViewport(const ASGE::Viewport& viewport) override;
     void setRenderTarget(const ASGE::RenderTarget* /*unused*/) override;
-    [[nodiscard]] unsigned int windowHeight() const noexcept override;
-    [[nodiscard]] unsigned int windowWidth() const noexcept override;
+    [[nodiscard]] float windowHeight() const noexcept override;
+    [[nodiscard]] float windowWidth() const noexcept override;
 
    private:
     std::unique_ptr<Input> inputPtr() override;
     void postRender() override;
+    void updateMonitorInfo(GLFWmonitor* monitor);
 
    private:
     GLSpriteBatch batch{};
@@ -118,12 +120,14 @@ namespace ASGE
     std::unique_ptr<CGLSpriteRenderer> sprite_renderer{};
     std::unique_ptr<GLAtlasManager> text_renderer{};
 
-    unsigned int desktop_res[2]{ 0, 0 };
-    unsigned int target_width    = 640;
-    unsigned int target_height   = 480;
-    unsigned int desktop_refresh = 60;
-    Colour debug_text_colour     = COLOURS::DEEPPINK;
-    GLFWwindow* window           = nullptr;
-    GLuint projection_ubo        = -1;
+    std::array<int32_t, 2> desktop_res{ 0, 0 };
+    unsigned int target_width  = 640;
+    unsigned int target_height = 480;
+    int16_t desktop_refresh    = 60;
+    Colour debug_text_colour   = COLOURS::DEEPPINK;
+    GLFWwindow* window         = nullptr;
+    GLuint projection_ubo      = -1;
+
+    void centerWindow();
   };
 }

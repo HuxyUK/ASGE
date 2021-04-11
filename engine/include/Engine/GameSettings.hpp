@@ -72,8 +72,8 @@ namespace ASGE
     int window_height{ 640 }; /**< The height of the GL Window to create. */                 // NOLINT
     int window_bpp{ 32 }; /**< The Bits Per Pixel (BPP) of the window. */                    // NOLINT
     int msaa_level{ 1 }; /**< MSAA can help smooth edges when using rotated views. */        // NOLINT
-    int fps_limit{ 60 }; /**< The engine will attempt to never exceed this FPS. */           // NOLINT
-    int fixed_ts{ fps_limit * 2 }; /**< The delta between fixed time-steps. */               // NOLINT
+    int fps_limit{ 60 }; /**< The engine will attempt to never exceed this tick rate. */    // NOLINT
+    int fixed_ts{ fps_limit * 2 }; /**< The delta between fixed time-steps. */              // NOLINT
     int anisotropic{ 16 }; /**< Improves filtering at oblique angles. Not useful for 2D. */  // NOLINT
 
     std::string write_dir{}; /**< The default write directory for ASGE IO. */

@@ -451,13 +451,13 @@ namespace ASGE {
      * Retrieves the window height.
      * @return The window height.
      */
-    [[nodiscard]] virtual unsigned int windowHeight() const noexcept = 0;
+    [[nodiscard]] virtual float windowHeight() const noexcept = 0;
 
     /**
      * Retrieves the window width.
      * @return The window width.
      */
-    [[nodiscard]] virtual unsigned int windowWidth()  const noexcept = 0;
+    [[nodiscard]] virtual float windowWidth()  const noexcept = 0;
 
     /**
      * @brief Sets the projection matrix
@@ -473,7 +473,7 @@ namespace ASGE {
      * @param[in] width The camera's frustum width.
      * @param[in] height The camera's frustum height.
      */
-    virtual void setProjectionMatrix(float camera_x, float camera_y, float width, float height) = 0;
+    virtual void setProjectionMatrix(int32_t camera_x, int32_t camera_y, uint32_t width, uint32_t height) = 0;
 
     /**
      * @brief Sets the projection matrix

@@ -87,7 +87,7 @@ ExternalProject_Add(
         SOURCE_DIR     "${CMAKE_CURRENT_LIST_DIR}/physfs++"
         INSTALL_DIR    ""
         UPDATE_COMMAND ""
-        CMAKE_ARGS     -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}}
+        CMAKE_ARGS     -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}}q
                        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                        -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
                        -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
@@ -101,11 +101,11 @@ ExternalProject_Add(
 )
 
 if(PHYSFS_SHARED_LIB OR NOT MSVC AND NOT WIN_CLANG)
-    list(APPEND LINK_LIBS physfs)
     list(APPEND LINK_LIBS debug physfscppd optimized physfscpp)
+    list(APPEND LINK_LIBS physfs)
 else()
-    list(APPEND LINK_LIBS physfs-static)
     list(APPEND LINK_LIBS debug physfscpp-staticd optimized physfscpp-static)
+    list(APPEND LINK_LIBS physfs-static)
 endif()
 
 add_dependencies(PhysFS++ PhysFS)

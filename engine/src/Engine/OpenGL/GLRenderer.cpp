@@ -98,7 +98,6 @@ bool ASGE::GLRenderer::init()
  // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
   glfwWindowHint(GLFW_SAMPLES, ASGE::SETTINGS.msaa_level);
 
   using GLVERSION = std::pair<int, int>;
@@ -120,7 +119,6 @@ bool ASGE::GLRenderer::init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, item.first.second);
 
     window = glfwCreateWindow(target_width, target_height, "ASGE", nullptr, nullptr);
-
     if (window != nullptr)
     {
       Logging::INFO(
@@ -137,6 +135,8 @@ bool ASGE::GLRenderer::init()
         return false;
       }
 
+      updateMonitorInfo(glfwGetPrimaryMonitor());
+      centerWindow();
       setWindowedMode(ASGE::SETTINGS.mode);
       glfwShowWindow(this->window);
       item.second();
@@ -274,8 +274,6 @@ void ASGE::GLRenderer::swapBuffers()
 void ASGE::GLRenderer::renderDebug()
 {
   batch.flush();
-  setViewport({0, 0, static_cast<float>(target_width), static_cast<float>(target_height)});
-  setProjectionMatrix(0.0F, 0.0F, target_width, target_height);
 
   std::string debug_string;
   switch (batch.getSpriteMode())
@@ -372,18 +370,14 @@ void ASGE::GLRenderer::setWindowedMode(GameSettings::WindowMode mode_request)
     return;
   }
 
-  auto* monitor           = glfwGetPrimaryMonitor();
-  const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-  desktop_res[0]          = mode->width;
-  desktop_res[1]          = mode->height;
-  desktop_refresh         = mode->refreshRate;
+  auto* monitor = glfwGetPrimaryMonitor();
+  updateMonitorInfo(monitor);
 
   switch (mode_request)
   {
     case (GameSettings::WindowMode::FULLSCREEN):
     {
-      glfwSetWindowMonitor(window, monitor, 0, 0, target_width, target_height, mode->refreshRate);
-
+      glfwSetWindowMonitor(window, monitor, 0, 0, target_width, target_height, desktop_refresh);
       glViewport(0, 0, target_width, target_height);
       break;
     }
@@ -391,22 +385,53 @@ void ASGE::GLRenderer::setWindowedMode(GameSettings::WindowMode mode_request)
     case (GameSettings::WindowMode::BORDERLESS_FULLSCREEN):
     {
       glfwSetWindowMonitor(window, monitor, 0, 0, desktop_res[0], desktop_res[1], desktop_refresh);
-      glViewport(0, 0, desktop_res[0], desktop_res[1]);
+
+      double width  = 0;
+      double height = 0;
+
+      // if aspect ratio isn't bigger..
+      if (desktop_res[0] / desktop_res[1] <= target_width / target_height)
+      {
+        width  = desktop_res[0];
+        height = desktop_res[0] *
+                 (static_cast<double>(target_height) / static_cast<double>(target_width));
+      }
+      else
+      {
+        if (desktop_res[0] >= desktop_res[1])
+        {
+          height  = desktop_res[1];
+          width = desktop_res[1] *
+                   (static_cast<double>(target_width) / static_cast<double>(target_height));
+        }
+        else
+        {
+          height = desktop_res[1];
+          width  = desktop_res[1] *
+                  (static_cast<double>(target_width) / static_cast<double>(target_height));
+        }
+      }
+
+      auto offset_x = (desktop_res[0] - width)  * 0.5;
+      auto offset_y = (desktop_res[1] - height) * 0.5;
+      glViewport(offset_x, offset_y, width, height);
       break;
     }
 
     case (GameSettings::WindowMode::BORDERLESS_WINDOWED):
     {
       // not working..
-      glfwWindowHint(GLFW_DECORATED, false);
-      glfwSetWindowMonitor(window, nullptr, 50, 50, target_width, target_height, GLFW_DONT_CARE);
+      glfwSetWindowAttrib(window, GLFW_DECORATED, GLFW_FALSE);
+      glfwSetWindowMonitor(window, nullptr, 0, 0, target_width, target_height, GLFW_DONT_CARE);
+      centerWindow();
       glViewport(0, 0, target_width, target_height);
       break;
     }
 
     case (GameSettings::WindowMode::WINDOWED):
     {
-      glfwSetWindowMonitor(window, nullptr, 50, 50, target_width, target_height, GLFW_DONT_CARE);
+      glfwSetWindowMonitor(window, nullptr, 0, 0, target_width, target_height, GLFW_DONT_CARE);
+      centerWindow();
       glViewport(0, 0, target_width, target_height);
       break;
     }
@@ -416,10 +441,21 @@ void ASGE::GLRenderer::setWindowedMode(GameSettings::WindowMode mode_request)
   windowMode() = mode_request;
 }
 
+void ASGE::GLRenderer::updateMonitorInfo(GLFWmonitor* monitor)
+{
+  if (monitor != nullptr)
+  {
+    const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    desktop_res[0]          = mode->width;
+    desktop_res[1]          = mode->height;
+    desktop_refresh         = mode->refreshRate;
+  }
+}
+
 ASGE::Viewport ASGE::GLRenderer::getViewport() const
 {
   ASGE::Viewport viewport;
-  glGetFloatv(GL_VIEWPORT, &viewport.x);
+  glGetIntegerv(GL_VIEWPORT, &viewport.x);
   return viewport;
 }
 
@@ -586,12 +622,12 @@ const ASGE::Font& ASGE::GLRenderer::getFont(int idx) const
   return this->text_renderer->getFont(idx);
 }
 
-unsigned int ASGE::GLRenderer::windowHeight() const noexcept
+float ASGE::GLRenderer::windowHeight() const noexcept
 {
   return target_height;
 }
 
-unsigned int ASGE::GLRenderer::windowWidth() const noexcept
+float ASGE::GLRenderer::windowWidth() const noexcept
 {
   return target_width;
 }
@@ -611,7 +647,8 @@ ASGE::SHADER_LIB::Shader* ASGE::GLRenderer::getShader()
   return this->findShader(sprite_renderer->getBasicSpriteShaderID());
 }
 
-void ASGE::GLRenderer::setProjectionMatrix(float camera_x, float camera_y, float width, float height)
+void ASGE::GLRenderer::setProjectionMatrix(
+  int32_t camera_x, int32_t camera_y, uint32_t width, uint32_t height)
 {
   ASGE::Viewport view{ camera_x, camera_y, width, height };
   setProjectionMatrix(view);
@@ -675,6 +712,14 @@ void ASGE::GLRenderer::render(ASGE::Texture2D& texture, int x, int y)
   sprite.width(texture.getWidth());
   sprite.height(texture.getHeight());
   renderSprite(sprite);
+}
+
+void ASGE::GLRenderer::centerWindow()
+{
+  glfwSetWindowPos(
+    window,
+    desktop_res[0] * 0.5 - target_width  * 0.5,
+    desktop_res[1] * 0.5 - target_height * 0.5);
 }
 
 std::vector<ASGE::SHADER_LIB::GLShader> ASGE::GLRenderer::shaders;

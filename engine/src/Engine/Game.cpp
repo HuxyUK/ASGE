@@ -16,6 +16,7 @@
 #include <PhysFS/PhysFS.hpp>
 #include <chrono>
 #include <string>
+#include <cmath>
 
 void ASGE::Game::toggleFPS() noexcept
 {
@@ -24,28 +25,30 @@ void ASGE::Game::toggleFPS() noexcept
 
 void ASGE::Game::updateFPS()
 {
-  static int fps             = 0;
-  static auto last_fps_frame = getGameTime();
-  frames++;
+  static double delta_accumulator = 0;
+  static int fps                  = 0;
+  static int frames               = 0;
 
   if (show_fps)
   {
+    frames++;
+    delta_accumulator += epoch.frame_delta.count();
+
     std::string fps_str = std::to_string(fps);
-    const auto pos_x    = 0;
-    const auto pos_y    = 34.F; // renderer->getDefaultFont().line_height;
+    const auto POS_X    = 0;
+    const auto POS_Y    = 34.F; // renderer->getDefaultFont().line_height;
 
     auto text = ASGE::Text{ renderer->getFont(0) };
-    text.setString("60");
+    text.setString(fps_str);
     text.setColour({ 1.0F, 0.2F, 0.5F });
-    text.setPosition({ pos_x, pos_y });
+    text.setPosition({ POS_X, POS_Y });
     renderer->renderText(std::move(text));
 
-    const auto ELAPSED = getGameTime().count() - last_fps_frame.count();
-    if (ELAPSED >= 1000)
+    if (delta_accumulator >= 1000)
     {
-      fps            = static_cast<int>(static_cast<float>(frames) / (ELAPSED / 1000.F));
-      frames         = 0;
-      last_fps_frame = getGameTime();
+      fps    = static_cast<int>(lround(static_cast<float>(frames) / (delta_accumulator / 1000.0)));
+      frames = 0;
+      delta_accumulator = 0;
     }
   }
 }
@@ -85,56 +88,64 @@ std::chrono::milliseconds ASGE::Game::getGameTime() noexcept
   return RUNTIME - paused_time;
 }
 
+#include <thread>
 int ASGE::Game::run()
 {
   renderer->setWindowTitle(ASGE::SETTINGS.window_title.c_str());
 
-  std::chrono::time_point<std::chrono::high_resolution_clock> prev_tick;
-  prev_tick         = std::chrono::high_resolution_clock::now();
   using ms          = std::chrono::duration<double, std::milli>;
   epoch.fixed_delta = ms((1 / float(ASGE::SETTINGS.fixed_ts)) * 1000);
 
   double accumulator = 0.0;
   while (!exit && !renderer->exit())
   {
-    auto now   = std::chrono::high_resolution_clock::now();
-    auto delta = ms(now - prev_tick);
-    prev_tick  = now;
-
-    epoch.elapsed     = ASGE::Game::getGameTime();
-    epoch.frame_delta = ms(now - epoch.frame_time);
-    epoch.distance    = 0.0;
-
+    auto tick_start              = std::chrono::high_resolution_clock::now();
+    epoch.elapsed                = ASGE::Game::getGameTime();
     constexpr auto MAX_FRAMETIME = std::chrono::milliseconds(200);
-    accumulator += delta.count();
+    constexpr auto MILLI_IN_SEC  = 1000;
+
+    /*
+     * Update Loop
+     * The update loop uses a fixed time step. The timing is based on the
+     * ASGE::GameSettings and will always use fixed_delta for running.
+     * If the updates are lagging, it will attempt to catch-up. To ensure
+     * the game doesn't lock-up, it will always render a frame every now
+     * and then even if the update is lagging.
+     */
+    accumulator += ms(tick_start - epoch.last_tick_time).count();
     while (accumulator >= epoch.fixed_delta.count())
     {
-      fixedUpdate(epoch);
+      epoch.last_tick_time = std::chrono::high_resolution_clock::now();
+      update(epoch);
       accumulator -= epoch.fixed_delta.count();
 
-      // just sanity check the last time a frame was rendered
-      epoch.frame_delta = ms(std::chrono::high_resolution_clock::now() - epoch.frame_time);
-      if (epoch.frame_delta > MAX_FRAMETIME)
+      if (ms(std::chrono::high_resolution_clock::now() - epoch.last_frame_time) > MAX_FRAMETIME)
       {
-        break;
+        break; // time to render a frame i.e. slideshow alert
       }
     }
 
     // how far along are we to the next "fixed" step
     epoch.distance = accumulator / epoch.fixed_delta.count();
 
-    constexpr auto MILLI_IN_SEC = 1000.F;
-    if (epoch.frame_delta.count() > (1.0F / static_cast<float>(ASGE::SETTINGS.fps_limit)) * MILLI_IN_SEC)
+
+    /*
+     * Render Loop
+     * The render loop calls an update function which is basically a variable
+     * time-step for simulating render related logic, such as particle systems
+     * and for drawing to the GPU.
+     */
+    epoch.frame_delta = ms(std::chrono::high_resolution_clock::now() - epoch.last_frame_time);
+    if (epoch.frame_delta.count() >= (1.0 / static_cast<double>(ASGE::SETTINGS.fps_limit)) * MILLI_IN_SEC)
     {
-      epoch.frame_time = std::chrono::high_resolution_clock::now();
-      update(epoch);
+      epoch.last_frame_time = std::chrono::high_resolution_clock::now();
       beginFrame();
-      render();
+      render(epoch);
       endFrame();
     }
   }
 
-  return 0;
+  return EXIT_SUCCESS;
 }
 
 void ASGE::Game::signalExit() noexcept
@@ -154,5 +165,3 @@ ASGE::Game::~Game()
 {
   PhysFS::deinit();
 }
-
-void ASGE::Game::fixedUpdate(const GameTime& us){};

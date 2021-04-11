@@ -16,6 +16,7 @@
 #ifndef ASGE_VIEWPORT_HPP
 #define ASGE_VIEWPORT_HPP
 
+#include <cstdint>
 namespace ASGE
 {
   /**
@@ -53,16 +54,16 @@ namespace ASGE
      * @param[in] width The width of the viewport.
      * @param[in] height The height of the viewport.
      */
-    Viewport(float xpos, float ypos, float width, float height) :
+    Viewport(int32_t xpos, int32_t ypos, uint32_t width, uint32_t height) :
       x(xpos), y(ypos), w(width), h(height)
     {
 
     };
 
-    float x = 0; /**< The starting X position */
-    float y = 0; /**< The starting Y position */
-    float w = 0; /**< The width of the viewport */
-    float h = 0; /**< The height of the viewport */
+    int32_t x = 0; /**< The starting X position */
+    int32_t y = 0; /**< The starting Y position */
+    uint32_t w = 0; /**< The width of the viewport */
+    uint32_t h = 0; /**< The height of the viewport */
   };
 }  // namespace ASGE
 

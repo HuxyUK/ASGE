@@ -15,61 +15,87 @@
 
 #pragma once
 #include <chrono>
-namespace ASGE {
-
-	/**
-	 *  @brief Stores both frame and game deltas.
-	 *
-	 *  Stores various measurements of delta time for the
-	 *  game. It will store the current time point which
-	 *  is used to calculate the delta between frames, the
-	 *  delta of the last frame and the entire delta since the
-	 *  game started. This can be used to control simulations
-	 *  and render functions to use non-fixed time steps.
-	 */
-	struct GameTime
-	{
+namespace ASGE
+{
+  /**
+   *  @brief Stores both frame and game deltas.
+   *
+   *  Stores various measurements of delta time for the
+   *  game. It will store the current time point which
+   *  is used to calculate the delta between frames, the
+   *  delta of the last frame and the entire delta since the
+   *  game started. This can be used to control simulations
+   *  and render functions to use non-fixed time steps.
+   */
+  struct GameTime
+  {
     /**
-     *  Time point of last tick.
-     *  The time at which the previous tick update began.
+     *  Time point of last rendered frame.
+     *  The time at which the previous frame render began.
      */
-    std::chrono::time_point<std::chrono::high_resolution_clock> frame_time = std::chrono::high_resolution_clock::now();
-    using delta_time = decltype(frame_time);
-
-		/**
-		 *  Tick delta.
-		 *  The amount of elapsed time since the last update.
-		 */
-		std::chrono::duration<double, std::milli> frame_delta;
+    std::chrono::time_point<std::chrono::high_resolution_clock> last_frame_time =
+      std::chrono::high_resolution_clock::now();
 
     /**
-     *  Fixed delta time.
-     *  The amount of delta between fixed updates.
+     *  Time point of last fixed step update.
+     *  The time at which the previous update tick began.
+     */
+    std::chrono::time_point<std::chrono::high_resolution_clock> last_tick_time =
+      std::chrono::high_resolution_clock::now();
+
+    /**
+     *  Frame delta.
+     *  How long did it take between the previous frame being rendered and the
+     *  current one starting. This can be used to help interpolate objects
+     *  using the render (variable time-step) function.
+     */
+    std::chrono::duration<double, std::milli> frame_delta;
+
+    /**
+     *  @brief Fixed delta time.
+     *
+     *  The delta between each fixed time-step. Use this to create
+     *  deterministic simulations inside the update function.
+     *
+     *  @Note This does not reflect the delta in real time between
+     *  updates, rather it represents the simulated amount of time
+     *  to aim for between them.
      */
     std::chrono::duration<double, std::milli> fixed_delta;
 
     /**
-     *  Distance to next fixed update
-     *  How far along (percentage) to the next fixed time step are we?
-     *  Or to re-frame, how much time has not yet been simulated?
+     *  @brief Distance to next fixed update
+     *
+     *  Used in combination with fixed time-steps. It represents how far
+     *  far along (percentage) to the next fixed time step we are. An update
+     *  call will only happen once this distance is 1.0 or higher. To
+     *  re-frame, how much simulated time has not yet been processed.
      */
-    double distance;
+    double distance = 0.0;
 
-		/**
-		 *  Running time.
-		 *  The amount of time since the start of the game.
-		 */
-		std::chrono::milliseconds elapsed;
+    /**
+     *  @brief Total running time.
+     *
+     *  The total amount of time since the start of the game in milliseconds.
+     *  The longer the game runs the higher this value will be. Could be
+     *  expanded upon to support pausing by storing the time the game is in
+     *  a paused state. However, currently the paused data is not exposed.
+     */
+    std::chrono::milliseconds elapsed;
 
-		/// The last delta expressed in seconds (double)
-		/// Just a shorthand function to convert the chrono::duration
-		/// into a more user friendly number.
-		/// \return The last frame delta in seconds
+    /**
+     * @brief The last frame delta expressed in seconds (double)
+     *
+     * Just a shorthand function to convert the chrono::duration of
+     * frame_delta in seconds to help with pacing of animations etc. This
+     * is purely just to present it in a more user friendly number.
+     *
+     * @return The last frame delta in seconds.
+     */
     [[nodiscard]] double deltaInSecs() const noexcept
     {
       using namespace std::chrono_literals;
-      return frame_delta.count() /
-             std::chrono::duration_cast<std::chrono::milliseconds>(1s).count();
+      return frame_delta.count() / std::chrono::duration_cast<std::chrono::milliseconds>(1s).count();
     }
   };
-}  // namespace ASGE
+} // namespace ASGE

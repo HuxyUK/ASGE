@@ -74,19 +74,6 @@ namespace ASGE
     virtual ~Game();
 
     /**
-     *  @brief Pure virtual function used to update the game.
-     *
-     *  The update pattern is common usage within engines
-     *  and will be automatically called every frame. Here
-     *  all game objects that need simulation should be
-     *  updated, ready to be rendered shortly thereafter.
-     *
-     *  @param[in] us Game and Frame delta information.
-     *  @see GameTime
-     */
-    virtual void update(const GameTime& us) = 0;
-
-    /**
      *  @brief Function used to update the game using fixed
      *  time-steps instead of the regular frame update.
      *
@@ -100,7 +87,7 @@ namespace ASGE
      *  @param[in] us Game and fixed delta information.
      *  @see GameTime
      */
-    virtual void fixedUpdate(const GameTime& us);
+    virtual void update(const GameTime& us) = 0;
 
     /**
      * @brief Pure virtual function that sets up the renderer before
@@ -121,7 +108,7 @@ namespace ASGE
      *  @param[in] us	Game and Frame delta information.
      *  @see GameTime
      */
-    virtual void render() = 0;
+    virtual void render(const GameTime& us) = 0;
 
     /**
      *  @brief Pure virtual function that completes the render frame.
@@ -216,6 +203,5 @@ namespace ASGE
     // used to measure the game's running time
     std::chrono::milliseconds paused_time = std::chrono::milliseconds(0);
     std::chrono::time_point<std::chrono::high_resolution_clock> start_time = std::chrono::high_resolution_clock::now();
-    int frames = 0;
   };
 } // namespace ASGE
