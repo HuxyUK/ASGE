@@ -647,10 +647,9 @@ ASGE::SHADER_LIB::Shader* ASGE::GLRenderer::getShader()
   return this->findShader(sprite_renderer->getBasicSpriteShaderID());
 }
 
-void ASGE::GLRenderer::setProjectionMatrix(
-  int32_t camera_x, int32_t camera_y, uint32_t width, uint32_t height)
+void ASGE::GLRenderer::setProjectionMatrix(float min_x, float max_x, float min_y, float max_y)
 {
-  ASGE::Viewport view{ camera_x, camera_y, width, height };
+  ASGE::Camera::CameraView view{ min_x, max_x, min_y, max_y };
   setProjectionMatrix(view);
 }
 
@@ -661,14 +660,7 @@ void ASGE::GLRenderer::setProjectionMatrix(const Camera::CameraView& view)
   float min = std::numeric_limits<decltype(RenderQuad::z_order)>::min();
   float max = std::numeric_limits<decltype(RenderQuad::z_order)>::max();
 
-  projection_matrix = glm::ortho<float>(
-    static_cast<float>(view.x),
-    static_cast<float>(view.w),
-    static_cast<float>(view.h),
-    static_cast<float>(view.y),
-    min,
-    max);
-
+  projection_matrix = glm::ortho<float>(view.min_x, view.max_x, view.max_y, view.min_y, min, max);
   global_shader_data.projection = projection_matrix;
 
   if(projection_ubo == -1)

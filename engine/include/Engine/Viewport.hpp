@@ -60,8 +60,8 @@ namespace ASGE
 
     };
 
-    int32_t x = 0; /**< The starting X position */
-    int32_t y = 0; /**< The starting Y position */
+    int32_t x = 0;  /**< The starting X position */
+    int32_t y = 0;  /**< The starting Y position */
     uint32_t w = 0; /**< The width of the viewport */
     uint32_t h = 0; /**< The height of the viewport */
   };

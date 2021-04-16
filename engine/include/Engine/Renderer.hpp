@@ -468,12 +468,12 @@ namespace ASGE {
      * side of the mid-point. This projection matrix may be stretched
      * to accommodate the viewport used to render to the window.
      *
-     * @param[in] camera_x The camera's look at x position.
-     * @param[in] camera_y The camera's look at y position.
-     * @param[in] width The camera's frustum width.
-     * @param[in] height The camera's frustum height.
+     * @param[in] min_x The camera's look at x position.
+     * @param[in] max_x The camera's look at y position.
+     * @param[in] min_y The camera's frustum width.
+     * @param[in] max_y The camera's frustum height.
      */
-    virtual void setProjectionMatrix(int32_t camera_x, int32_t camera_y, uint32_t width, uint32_t height) = 0;
+    virtual void setProjectionMatrix(float min_x, float max_x, float min_y, float max_y) = 0;
 
     /**
      * @brief Sets the projection matrix

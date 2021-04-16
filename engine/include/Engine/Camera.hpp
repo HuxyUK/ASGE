@@ -11,7 +11,7 @@
 //  SOFTWARE.
 
 //! @file Camera.hpp
-//! @brief Class @ref ASGE::Camera
+//! @brief Class @ref ASGE::Camera, Struct @ref ASGE::Camera::CameraView
 
 #ifndef ASGE_CAMERA_HPP
 #define ASGE_CAMERA_HPP
@@ -55,7 +55,25 @@ namespace ASGE
   {
    public:
     using Translation = std::array<float, 3>;
-    using CameraView = ASGE::Viewport;
+
+    /**
+     * @brief A an orthogonal camera view struct.
+     *
+     * The camera view class describes a bounding box that is used
+     * to map the game world to the camera’s lens. Objects outside
+     * of the the view will not be rendered. The camera view can be
+     * applied to the renderer during the drawing phase of the game.
+     * It’s possible to swap camera views during a render cycle.
+     * The easiest way to generate the view is to use a Camera class,
+     * assign it a width and height and update its focal point using
+     */
+    struct CameraView
+    {
+      float min_x = 0.0F; /**< The minimum x position to include */
+      float min_y = 0.0F; /**< The minimum y position to include */
+      float max_x = 0.0F; /**< The maximum x position to include */
+      float max_y = 0.0F; /**< The maximum y position to include */
+    };
 
    public:
     /**

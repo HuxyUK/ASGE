@@ -33,15 +33,15 @@ namespace ASGE
      *  Time point of last rendered frame.
      *  The time at which the previous frame render began.
      */
-    std::chrono::time_point<std::chrono::high_resolution_clock> last_frame_time =
-      std::chrono::high_resolution_clock::now();
+    std::chrono::time_point<std::chrono::steady_clock> last_frame_time =
+      std::chrono::steady_clock::now();
 
     /**
      *  Time point of last fixed step update.
      *  The time at which the previous update tick began.
      */
-    std::chrono::time_point<std::chrono::high_resolution_clock> last_tick_time =
-      std::chrono::high_resolution_clock::now();
+    std::chrono::time_point<std::chrono::steady_clock> last_tick_time =
+      std::chrono::steady_clock::now();
 
     /**
      *  Frame delta.
@@ -93,6 +93,22 @@ namespace ASGE
      * @return The last frame delta in seconds.
      */
     [[nodiscard]] double deltaInSecs() const noexcept
+    {
+      using namespace std::chrono_literals;
+      return frame_delta.count() / std::chrono::duration_cast<std::chrono::milliseconds>(1s).count();
+    }
+
+    /**
+     * @brief The fixed delta expressed in seconds (double)
+     *
+     * Just a shorthand function to convert the chrono::duration of
+     * fixed_delta in seconds to help with simulations and fixed time-step
+     * update functions. It is purely just to present it in a more user
+     * friendly number.
+     *
+     * @return The fixed time-step in seconds.
+     */
+    [[nodiscard]] double fixedTsInSecs() const noexcept
     {
       using namespace std::chrono_literals;
       return frame_delta.count() / std::chrono::duration_cast<std::chrono::milliseconds>(1s).count();

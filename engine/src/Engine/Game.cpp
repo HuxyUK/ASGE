@@ -83,7 +83,7 @@ void ASGE::Game::initFileIO()
 std::chrono::milliseconds ASGE::Game::getGameTime() noexcept
 {
   const auto RUNTIME = std::chrono::duration_cast<std::chrono::milliseconds>(
-    std::chrono::high_resolution_clock::now() - start_time);
+    std::chrono::steady_clock::now() - start_time);
 
   return RUNTIME - paused_time;
 }
@@ -93,13 +93,13 @@ int ASGE::Game::run()
 {
   renderer->setWindowTitle(ASGE::SETTINGS.window_title.c_str());
 
+  using clock       = std::chrono::steady_clock;
   using ms          = std::chrono::duration<double, std::milli>;
   epoch.fixed_delta = ms((1 / float(ASGE::SETTINGS.fixed_ts)) * 1000);
 
-  double accumulator = 0.0;
   while (!exit && !renderer->exit())
   {
-    auto tick_start              = std::chrono::high_resolution_clock::now();
+    auto tick_start              = clock::now();
     epoch.elapsed                = ASGE::Game::getGameTime();
     constexpr auto MAX_FRAMETIME = std::chrono::milliseconds(200);
     constexpr auto MILLI_IN_SEC  = 1000;
@@ -112,22 +112,33 @@ int ASGE::Game::run()
      * the game doesn't lock-up, it will always render a frame every now
      * and then even if the update is lagging.
      */
-    accumulator += ms(tick_start - epoch.last_tick_time).count();
-    while (accumulator >= epoch.fixed_delta.count())
+    auto accumulator = ms(tick_start - epoch.last_tick_time);
+    if(accumulator > epoch.fixed_delta * 2)
     {
-      epoch.last_tick_time = std::chrono::high_resolution_clock::now();
-      update(epoch);
-      accumulator -= epoch.fixed_delta.count();
+      Logging::WARN(
+        "Fixed time-step lag is currently " +
+        std::to_string(accumulator / epoch.fixed_delta) +
+        " updates behind");
+    }
 
-      if (ms(std::chrono::high_resolution_clock::now() - epoch.last_frame_time) > MAX_FRAMETIME)
+    while (accumulator >= epoch.fixed_delta)
+    {
+      Logging::ERRORS("start: " + std::to_string(accumulator.count()));
+      epoch.last_tick_time = clock::now();
+      update(epoch);
+
+      auto tick_delta = clock::now();
+      if (ms(tick_delta - epoch.last_frame_time) > MAX_FRAMETIME)
       {
         break; // time to render a frame i.e. slideshow alert
       }
+
+      accumulator -= ms(epoch.fixed_delta - (tick_delta - epoch.last_tick_time));
     }
 
     // how far along are we to the next "fixed" step
-    epoch.distance = accumulator / epoch.fixed_delta.count();
-
+    epoch.distance = accumulator / epoch.fixed_delta;
+    Logging::ERRORS("distance: " + std::to_string((epoch.distance)));
 
     /*
      * Render Loop
@@ -135,10 +146,10 @@ int ASGE::Game::run()
      * time-step for simulating render related logic, such as particle systems
      * and for drawing to the GPU.
      */
-    epoch.frame_delta = ms(std::chrono::high_resolution_clock::now() - epoch.last_frame_time);
+    epoch.frame_delta = ms(clock::now() - epoch.last_frame_time);
     if (epoch.frame_delta.count() >= (1.0 / static_cast<double>(ASGE::SETTINGS.fps_limit)) * MILLI_IN_SEC)
     {
-      epoch.last_frame_time = std::chrono::high_resolution_clock::now();
+      epoch.last_frame_time = clock::now();
       beginFrame();
       render(epoch);
       endFrame();

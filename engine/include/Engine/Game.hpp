@@ -202,6 +202,6 @@ namespace ASGE
 
     // used to measure the game's running time
     std::chrono::milliseconds paused_time = std::chrono::milliseconds(0);
-    std::chrono::time_point<std::chrono::high_resolution_clock> start_time = std::chrono::high_resolution_clock::now();
+    std::chrono::time_point<std::chrono::steady_clock> start_time = std::chrono::steady_clock::now();
   };
 } // namespace ASGE

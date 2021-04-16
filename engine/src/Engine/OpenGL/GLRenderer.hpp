@@ -97,8 +97,7 @@ namespace ASGE
     const Font& getFont(int idx) const override;
     void renderText(const Text& string) override;
     void renderText(Text&& string) override;
-    void setProjectionMatrix(
-      int32_t camera_x, int32_t camera_y, uint32_t width, uint32_t height) override;
+    void setProjectionMatrix(float min_x, float max_x, float min_y, float max_y) override;
     void setProjectionMatrix(const Camera::CameraView& view) override;
     void renderSprite(const Sprite& sprite) override;
     void render(ASGE::Texture2D& texture,  int x, int y) override;
