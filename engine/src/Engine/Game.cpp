@@ -123,7 +123,7 @@ int ASGE::Game::run()
 
     while (accumulator >= epoch.fixed_delta)
     {
-      Logging::ERRORS("start: " + std::to_string(accumulator.count()));
+      Logging::TRACE("tick start: " + std::to_string(accumulator.count()));
       epoch.last_tick_time = clock::now();
       update(epoch);
 
@@ -138,7 +138,6 @@ int ASGE::Game::run()
 
     // how far along are we to the next "fixed" step
     epoch.distance = accumulator / epoch.fixed_delta;
-    Logging::ERRORS("distance: " + std::to_string((epoch.distance)));
 
     /*
      * Render Loop
