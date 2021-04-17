@@ -163,7 +163,7 @@ endif()
 
 # Dependencies on other libraries
 target_link_libraries( ${PROJECT_NAME} PUBLIC ${LINK_LIBS})
-add_dependencies( ${PROJECT_NAME}  Freetype2)
+add_dependencies( ${PROJECT_NAME}  freetype)
 add_dependencies( ${PROJECT_NAME}  PhysFS++)
 
 target_compile_definitions(

@@ -96,6 +96,9 @@ int ASGE::Game::run()
   using clock           = std::chrono::steady_clock;
   using ms              = std::chrono::duration<double, std::milli>;
   epoch.fixed_delta     = ms((1 / float(ASGE::SETTINGS.fixed_ts)) * 1000);
+  epoch.last_tick_time  = clock::now() - std::chrono::duration_cast<std::chrono::milliseconds>(epoch.fixed_delta);
+  epoch.last_frame_time = clock::now() - std::chrono::duration_cast<std::chrono::milliseconds>(
+                          ms(1.0 / static_cast<double>(ASGE::SETTINGS.fps_limit)) * 1000);
 
   while (!exit && !renderer->exit())
   {
