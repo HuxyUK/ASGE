@@ -35,7 +35,7 @@ void ASGE::Game::updateFPS()
     delta_accumulator += epoch.frame_delta.count();
 
     std::string fps_str = std::to_string(fps);
-    const auto POS_X    = 0;
+    const auto POS_X    = 0.F;
     const auto POS_Y    = 34.F; // renderer->getDefaultFont().line_height;
 
     auto text = ASGE::Text{ renderer->getFont(0) };
@@ -93,9 +93,9 @@ int ASGE::Game::run()
 {
   renderer->setWindowTitle(ASGE::SETTINGS.window_title.c_str());
 
-  using clock       = std::chrono::steady_clock;
-  using ms          = std::chrono::duration<double, std::milli>;
-  epoch.fixed_delta = ms((1 / float(ASGE::SETTINGS.fixed_ts)) * 1000);
+  using clock           = std::chrono::steady_clock;
+  using ms              = std::chrono::duration<double, std::milli>;
+  epoch.fixed_delta     = ms((1 / float(ASGE::SETTINGS.fixed_ts)) * 1000);
 
   while (!exit && !renderer->exit())
   {
