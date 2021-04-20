@@ -111,7 +111,7 @@ namespace ASGE
     [[nodiscard]] double fixedTsInSecs() const noexcept
     {
       using namespace std::chrono_literals;
-      return frame_delta.count() / std::chrono::duration_cast<std::chrono::milliseconds>(1s).count();
+      return fixed_delta.count() / std::chrono::duration_cast<std::chrono::milliseconds>(1s).count();
     }
   };
 } // namespace ASGE
