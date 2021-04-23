@@ -68,7 +68,7 @@ namespace ASGE
   struct Text
   {
    public:
-    Text() = delete;
+    Text() = default;
     Text(const Text&) = delete;
     Text& operator=(const Text&) = delete;
     Text(Text&&) noexcept;
