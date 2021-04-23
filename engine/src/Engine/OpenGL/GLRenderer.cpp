@@ -135,6 +135,10 @@ bool ASGE::GLRenderer::init()
         return false;
       }
 
+      Logging::INFO(
+        "=> " +
+        std::string(reinterpret_cast<const char*>(glGetString(GL_RENDERER))));
+
       updateMonitorInfo(glfwGetPrimaryMonitor());
       centerWindow();
       setWindowedMode(ASGE::SETTINGS.mode);

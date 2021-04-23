@@ -61,7 +61,7 @@ void ASGE::Game::initFileIO()
 
   auto base_dir = PhysFS::getBaseDir();
 
-  Logging::INFO(base_dir);
+  Logging::INFO("=> Working Directory: " + base_dir);
   PhysFS::mount(base_dir + "data", "data", true);
   PhysFS::mount(base_dir + "data.pkg", "data", true);
   PhysFS::mount(base_dir + "game.dat", "data", true);
