@@ -4,8 +4,8 @@ project(asge)
 string(TIMESTAMP date "%Y%m%d")
 set(ASGE_VERSION_MAJOR "2")
 set(ASGE_VERSION_MINOR "0")
-set(ASGE_VERSION_PATCH "1")
-set(ASGE_VERSION_EXTRA "-alpha+${date}")
+set(ASGE_VERSION_PATCH "0")
+set(ASGE_VERSION_EXTRA "-alpha.2+${date}")
 set(ASGE_VERSION "${ASGE_VERSION_MAJOR}.${ASGE_VERSION_MINOR}")
 set(ASGE_VERSION_FULL "${ASGE_VERSION}.${ASGE_VERSION_PATCH}${ASGE_VERSION_EXTRA}")
 
@@ -56,8 +56,8 @@ set( PROJECT_SOURCES
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/Shader.cpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/Sprite.cpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/Text.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/CGLSpriteRenderer.hpp"
-        "${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/CGLSpriteRenderer.cpp"
+		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/CGLSpriteRenderer.hpp"
+		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/CGLSpriteRenderer.cpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLAtlas.hpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLAtlas.cpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLConstants.hpp"
@@ -174,7 +174,7 @@ target_compile_definitions(
 		"$<$<CONFIG:Debug>:LOGGING_LEVEL_ALL>"
 		"$<$<CONFIG:Release>:LOGGING_LEVEL_ERROR>"
 		"$<$<CXX_COMPILER_ID:MSVC>:__PRETTY_FUNCTION__=__FUNCSIG__>"
-        "$<$<STREQUAL:${CMAKE_CXX_SIMULATE_ID},MSVC>:_ENABLE_EXTENDED_ALIGNED_STORAGE>")
+		"$<$<STREQUAL:${CMAKE_CXX_SIMULATE_ID},MSVC>:_ENABLE_EXTENDED_ALIGNED_STORAGE>")
 
 set_target_properties(
         ${PROJECT_NAME} PROPERTIES

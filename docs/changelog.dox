@@ -4,22 +4,41 @@ namespace ASGE {
 
 @tableofcontents
 
-@section changelog-202 v2.0-alpha3
-@subsection changelog-201-changes Enhancements
+@section changelog-200a2 v2.0.0.alpha.2
+Released 23/04/2021
+
+@subsection changelog-200a2-changes Enhancements
+- Added CameraView data structure
+- Added time-step conversion functions
+- Render function now passes GameTime
+- Render to texture support implemented
+- Support for custom viewports
+- Use int16_t consistently for z-ordering
+
+@subsection changelog-200a2-changes-misc Misc
+- Bumped supporting libraries
+- Fixed MSVC build issues
+- Moved to GLAD from GLEW for GL loader
+- Renamed headers to .hpp
+- Updates are now fixed-steps and renders variable
+
+@subsection changelog-200a2-bugs Bug Fixes
+- Alpha channel now works when rendering text
+- Fixed camera view issues
+- Many small issues resolved due to porting of library to Python
+- Sprites will now fallback to the default shader if the text version is currently attached
+- Time-steps and frame pacing improvements
+- Z-ordering now works correctly
+
+---
+
+@section changelog-200a1 v2.0.0.alpha.1
+Released 29/02/2020
+
+@subsection changelog-200a1-changes Enhancements
 - Text now proxy's the width and height calls to the underlying font
 - float ASGE::Text::getWidth()
 - float ASGE::Text::getHeight()
-
-@subsection changelog-202-bugs  Bug Fixes
-- ASGE::Text now sets the Y position instead of the z-order when calling setPositionY
-
-@section changelog-201 v2.0-alpha2
-@subsection changelog-201-changes Enhancements
-
-@section changelog-200 v2.0-alpha
-Released xxxxx
-
-@subsection changelog-200-changes Enhancements
 - Removed slow ASGE::DebugPrinter{}
 - Added a thread-safe generic logging namespace @see Logging
   This new namespace provides a generic logging factory where
@@ -37,14 +56,14 @@ Released xxxxx
 - FPS limits can now be applied to enable finer control of rendering
 - Support for basic MSAA and AF options
 
-@subsubsection changelog-200-changes-misc Misc
+@subsubsection changelog-200a1-changes-misc Misc
 - Remove unused GamePad Event
 - Texture2D dimensions are now floats
 - Game setup parameters have been moved to a struct called GameSettings
 - The current game settings can be accessed via a static data member on ASGE::Game
 - GameTime is no longer passed to the render function, simulations should be done using the update function
 
-@subsubsection changelog-200-changes-rendering Rendering
+@subsubsection changelog-200a1-changes-rendering Rendering
 - Complete rewrite of rendering system for modern OGL systems
 - Shaders now utilise a RenderQuad data structure which is uploaded in batches
 - Persistant mapping of SSBO objects enabled, allowing manual DMA transfer signalling
@@ -53,12 +72,14 @@ Released xxxxx
 - Textures with out of bounds UV coordinates now repeat instead of clamp
 - Implemented proper move support for Quads resulting in large speed gains for sorting
 
-@subsection changelog-200-bugs Bug Fixes
+@subsection changelog-200a1-bugs Bug Fixes
+- ASGE::Text now sets the Y position instead of the z-order when calling setPositionY
 - Various Code Analysis fixes
 - Moved Point2D to ASGE namespace
 - Flip flags now work correctly
 - Fixed issue with sprite sheets and deferred rendering
 
+---
 
 @section changelog-032 v0.3.2
 Released 20/02/2019
@@ -72,7 +93,7 @@ Released 20/02/2019
 - Fixed build warning
 - Added debug message when performing monolithic builds
 
-
+---
 
 @section changelog-031 v0.3.1
 Released 08/01/2019
@@ -83,7 +104,7 @@ Released 08/01/2019
 @subsection changelog-031-bugs Bug Fixes
 - Fixes issue with PhysFS and latest version of Crapindows 10 and its API changes
 
-
+---
 
 @section changelog-030 v0.3.0
 Released 12/12/2018
@@ -100,7 +121,7 @@ Released 12/12/2018
 @subsection changelog-030-bugs Bug Fixes
 - Fixed some compilation errors in specific configurations.
 
-
+---
 
 @section changelog-024 v0.2.4
 Released 12/11/2018
@@ -120,7 +141,7 @@ Released 12/11/2018
 @subsection changelog-024-bugs Bug Fixes
 - Buffer size was not being increased when data was appended
 
-
+---
 
 @section changelog-023 v0.2.3
 Released 12/11/2018
@@ -131,6 +152,7 @@ Released 12/11/2018
 - New function to retrieve local bounds of a sprite
 - New function to retrieve global bounds of a sprite
 
+---
 
 @section changelog-022 v0.2.2
 Released 16/10/2018
@@ -138,7 +160,7 @@ Released 16/10/2018
 @subsection changelog-022-hotfix Hotfix
 - Reworked FileIO to remove dependency on PhysFS headers
 
-
+---
 
 @section changelog-021 v0.2.1
 Released 10/10/2018
@@ -150,7 +172,7 @@ Released 10/10/2018
 @subsection changelog-021-bugs Bug Fixes
 - Fixed build issues for Linux 
 
-
+---
 
 @section changelog-020 v0.2.0
 Released 14/09/2018
@@ -170,7 +192,7 @@ Released 14/09/2018
 - Some minor code tidy (static analysis)
 - Fixed build issue with missing include
 
-
+---
 
 @section changelog-016 v0.1.6
 Released 28/06/2018
@@ -181,7 +203,7 @@ Released 28/06/2018
 - Removed VS projects and solutions
 - Upgraded external libraries 
 
-
+---
 
 @section changelog-015a v0.1.5a
 Released 03/04/2018
@@ -189,7 +211,7 @@ Released 03/04/2018
 @subsection changelog-015a-hotfix Hotfix
 - Ensure mouse co-ordinates are correctly gathered when sending the click event
 
-
+---
 
 @section changelog-015 v0.1.5
 Released 14/03/2018
@@ -201,7 +223,7 @@ Released 14/03/2018
 - Mouse co-ordinates will now always be unprojected back into orthogonal space
 - Fixed issue with subpixel positions causing texel offsets by rounding up vertex positions
 
-
+---
 
 @section changelog-014 v0.1.4
 Released 07/03/2018
@@ -209,7 +231,7 @@ Released 07/03/2018
 @subsection changelog-014-bugs Bug Fixes
 - Fixed an issue with the wrong UV mapping when using source rectangles for rendering sprites
 
-
+---
 
 @section changelog-013 v0.1.3
 Released 15/02/2018
@@ -218,7 +240,7 @@ Released 15/02/2018
 - Added the ability to hide the mouse cursor
 - Added the ability to lock the mouse cursor to the window
 
-
+---
 
 @section changelog-012 v0.1.2
 Released 18/12/2017
@@ -226,7 +248,7 @@ Released 18/12/2017
 @subsection changelog-012-bugs Bug Fixes
 - Resolved issue with string destruction after storing the texture in the cache  
 
-
+---
 
 @section changelog-011 v0.1.1
 Released 14/09/2018
