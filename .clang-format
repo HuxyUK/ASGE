@@ -2,8 +2,8 @@
 BasedOnStyle: Mozilla
 AccessModifierOffset: -1
 AlignAfterOpenBracket: AlwaysBreak
-AlignConsecutiveAssignments: true
-AlignConsecutiveDeclarations: false
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveDeclarations: None
 AlignEscapedNewlines: Left
 AlignTrailingComments: true
 AlignOperands: Align
