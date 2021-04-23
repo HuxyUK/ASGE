@@ -125,7 +125,7 @@ ASGE::GamePadData ASGE::GLInput::getGamePad(int idx) const
 
   if (glfwJoystickPresent(idx) == 0)
   {
-    GamePadData data(idx, std::string("not connected").c_str(), 0, nullptr, 0, nullptr);
+    GamePadData data(nullptr, nullptr, std::string("not connected").c_str(), idx, 0, 0);
     data.is_connected = false;
     return data;
   }
@@ -137,7 +137,7 @@ ASGE::GamePadData ASGE::GLInput::getGamePad(int idx) const
   const auto* axis_state   = glfwGetJoystickAxes(idx, &axis_count);
   const auto* button_state = glfwGetJoystickButtons(idx, &button_count);
 
-  GamePadData data(idx, name, axis_count, axis_state, button_count, button_state);
+  GamePadData data(axis_state, button_state, name, idx, axis_count, button_count);
   data.is_connected = true;
   return data;
 }

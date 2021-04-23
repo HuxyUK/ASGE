@@ -58,7 +58,7 @@ namespace ASGE
       x(xpos), y(ypos), w(width), h(height)
     {
 
-    };
+    }
 
     int32_t x = 0;  /**< The starting X position */
     int32_t y = 0;  /**< The starting Y position */

@@ -49,19 +49,23 @@ namespace ASGE
     /**
         * Default constructor.
         * @param id The index of the controller.
-        * @param n The name of the controller.
+        * @param gamepad_name The name of the controller.
         * @param axis_count The number of axis.
         * @param axis_data The value of each axis.
         * @param button_count The number of buttons.
         * @param button_state The state of each button.
      */
     GamePadData(
-      int id, const char* n, int axis_count, const float* axis_data, int button_count,
-      const unsigned char* button_state) noexcept :
+      const float* axis_data, const unsigned char* button_state,
+      const char* gamepad_name, int id, int axis_count, int button_count) noexcept :
+      axis(axis_data),
+      buttons(button_state),
+      name(gamepad_name),
       idx(id),
-      no_of_axis(axis_count), no_of_buttons(button_count), axis(axis_data), buttons(button_state),
-      name(n)
+      no_of_axis(axis_count),
+      no_of_buttons(button_count)
     {
+
     }
 
     GamePadData(GamePadData&& rhs) = default;
