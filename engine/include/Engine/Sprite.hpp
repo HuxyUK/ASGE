@@ -420,7 +420,7 @@ namespace ASGE
      * @brief Retrieves the rendering order (layer) of the sprite.
      * @return The sprite's current z-order.
      */
-    [[nodiscard]] short getGlobalZOrder() const noexcept;
+    [[nodiscard]] int16_t getGlobalZOrder() const noexcept;
 
     /**
      * @brief Sets the rendering order (layer) of the sprite.
@@ -446,7 +446,7 @@ namespace ASGE
      * they are rendered first.
      * @image html "https://i.stack.imgur.com/8aGig.png" "GameDev @ StackExchange" width=300
      */
-    void setGlobalZOrder(int8_t new_z_order) noexcept;
+    void setGlobalZOrder(int16_t new_z_order) noexcept;
 
     /**
      * @brief Retrieves any attached shader.
@@ -508,7 +508,7 @@ namespace ASGE
     /**< Sprite Rectangle. The source rectangle used for drawing. */
     std::array<float, 4> src_rect{ 0, 0, 0, 0 };
 
-    short z_order        = 0;    /**< Sprite Z-Order. Used to control the render layer.           */
+    int16_t z_order      = 0;    /**< Sprite Z-Order. Used to control the render layer.           */
     float angle          = 0.0F; /**< Sprite Rotation. Rotation around the sprite's origin.       */
     float scale_factor   = 1.0F; /**< Sprite Scale. Scales the sprite equally in both dims.       */
     float alpha          = 1.0F; /**< Sprite Opacity. Controls the sprite's opacity via alpha     */

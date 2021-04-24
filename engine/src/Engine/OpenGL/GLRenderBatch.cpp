@@ -19,7 +19,7 @@ template<class T>
 struct always_false : std::false_type
 {
 };
-signed short ASGE::PrimitiveVariant::getGlobalZOrder() const noexcept
+int16_t ASGE::PrimitiveVariant::getGlobalZOrder() const noexcept
 {
   return std::visit(
     [](auto&& arg) {

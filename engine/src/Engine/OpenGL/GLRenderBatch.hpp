@@ -89,7 +89,7 @@ namespace ASGE
     explicit PrimitiveVariant(GLText font) : prim{ font } {};
     ~PrimitiveVariant() = default;
 
-    [[nodiscard]] signed short getGlobalZOrder() const noexcept;
+    [[nodiscard]] int16_t getGlobalZOrder() const noexcept;
     [[nodiscard]] GLuint getTextureID() const noexcept;
     [[nodiscard]] GLuint getShader() const noexcept;
     [[nodiscard]] GLuint getQuadCount() const noexcept;

@@ -46,7 +46,7 @@ ASGE::Text::Text(
   this->colour = colour;
 }
 
-short ASGE::Text::getZOrder() const noexcept
+int16_t ASGE::Text::getZOrder() const noexcept
 {
   return this->z_order;
 }
@@ -117,7 +117,7 @@ ASGE::Text& ASGE::Text::setScale(float scale) noexcept
   return *this;
 }
 
-ASGE::Text& ASGE::Text::setZOrder(int8_t z_order) noexcept
+ASGE::Text& ASGE::Text::setZOrder(int16_t z_order) noexcept
 {
   this->z_order = z_order;
   return *this;

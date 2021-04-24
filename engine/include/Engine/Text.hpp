@@ -142,7 +142,7 @@ namespace ASGE
      *
      * @return Returns the text objects current z order.
      */
-    [[nodiscard]] short getZOrder() const noexcept;
+    [[nodiscard]] int16_t getZOrder() const noexcept;
 
     /**
      * Attempts to calculate the spacing between lines.
@@ -237,7 +237,7 @@ namespace ASGE
      * @param[in] z_order The new z-order to apply.
      * @return The text instance.
      */
-    Text& setZOrder(int8_t z_order) noexcept;
+    Text& setZOrder(int16_t z_order) noexcept;
 
     /**
      * Sets the scale factor of the rendered output.

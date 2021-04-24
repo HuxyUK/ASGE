@@ -178,12 +178,12 @@ ASGE::Sprite::FlipFlags ASGE::Sprite::flipFlags() const noexcept
   return flip_flags;
 }
 
-short ASGE::Sprite::getGlobalZOrder() const noexcept
+int16_t ASGE::Sprite::getGlobalZOrder() const noexcept
 {
   return z_order;
 }
 
-void ASGE::Sprite::setGlobalZOrder(int8_t new_z_order) noexcept
+void ASGE::Sprite::setGlobalZOrder(int16_t new_z_order) noexcept
 {
   z_order = new_z_order;
 }
