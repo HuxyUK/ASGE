@@ -42,7 +42,8 @@ ASGE::SHADER_LIB::GLShader* ASGE::CGLSpriteRenderer::initShader(
 bool ASGE::CGLSpriteRenderer::bindShader(GLuint shader_id, GLuint /*start_idx*/) noexcept
 {
   shader_id == 0 ? shader_id = getBasicSpriteShaderID() : shader_id;
-  if (active_shader->getShaderID() != shader_id)
+
+  if(active_shader && active_shader->getShaderID() != shader_id)
   {
     auto iter = std::find(GLRenderer::shaders.begin(), GLRenderer::shaders.end(), shader_id);
     if (iter == GLRenderer::shaders.end())
@@ -51,9 +52,9 @@ bool ASGE::CGLSpriteRenderer::bindShader(GLuint shader_id, GLuint /*start_idx*/)
     }
 
     active_shader = &(*iter);
+    active_shader->use();
   }
 
-  active_shader->use();
   return true;
 }
 

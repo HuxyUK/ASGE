@@ -578,10 +578,7 @@ ASGE::SHADER_LIB::Shader* ASGE::GLRenderer::initPixelShader(std::string shader_s
 void ASGE::GLRenderer::setActiveShader(ASGE::SHADER_LIB::Shader* shader)
 {
   auto *gl_shader = dynamic_cast<ASGE::SHADER_LIB::GLShader*>(shader);
-  if (gl_shader != nullptr)
-  {
-    sprite_renderer->setActiveShader(gl_shader);
-  }
+  sprite_renderer->setActiveShader(gl_shader);
 }
 
 ASGE::SHADER_LIB::GLShader* ASGE::GLRenderer::getActiveShader()

@@ -91,13 +91,13 @@ void ASGE::GLSpriteBatch::renderSprite(const ASGE::Sprite& sprite)
   {
     quad.shader_id = gl_sprite.asGLShader()->getShaderID();
   }
-  else if (sprite_renderer->activeShader()->getShaderID() == sprite_renderer->getDefaultTextShaderID())
+  else if(sprite_renderer->activeShader() != nullptr)
   {
-    quad.shader_id = sprite_renderer->getBasicSpriteShaderID();
+    quad.shader_id = sprite_renderer->activeShader()->getShaderID();
   }
   else
   {
-    quad.shader_id = sprite_renderer->activeShader()->getShaderID();
+    quad.shader_id = sprite_renderer->getBasicSpriteShaderID();
   }
 
   sprite_renderer->quadGen(gl_sprite, quad.gpu_data);
@@ -151,7 +151,8 @@ void ASGE::GLSpriteBatch::sortQuads()
     {
       return (lhs_texture_id < rhs_texture_id);
     }
-    else if (render_mode == SpriteSortMode::BACK_TO_FRONT)
+
+    if (render_mode == SpriteSortMode::BACK_TO_FRONT)
     {
       // if z order is lower
       return (lhs_z_order < rhs_z_order) ||
