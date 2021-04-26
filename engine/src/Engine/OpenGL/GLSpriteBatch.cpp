@@ -91,7 +91,9 @@ void ASGE::GLSpriteBatch::renderSprite(const ASGE::Sprite& sprite)
   {
     quad.shader_id = gl_sprite.asGLShader()->getShaderID();
   }
-  else if(sprite_renderer->activeShader() != nullptr)
+  else if (
+    sprite_renderer->activeShader() != nullptr &&
+    sprite_renderer->activeShader()->getShaderID() != sprite_renderer->getDefaultTextShaderID())
   {
     quad.shader_id = sprite_renderer->activeShader()->getShaderID();
   }
