@@ -90,12 +90,12 @@ namespace ASGE::KEYS
 
   enum ModKeys
   {
-    MOD_SHIFT,
-    MOD_CONTROL,
-    MOD_ALT,
-    MOD_SUPER,
-    MOD_CAPS_LOCK,
-    MOD_NUM_LOCK,
+    MOD_KEY_SHIFT,
+    MOD_KEY_CONTROL,
+    MOD_KEY_ALT,
+    MOD_KEY_SUPER,
+    MOD_KEY_CAPS_LOCK,
+    MOD_KEY_NUM_LOCK
   };
 
   // using namespace magic_enum::bitwise_operators;
