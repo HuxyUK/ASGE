@@ -502,7 +502,7 @@ namespace ASGE {
 
     /**
     *  @brief Sets the render target to use for rendering.
-     *
+    *
     *  Instead of rendering directly to the screen, a render target with
     *  an attached texture can be directly rendered to. This allows for
     *  off-screen rendering as well as an easier to manage post-fx pipeline.
@@ -511,6 +511,27 @@ namespace ASGE {
     */
     virtual void setRenderTarget(const ASGE::RenderTarget*) = 0;
 
+
+    /**
+     * @brief Retrieves information about the screen the window is on.
+     *
+     * Retrieves information on the screen the window resides on. In
+     * particular it provides information about the width, height and
+     * the refresh rate of the screen. Returned as a tuple to allow
+     * the use of structured bindings.
+     *
+     * <example>
+     * @code
+     *   auto [width, height, std::ignore] = renderer->screenRes();
+     *   auto [width, height, refresh]     = renderer->screenRes();
+     *   Logging::INFO(std::to_string(width) + "," +
+                       std::to_string(height)+ "," + std::to_string(refresh));
+     * @endcode
+     * </example>
+     *
+     * @return The screen mode info: width, height and refresh rate.
+     */
+    virtual std::tuple<int32_t, int32_t, int16_t> screenRes() = 0;
 
 	private:
 		GameSettings::WindowMode window_mode = GameSettings::WindowMode::WINDOWED; /**< The window mode being used. */

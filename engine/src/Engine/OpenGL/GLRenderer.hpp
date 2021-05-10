@@ -107,6 +107,7 @@ namespace ASGE
     void setRenderTarget(const ASGE::RenderTarget* /*unused*/) override;
     [[nodiscard]] float windowHeight() const noexcept override;
     [[nodiscard]] float windowWidth() const noexcept override;
+    std::tuple<int32_t,int32_t,int16_t> screenRes() override;
 
    private:
     std::unique_ptr<Input> inputPtr() override;

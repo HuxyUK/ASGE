@@ -404,9 +404,9 @@ void ASGE::GLRenderer::setWindowedMode(GameSettings::WindowMode mode_request)
       {
         if (desktop_res[0] >= desktop_res[1])
         {
-          height  = desktop_res[1];
-          width = desktop_res[1] *
-                   (static_cast<double>(target_width) / static_cast<double>(target_height));
+          height = desktop_res[1];
+          width  = desktop_res[1] *
+                  (static_cast<double>(target_width) / static_cast<double>(target_height));
         }
         else
         {
@@ -713,6 +713,11 @@ void ASGE::GLRenderer::centerWindow()
     window,
     desktop_res[0] * 0.5 - target_width  * 0.5,
     desktop_res[1] * 0.5 - target_height * 0.5);
+}
+
+std::tuple<int32_t, int32_t, int16_t> ASGE::GLRenderer::screenRes()
+{
+  return std::make_tuple(desktop_res[0], desktop_res[1], desktop_refresh);
 }
 
 std::vector<ASGE::SHADER_LIB::GLShader> ASGE::GLRenderer::shaders;
