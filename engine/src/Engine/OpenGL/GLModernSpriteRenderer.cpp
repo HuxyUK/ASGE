@@ -47,12 +47,8 @@ ASGE::GLModernSpriteRenderer::GLModernSpriteRenderer()
                  << " bytes.";
 
   Logging::DEBUG(ssbo_allocated.str());
-
-  Logging::DEBUG(
-    "GPUQuad size: " + std::to_string(sizeof(ASGE::GPUQuad)));
-
-  Logging::DEBUG(
-    "RenderQuad size: " + std::to_string(sizeof(ASGE::RenderQuad)));
+  Logging::DEBUG("GPUQuad size: " + std::to_string(sizeof(ASGE::GPUQuad)));
+  Logging::DEBUG("RenderQuad size: " + std::to_string(sizeof(ASGE::RenderQuad)));
 }
 
 /**
@@ -108,7 +104,7 @@ bool ASGE::GLModernSpriteRenderer::init()
   glVertexAttribDivisor(position_loc, 0);
   glEnableVertexAttribArray(position_loc);
 
-  constexpr GLbitfield MAPPING_FLAGS = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT;
+  constexpr GLbitfield MAPPING_FLAGS = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT;
   constexpr GLbitfield STORAGE_FLAGS = GL_DYNAMIC_STORAGE_BIT | MAPPING_FLAGS;
 
   const auto MAX_SSBO_CAPACITY = SSBOSize() * ASGE::GLModernSpriteRenderer::VBOTripleBuffer::BUFFER_COUNT;
