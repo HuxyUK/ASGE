@@ -111,6 +111,8 @@ namespace ASGE
 
    private:
     std::unique_ptr<Input> inputPtr() override;
+    void centerWindow();
+    void fit(Viewport& viewport);
     void postRender() override;
     void updateMonitorInfo(GLFWmonitor* monitor);
 
@@ -119,15 +121,12 @@ namespace ASGE
     glm::mat4 projection_matrix{};
     std::unique_ptr<CGLSpriteRenderer> sprite_renderer{};
     std::unique_ptr<GLAtlasManager> text_renderer{};
-
     std::array<int32_t, 2> desktop_res{ 0, 0 };
-    unsigned int target_width  = 640;
-    unsigned int target_height = 480;
-    int16_t desktop_refresh    = 60;
-    Colour debug_text_colour   = COLOURS::DEEPPINK;
-    GLFWwindow* window         = nullptr;
-    GLuint projection_ubo      = -1;
-
-    void centerWindow();
+    int target_width         = 640;
+    int target_height        = 480;
+    int16_t desktop_refresh  = 60;
+    Colour debug_text_colour = COLOURS::DEEPPINK;
+    GLFWwindow* window       = nullptr;
+    GLuint projection_ubo    = -1;
   };
-}
+}  // namespace ASGE

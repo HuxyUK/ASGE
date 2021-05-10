@@ -46,7 +46,7 @@ namespace ASGE
   {
     enum class WindowMode
     {
-      FULLSCREEN = 0,            /**< Fullscreen without decorations. */
+      EXCLUSIVE_FULLSCREEEN = 0, /**< Fullscreen without decorations. */
       WINDOWED = 1,              /**< Windowed desktop mode. */
       BORDERLESS_WINDOWED = 2,   /**< Borderless window desktop mode. */
       BORDERLESS_FULLSCREEN = 3, /**< Borderless full screen window mode. */

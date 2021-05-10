@@ -358,6 +358,45 @@ void ASGE::GLRenderer::postRender()
 }
 
 /**
+ * @brief Attempts to fit viewport to window.
+ *
+ * @Details Given a viewport, the function will attempt to frame
+ * it appropriately within the monitor's primary desktop resolution,
+ * using padding where needed and always trying to maintain the
+ * original requested aspect ratio.
+ *
+ * @param viewport[in] The requested viewport size.
+ */
+void ASGE::GLRenderer::fit(ASGE::Viewport& viewport)
+{
+  updateMonitorInfo(glfwGetPrimaryMonitor());
+
+  double width  = 0;
+  double height = 0;
+
+  float screen_aspect_ratio = static_cast<float>(desktop_res[0]) / static_cast<float>(desktop_res[1]);
+  float design_aspect_ratio = static_cast<float>(target_width)   / static_cast<float>(target_height);
+
+  float scalar =
+    screen_aspect_ratio > design_aspect_ratio
+      ? static_cast<float>(desktop_res[1]) / static_cast<float>(target_height)
+      : static_cast<float>(desktop_res[0]) / static_cast<float>(target_width);
+
+  width  = static_cast<float>(viewport.w) * scalar;
+  height = static_cast<float>(viewport.h) * scalar;
+
+  auto padding_x = (static_cast<float>(desktop_res[0]) - static_cast<float>(target_width)  * scalar) * 0.5F;
+  auto padding_y = (static_cast<float>(desktop_res[1]) - static_cast<float>(target_height) * scalar) * 0.5F;
+  auto offset_x  = (static_cast<float>(viewport.x) * scalar) + padding_x;
+  auto offset_y  = (static_cast<float>(viewport.y) * scalar) + padding_y;
+
+  viewport = { static_cast<int>(offset_x),
+               static_cast<int>(offset_y),
+               static_cast<int>(width),
+               static_cast<int>(height) };
+}
+
+  /**
  *  Sets the window mode.
  *  It is possible to display the game in a window, fullscreen or
  *  even borderless mode. This function will set the screen mode. At
@@ -375,56 +414,28 @@ void ASGE::GLRenderer::setWindowedMode(GameSettings::WindowMode mode_request)
   }
 
   auto* monitor = glfwGetPrimaryMonitor();
-  updateMonitorInfo(monitor);
-
   switch (mode_request)
   {
-    case (GameSettings::WindowMode::FULLSCREEN):
-    {
-      glfwSetWindowMonitor(window, monitor, 0, 0, target_width, target_height, desktop_refresh);
-      glViewport(0, 0, target_width, target_height);
-      break;
-    }
-
+    case (GameSettings::WindowMode::EXCLUSIVE_FULLSCREEEN):
     case (GameSettings::WindowMode::BORDERLESS_FULLSCREEN):
     {
-      glfwSetWindowMonitor(window, monitor, 0, 0, desktop_res[0], desktop_res[1], desktop_refresh);
-
-      double width  = 0;
-      double height = 0;
-
-      // if aspect ratio isn't bigger..
-      if (desktop_res[0] / desktop_res[1] <= target_width / target_height)
+      if(mode_request == GameSettings::WindowMode::EXCLUSIVE_FULLSCREEEN)
       {
-        width  = desktop_res[0];
-        height = desktop_res[0] *
-                 (static_cast<double>(target_height) / static_cast<double>(target_width));
+        glfwSetWindowMonitor(window, monitor, 0, 0, target_width, target_height, desktop_refresh);
       }
       else
       {
-        if (desktop_res[0] >= desktop_res[1])
-        {
-          height = desktop_res[1];
-          width  = desktop_res[1] *
-                  (static_cast<double>(target_width) / static_cast<double>(target_height));
-        }
-        else
-        {
-          height = desktop_res[1];
-          width  = desktop_res[1] *
-                  (static_cast<double>(target_width) / static_cast<double>(target_height));
-        }
+        glfwSetWindowMonitor(window, monitor, 0, 0, desktop_res[0], desktop_res[1], desktop_refresh);
       }
 
-      auto offset_x = (desktop_res[0] - width)  * 0.5;
-      auto offset_y = (desktop_res[1] - height) * 0.5;
-      glViewport(offset_x, offset_y, width, height);
+      auto viewport = ASGE::Viewport{0, 0, target_width, target_height};
+      fit(viewport);
+      glViewport(viewport.x, viewport.y, viewport.w, viewport.h);
       break;
     }
 
     case (GameSettings::WindowMode::BORDERLESS_WINDOWED):
     {
-      // not working..
       glfwSetWindowAttrib(window, GLFW_DECORATED, GLFW_FALSE);
       glfwSetWindowMonitor(window, nullptr, 0, 0, target_width, target_height, GLFW_DONT_CARE);
       centerWindow();
@@ -466,8 +477,18 @@ ASGE::Viewport ASGE::GLRenderer::getViewport() const
 void ASGE::GLRenderer::setViewport(const ASGE::Viewport& viewport)
 {
   this->batch.flush();
-  glViewport(static_cast<int>(viewport.x), static_cast<int>(viewport.y),
-             static_cast<int>(viewport.w), static_cast<int>(viewport.h));
+
+  if (
+    windowMode() == GameSettings::WindowMode::BORDERLESS_FULLSCREEN ||
+    windowMode() == GameSettings::WindowMode::EXCLUSIVE_FULLSCREEEN)
+  {
+    Viewport vp{ viewport };
+    fit(vp);
+    glViewport(vp.x, vp.y, static_cast<int>(vp.w), static_cast<int>(vp.h));
+    return;
+  }
+
+  glViewport(viewport.x, viewport.y, viewport.w, viewport.h);
 }
 
 /**

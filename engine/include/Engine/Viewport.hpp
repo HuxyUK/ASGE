@@ -54,7 +54,7 @@ namespace ASGE
      * @param[in] width The width of the viewport.
      * @param[in] height The height of the viewport.
      */
-    Viewport(int32_t xpos, int32_t ypos, uint32_t width, uint32_t height) :
+    Viewport(int32_t xpos, int32_t ypos, int32_t width, int32_t height) :
       x(xpos), y(ypos), w(width), h(height)
     {
 
@@ -62,8 +62,8 @@ namespace ASGE
 
     int32_t x = 0;  /**< The starting X position */
     int32_t y = 0;  /**< The starting Y position */
-    uint32_t w = 0; /**< The width of the viewport */
-    uint32_t h = 0; /**< The height of the viewport */
+    int32_t w = 0; /**< The width of the viewport */
+    int32_t h = 0; /**< The height of the viewport */
   };
 }  // namespace ASGE
 
