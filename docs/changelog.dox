@@ -4,6 +4,19 @@ namespace ASGE {
 
 @tableofcontents
 
+@section changelog-200a3 v2.0.0.alpha.3
+
+Released 10/05/2021
+@subsection changelog-200a3-changes Enhancements
+- Expose screen resolution info to end user
+- Resize and reposition viewports when entering fullscreen modes
+
+@subsection changelog-200a3-bugs Bug Fixes
+- Camera zoom now works correctly, thanks @olihewi
+- NVIDIA rendering under Linux no longer causes artefacts
+
+---
+
 @section changelog-200a2 v2.0.0.alpha.2
 Released 23/04/2021
 
