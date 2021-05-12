@@ -45,7 +45,7 @@ namespace ASGE
 							          the highest z-order first. */
 	};
 
-	/**
+  /**
 	* @brief a simple 2D non-renderable texture.
 	* 
 	* A texture is used to load images into the GPU.
@@ -69,6 +69,23 @@ namespace ASGE
         MONOCHROME_ALPHA = 2, /**< The texture is monochromatic and has an alpha channel.*/
         RGB = 3, /**< There are Red, Green & Blue channels present.*/
         RGBA = 4 /**< There are RGB plus alpha channels present .*/
+    };
+
+    /**
+     * @brief modes that controlling the UV texture wrapping
+     *
+     * When sampling textures and using UV coordinates outside of
+     * the normalised range, wrapping modes can be used to control
+     * the resultant sampled pixel. For example, REPEAT will
+     * continuously wrap the texture. This is good for when you want
+     * to sample outside the normal [0,1] range but still obtain a
+     * resultant pixel. A use case for this is a scrolling background layer.
+     */
+    enum class UVWrapMode
+    {
+      CLAMP,   /**< Clamps the texture to [0,1].        */
+      REPEAT,  /**< Repeats the texture.                */
+      MIRRORED /**< Mirrors the image with each repeat. */
     };
 
     /**
@@ -112,10 +129,21 @@ namespace ASGE
     virtual void updateMagFilter(MagFilter filter) = 0;
 
     /**
-    * Sets the filtering used for texture magnification.
-    * Allows the type of filtering applied when
-    * sampling the texture under magnification to be changed.
-    * @param MagFilter.
+     * @brief Controls how the UV coordinates are wrapped.
+     *
+     * When sampling the texture, UV coordinates outside of
+     * the range of [0,1] can either be clamped or repeated. It
+     * is also possible to clamp in one direction, and repeat in
+     * another as both directions (s,t) can be controlled
+     * independently of each other.
+     *
+     * @param s The wrapping mode for the x dimension.
+     * @param t The wrapping mode for the y dimension.
+     */
+    virtual void updateUVWrapping(UVWrapMode s, UVWrapMode t) = 0;
+
+    /**
+    * Rebuilds the mip maps used for minification.
     */
     virtual void updateMips() = 0;
 

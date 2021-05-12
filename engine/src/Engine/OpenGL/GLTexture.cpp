@@ -93,3 +93,9 @@ void ASGE::GLTexture::updateMips()
   GLVCMD(glBindTexture, GL_TEXTURE_2D, getID());
   GLVMSG("Rebuilding Mips", glGenerateMipmap, GL_TEXTURE_2D);
 }
+
+void ASGE::GLTexture::updateUVWrapping(Texture2D::UVWrapMode s, Texture2D::UVWrapMode t)
+{
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GLTexture::GL_UVWRAP_LOOKUP.at(s));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GLTexture::GL_UVWRAP_LOOKUP.at(t));
+}

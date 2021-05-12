@@ -21,12 +21,19 @@ namespace ASGE
   class GLTexture : public Texture2D
   {
    public:
-
     inline static const std::map<ASGE::Texture2D::MagFilter, GLuint> GL_MAG_LOOKUP {
       std::make_pair(ASGE::Texture2D::MagFilter::LINEAR, GL_LINEAR),
-      std::make_pair(ASGE::Texture2D::MagFilter::NEAREST, GL_NEAREST),
+      std::make_pair(ASGE::Texture2D::MagFilter::NEAREST, GL_NEAREST)
     };
 
+   private:
+    inline static const std::map<ASGE::Texture2D::UVWrapMode, GLint> GL_UVWRAP_LOOKUP {
+      std::make_pair(ASGE::Texture2D::UVWrapMode::CLAMP, GL_CLAMP_TO_EDGE),
+      std::make_pair(ASGE::Texture2D::UVWrapMode::REPEAT, GL_REPEAT),
+      std::make_pair(ASGE::Texture2D::UVWrapMode::MIRRORED, GL_MIRRORED_REPEAT)
+    };
+
+   public:
     GLTexture(int width, int height);
     ~GLTexture() override;
     GLTexture(const GLTexture&) = delete;
@@ -39,6 +46,7 @@ namespace ASGE
     const PixelBuffer* getPixelBuffer() const noexcept override;
     void updateMagFilter(MagFilter filter) override;
     void updateMips() override;
+    void updateUVWrapping(Texture2D::UVWrapMode s, Texture2D::UVWrapMode t) override;
 
    private:
     bool unload();
