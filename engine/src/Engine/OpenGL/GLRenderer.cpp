@@ -142,6 +142,7 @@ bool ASGE::GLRenderer::init()
       updateMonitorInfo(glfwGetPrimaryMonitor());
       centerWindow();
       setWindowedMode(ASGE::SETTINGS.mode);
+      glfwGetFramebufferSize(window, &target_width, &target_height);
       glfwShowWindow(this->window);
       item.second();
       RENDER_LIB = sprite_renderer->getRenderLib();
