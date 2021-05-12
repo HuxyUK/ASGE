@@ -43,7 +43,7 @@ bool ASGE::CGLSpriteRenderer::bindShader(GLuint shader_id, GLuint /*start_idx*/)
 {
   shader_id == 0 ? shader_id = getBasicSpriteShaderID() : shader_id;
 
-  if(active_shader && active_shader->getShaderID() != shader_id)
+  if(active_shader == nullptr || active_shader->getShaderID() != shader_id)
   {
     auto iter = std::find(GLRenderer::shaders.begin(), GLRenderer::shaders.end(), shader_id);
     if (iter == GLRenderer::shaders.end())

@@ -272,8 +272,10 @@ void ASGE::GLSpriteBatch::end()
 
 void ASGE::GLSpriteBatch::renderText(const ASGE::Text& text)
 {
-  if(!text.validFont())
-     return;
+  if (!text.validFont())
+  {
+    return;
+  }
 
   GLCharRender render_char;
   auto x_pos_begin = text.getPosition().x;

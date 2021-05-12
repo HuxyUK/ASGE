@@ -307,7 +307,7 @@ void ASGE::GLRenderer::renderDebug()
   debug_string += (std::string("DRAW COUNT: ") + std::to_string(batch.current_draw_count));
 
   Text debug_text = { getFont(0), debug_string.c_str(), 0, 52, ASGE::COLOURS::PINK };
-  batch.renderText(std::move(debug_text));
+  batch.renderText(debug_text);
 }
 
 /**
@@ -355,6 +355,7 @@ void ASGE::GLRenderer::renderSprite(const Sprite& spr)
 void ASGE::GLRenderer::postRender()
 {
   batch.end();
+  sprite_renderer->setActiveShader(nullptr);
 }
 
 /**
