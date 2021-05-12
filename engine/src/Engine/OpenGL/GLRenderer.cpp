@@ -128,16 +128,14 @@ bool ASGE::GLRenderer::init()
 
       glfwMakeContextCurrent(window);
 
-      if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+      if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == 0)
       {
         Logging::ERRORS("Failed to initialise GLAD");
         throw std::runtime_error("gladLoadGLLoader failed");
         return false;
       }
 
-      Logging::INFO(
-        "=> " +
-        std::string(reinterpret_cast<const char*>(glGetString(GL_RENDERER))));
+      Logging::INFO("=> " + std::string(reinterpret_cast<const char*>(glGetString(GL_RENDERER))));
 
       updateMonitorInfo(glfwGetPrimaryMonitor());
       centerWindow();
