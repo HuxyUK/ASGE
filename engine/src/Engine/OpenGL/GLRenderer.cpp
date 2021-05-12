@@ -417,10 +417,10 @@ void ASGE::GLRenderer::setWindowedMode(GameSettings::WindowMode mode_request)
   auto* monitor = glfwGetPrimaryMonitor();
   switch (mode_request)
   {
-    case (GameSettings::WindowMode::EXCLUSIVE_FULLSCREEEN):
+    case (GameSettings::WindowMode::EXCLUSIVE_FULLSCREEN):
     case (GameSettings::WindowMode::BORDERLESS_FULLSCREEN):
     {
-      if(mode_request == GameSettings::WindowMode::EXCLUSIVE_FULLSCREEEN)
+      if(mode_request == GameSettings::WindowMode::EXCLUSIVE_FULLSCREEN)
       {
         glfwSetWindowMonitor(window, monitor, 0, 0, target_width, target_height, desktop_refresh);
       }
@@ -481,7 +481,7 @@ void ASGE::GLRenderer::setViewport(const ASGE::Viewport& viewport)
 
   if (
     windowMode() == GameSettings::WindowMode::BORDERLESS_FULLSCREEN ||
-    windowMode() == GameSettings::WindowMode::EXCLUSIVE_FULLSCREEEN)
+    windowMode() == GameSettings::WindowMode::EXCLUSIVE_FULLSCREEN)
   {
     Viewport vp{ viewport };
     fit(vp);
