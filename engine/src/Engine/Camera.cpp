@@ -12,11 +12,11 @@
 
 #include <Engine/Camera.hpp>
 ASGE::Camera::Camera(float width, float height) :
-  position{ 0, 0 },
+  xy_pos{ 0, 0 },
   dimensions{ width, height } {}
 
 ASGE::Camera::Camera(ASGE::Point2D focal_point, float width, float height) :
-  position{ focal_point.x, focal_point.y },
+  xy_pos{ focal_point.x, focal_point.y },
   dimensions{ width, height } {}
 
 void ASGE::Camera::update(const ASGE::GameTime& /*game_time*/)
@@ -26,15 +26,15 @@ void ASGE::Camera::update(const ASGE::GameTime& /*game_time*/)
 
 void ASGE::Camera::lookAt(ASGE::Point2D pos)
 {
-  this->position.x = pos.x;
-  this->position.y = pos.y;
+  this->xy_pos.x = pos.x;
+  this->xy_pos.y = pos.y;
 }
 
 ASGE::Camera::CameraView ASGE::Camera::getView() const
 {
   ASGE::Camera::CameraView view;
-  view.min_x = position.x - dimensions[0] * 0.5F * zoom;
-  view.min_y = position.y - dimensions[1] * 0.5F * zoom;
+  view.min_x = xy_pos.x - dimensions[0] * 0.5F * zoom;
+  view.min_y = xy_pos.y - dimensions[1] * 0.5F * zoom;
   view.max_x = view.min_x + dimensions[0] * zoom;
   view.max_y = view.min_y + dimensions[1] * zoom;
   return view;
@@ -42,14 +42,14 @@ ASGE::Camera::CameraView ASGE::Camera::getView() const
 
 void ASGE::Camera::translate(float x, float y, float z)
 {
-  position.x += x;
-  position.y += y;
+  xy_pos.x += x;
+  xy_pos.y += y;
   zoom += z;
 }
 
 void ASGE::Camera::translateY(float y)
 {
-  position.y += y;
+  xy_pos.y += y;
 }
 
 void ASGE::Camera::translateZ(float z)
@@ -59,7 +59,7 @@ void ASGE::Camera::translateZ(float z)
 
 void ASGE::Camera::translateX(float x)
 {
-  position.x += x;
+  xy_pos.x += x;
 }
 
 void ASGE::Camera::resize(float width, float height)
@@ -76,4 +76,9 @@ float ASGE::Camera::getZoom() const
 void ASGE::Camera::setZoom(float z)
 {
   this->zoom = z;
+}
+
+const ASGE::Point2D& ASGE::Camera::position() const
+{
+  return xy_pos;
 }

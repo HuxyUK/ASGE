@@ -200,8 +200,14 @@ namespace ASGE
      */
     [[nodiscard]] float getZoom() const;
 
+    /**
+     * Retrieves the camera's current position on the XY axis.
+     * @return The camera's position.
+     */
+    [[nodiscard]] const ASGE::Point2D& position() const;
+
    private:
-    ASGE::Point2D position{ 0, 0 };
+    ASGE::Point2D xy_pos{ 0, 0 };
     std::array<float, 2> dimensions{ 0, 0 };
     float zoom = 1.0F;
   };
