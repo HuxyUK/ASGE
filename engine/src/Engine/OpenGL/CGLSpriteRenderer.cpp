@@ -165,11 +165,6 @@ void ASGE::CGLSpriteRenderer::generateUvData(
     uv_x *= src_rect[2] / sprite.getTexture()->getWidth();
     uv_x += src_rect[0] / sprite.getTexture()->getWidth();
 
-    if (sprite.isFlippedOnX())
-    {
-      uv_x = 1.0F - uv_x;
-    }
-
     uvs[i] = uv_x;
   }
 
@@ -179,12 +174,19 @@ void ASGE::CGLSpriteRenderer::generateUvData(
     uv_y *= src_rect[3] / sprite.getTexture()->getHeight();
     uv_y += src_rect[1] / sprite.getTexture()->getHeight();
 
-    if (sprite.isFlippedOnY())
-    {
-      uv_y = 1.0F - uv_y;
-    }
-
     uvs[i] = uv_y;
+  }
+
+  if (sprite.isFlippedOnX())
+  {
+    std::swap(uvs[0], uvs[4]);
+    std::swap(uvs[8], uvs[12]);
+  }
+
+  if (sprite.isFlippedOnY())
+  {
+    std::swap(uvs[1], uvs[5]);
+    std::swap(uvs[9], uvs[13]);
   }
 }
 
