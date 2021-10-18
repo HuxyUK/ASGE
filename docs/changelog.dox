@@ -4,9 +4,31 @@ namespace ASGE {
 
 @tableofcontents
 
-@section changelog-200a3 v2.0.0.alpha.3
+@section changelog-200 v2.0.0
+Released 18/10/2021
 
+---
+
+@section changelog-200a4 v2.0.0.alpha.4
+Released 14/05/2021
+
+@subsection changelog-200a4-changes Enhancements
+- Allow UV wrapping mode to be changed for individual textures
+- Expose read-only camera positional property
+
+@subsection changelog-200a4-changes-misc Misc
+- The default UV wrapping mode is now CLAMP instead of REPEAT
+- Renamed EXCLUSIVE_FULLSCREEEN typo to EXCLUSIVE_FULLSCREEN
+
+@subsection changelog-200a4-bugs Bug Fixes
+- Using a custom shader no longer causes an issue when reset to nullptr
+- Flip flags now apply correctly to sprites when using custom source rectangles
+
+---
+
+@section changelog-200a3 v2.0.0.alpha.3
 Released 10/05/2021
+
 @subsection changelog-200a3-changes Enhancements
 - Expose screen resolution info to end user
 - Resize and reposition viewports when entering fullscreen modes
