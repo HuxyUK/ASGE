@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.9.0)
-
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 project(asge)
 string(TIMESTAMP date "%Y%m%d")
 set(ASGE_VERSION_MAJOR "2")
