@@ -55,32 +55,32 @@ namespace ASGE
 
     SHADER_LIB::Shader* getShader() override;
 
-		GLRenderer();
-		~GLRenderer() override;
+    GLRenderer();
+    ~GLRenderer() override;
     GLRenderer(const GLRenderer&) = delete;
     GLRenderer operator=(const GLRenderer&) = delete;
 
     bool init() override;
-		bool exit() override;
-		void setDefaultTextColour(const Colour& rgb) override;
-		void preRender() override;
-		void swapBuffers() override;
-		void renderDebug();
-		
-		std::unique_ptr<Sprite> createUniqueSprite() override;
-		Sprite* createRawSprite() override;
-		GLFWwindow* getWindow();
-		const glm::mat4& getProjectionMatrix() const;
+    bool exit() override;
+    void setDefaultTextColour(const Colour& rgb) override;
+    void preRender() override;
+    void swapBuffers() override;
+    void renderDebug();
 
-		// Inherited via Renderer
-		int     loadFont(const char * font, int pt) override;
-		int     loadFontFromMem(const char* name, const unsigned char* data, unsigned int size, int pt) override;
-		void    setFont(int id) override;
-		void    setWindowTitle(const char * str) override;
-		void    setSpriteMode(SpriteSortMode sort_mode) override;
-		void    setWindowedMode(GameSettings::WindowMode window_mode) override;
-		void    setClearColour(ASGE::Colour rgb) override;
-		const   Font& getDefaultFont() const override;
+    std::unique_ptr<Sprite> createUniqueSprite() override;
+    Sprite* createRawSprite() override;
+    GLFWwindow* getWindow();
+    const glm::mat4& getProjectionMatrix() const;
+
+    // Inherited via Renderer
+    int     loadFont(const char * font, int pt) override;
+    int     loadFontFromMem(const char* name, const unsigned char* data, unsigned int size, int pt) override;
+    void    setFont(int id) override;
+    void    setWindowTitle(const char * str) override;
+    void    setSpriteMode(SpriteSortMode sort_mode) override;
+    void    setWindowedMode(GameSettings::WindowMode window_mode) override;
+    void    setClearColour(ASGE::Colour rgb) override;
+    const   Font& getDefaultFont() const override;
 
     // TODO create central shader storage, this is bad design
     SHADER_LIB::Shader* initPixelShader(std::string shader_source) override;
