@@ -1,6 +1,6 @@
 #FOR LLP - YEAR 2 STUDENTS. NOT SUITABLE FOR YEAR 1
 Checks:            '*,readability-identifier-naming,
-                    -android-*,-fuchsia-*,-google-*,-llvm-*,-objc-*,-zircon-*,
+                    -android-*,-fuchsia-*,-google-*,-llvm-*,-objc-*,-zircon-*,-altera-*,
                     -clang-analyzer-alpha.*,-modernize-use-trailing-return-type, -readability-magic-numbers,
                     -hicpp-special-member-functions, -readability-redundant-access-specifiers,
                     -cppcoreguidelines-avoid-magic-numbers, -cppcoreguidelines-pro-bounds-pointer-arithmetic,
