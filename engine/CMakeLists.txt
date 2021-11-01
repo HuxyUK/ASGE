@@ -4,7 +4,7 @@ project(asge)
 string(TIMESTAMP date "%Y%m%d")
 set(ASGE_VERSION_MAJOR "2")
 set(ASGE_VERSION_MINOR "0")
-set(ASGE_VERSION_PATCH "1")
+set(ASGE_VERSION_PATCH "2")
 set(ASGE_VERSION_EXTRA "${date}")
 set(ASGE_VERSION "${ASGE_VERSION_MAJOR}.${ASGE_VERSION_MINOR}")
 set(ASGE_VERSION_FULL "${ASGE_VERSION}.${ASGE_VERSION_PATCH}${ASGE_VERSION_EXTRA}")
@@ -127,13 +127,14 @@ target_sources( ${PROJECT_NAME}
 		${PROJECT_SOURCES}
 		${PLATFORM_SOURCES})
 
+
 # Define headers for this library. PUBLIC headers are used for
 # compiling the library and added to build paths. 
 target_include_directories( ${PROJECT_NAME}
 		SYSTEM
 		PUBLIC
         $<INSTALL_INTERFACE:include>
-        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+		"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
 		"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libs/physfs++/include>"
 		"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libs/physfs/src>"
       	PRIVATE
@@ -143,6 +144,13 @@ target_include_directories( ${PROJECT_NAME}
 		"${CMAKE_CURRENT_SOURCE_DIR}/libs/freetype2/include"
 		"${CMAKE_CURRENT_SOURCE_DIR}/libs/stb"
         )
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+		asgeConfigVersion.cmake
+		VERSION ${ASGE_VERSION_FULL}
+		COMPATIBILITY AnyNewerVersion
+)
 
 # Compiler requirements for this library,
 target_compile_features( ${PROJECT_NAME} PUBLIC cxx_std_17 )

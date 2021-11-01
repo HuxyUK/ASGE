@@ -4,6 +4,32 @@ namespace ASGE {
 
 @tableofcontents
 
+@section changelog-202 v2.0.2
+Released 01/11/2021
+
+@subsection changelog-202-changes Enhancements
+- Scale the game resolution on init, instead of assuming framebuffer dimensions
+
+@subsection changelog-202-changes-misc Misc
+- Disable altera warnings for clang-tidy
+
+---
+
+@section changelog-201 v2.0.1
+Released 31/10/2021
+
+@subsection changelog-201-changes Enhancements
+- Expose read-only camera positional property
+- Disable deprecated OpenGL support, fixes mac-build
+- Target 10.15 to allow use of C++17 std::filesystem
+
+@subsection changelog-201-changes-misc Misc
+- Minor formatting changes
+- Upgrade to a non-broken Freetype2 repository
+- Working MacOS build
+
+---
+
 @section changelog-200 v2.0.0
 Released 18/10/2021
 
