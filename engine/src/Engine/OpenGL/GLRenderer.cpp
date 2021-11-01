@@ -140,7 +140,6 @@ bool ASGE::GLRenderer::init()
       updateMonitorInfo(glfwGetPrimaryMonitor());
       centerWindow();
       setWindowedMode(ASGE::SETTINGS.mode);
-      glfwGetFramebufferSize(window, &target_width, &target_height);
       glfwShowWindow(this->window);
       item.second();
       RENDER_LIB = sprite_renderer->getRenderLib();
@@ -148,7 +147,9 @@ bool ASGE::GLRenderer::init()
     }
   }
 
-  setProjectionMatrix(0, 0, static_cast<float>(target_width), static_cast<float>(target_height));
+  setProjectionMatrix(0, 0,
+                      static_cast<float>(target_width),
+                      static_cast<float>(target_height));
 
   text_renderer = std::make_unique<GLAtlasManager>();
   text_renderer->init();
