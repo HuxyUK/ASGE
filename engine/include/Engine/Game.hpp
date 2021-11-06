@@ -78,23 +78,54 @@ namespace ASGE
      *  time-steps instead of the regular frame update.
      *
      *  This is useful when you only want to progress the
-     *  game world i.e. physics with a deterministically
-     *  known amount. It is best to use fixed updates as
-     *  a divisible or multiple of the FPS count. This allows
+     *  game world by a known amount i.e. physics calculations
+     *  which should act deterministically or network simulations
+     *  where clients need syncing. It is best to use fixed updates
+     *  as a divisible or multiple of the FPS count. This allows
      *  a smoother delivery of frame data. For example: 60/120
      *  would deliver one fixed update per two renders.
+     *
+     *  @note
+     *  It's important to remember that the amount of time being
+     *  simulated does not directly correlate with the wall clock.
+     *  It will always pass the same delta in to the fixedUpdate
+     *  function. So six fixed updates will always simulate the
+     *  same amount of time irrespective of the game's speed.
      *
      *  @param[in] us Game and fixed delta information.
      *  @see GameTime
      */
-    virtual void update(const GameTime& us) = 0;
+    virtual void fixedUpdate(const GameTime& us);
 
     /**
-     * @brief Pure virtual function that sets up the renderer before
-     * rendering a frame.
+     *  @brief Function used to update the game using variable
+     *  time-steps instead of relying on the deterministic
+     *  fixedUpdate function calls.
      *
-     * Can include flushing of buffers, clearing screens etc.
-     * **This is handled inside the platform's specific implementation.**
+     *  If the fixed update lags too aggressively, a forced render
+     *  and update call will be performed. This is to prevent the
+     *  window from hanging, as it is possible that the loop will
+     *  never recover otherwise.
+     *
+     *  @note
+     *  You can think of the update function as the render update.
+     *  It gets called once per each frame rendered. If too much
+     *  time passes between updates, the delta will be capped and
+     *  will result in the amount of game time being progressed
+     *  to be slowed down.
+     *
+     *  @param[in] us Game and frame delta information.
+     *  @see GameTime
+     */
+    virtual void update(const GameTime& us) = 0;
+
+
+    /**
+     *  @brief Pure virtual function that sets up the renderer before
+     *  rendering a frame.
+     *
+     *  Can include flushing of buffers, clearing screens etc.
+     *  **This is handled inside the platform's specific implementation.**
      */
     virtual void beginFrame() = 0;
 

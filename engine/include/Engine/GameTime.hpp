@@ -40,7 +40,7 @@ namespace ASGE
      *  Time point of last fixed step update.
      *  The time at which the previous update tick began.
      */
-    std::chrono::time_point<std::chrono::steady_clock> last_tick_time =
+    std::chrono::time_point<std::chrono::steady_clock> last_fixedstep_time =
       std::chrono::steady_clock::now();
 
     /**

@@ -93,12 +93,12 @@ int ASGE::Game::run()
 {
   renderer->setWindowTitle(ASGE::SETTINGS.window_title.c_str());
 
-  using clock           = std::chrono::steady_clock;
-  using ms              = std::chrono::duration<double, std::milli>;
-  epoch.fixed_delta     = ms((1 / float(ASGE::SETTINGS.fixed_ts)) * 1000);
-  epoch.last_tick_time  = clock::now() - std::chrono::duration_cast<std::chrono::milliseconds>(epoch.fixed_delta);
-  epoch.last_frame_time = clock::now() - std::chrono::duration_cast<std::chrono::milliseconds>(
-                          ms(1.0 / static_cast<double>(ASGE::SETTINGS.fps_limit)) * 1000);
+  using clock               = std::chrono::steady_clock;
+  using ms                  = std::chrono::duration<double, std::milli>;
+  epoch.fixed_delta         = ms((1 / float(ASGE::SETTINGS.fixed_ts)) * 1000);
+  epoch.last_fixedstep_time = clock::now() - std::chrono::duration_cast<std::chrono::milliseconds>(epoch.fixed_delta);
+  epoch.last_frame_time     = clock::now() - std::chrono::duration_cast<std::chrono::milliseconds>(
+                              ms(1.0 / static_cast<double>(ASGE::SETTINGS.fps_limit)) * 1000);
 
   while (!exit && !renderer->exit())
   {
@@ -108,14 +108,14 @@ int ASGE::Game::run()
     constexpr auto MILLI_IN_SEC  = 1000;
 
     /*
-     * Update Loop
-     * The update loop uses a fixed time step. The timing is based on the
-     * ASGE::GameSettings and will always use fixed_delta for running.
+     * Fixed-Update Loop
+     * The fixed update loop uses a fixed time step. The timing is based on
+     * the ASGE::GameSettings and will always use fixed_delta for running.
      * If the updates are lagging, it will attempt to catch-up. To ensure
-     * the game doesn't lock-up, it will always render a frame every now
+     * the game doesn't lock up, it will always render a frame every now
      * and then even if the update is lagging.
      */
-    auto accumulator = ms(tick_start - epoch.last_tick_time);
+    auto accumulator = ms(tick_start - epoch.last_fixedstep_time);
     if(accumulator > epoch.fixed_delta * 2)
     {
       Logging::WARN(
@@ -124,23 +124,26 @@ int ASGE::Game::run()
         " updates behind");
     }
 
+    bool timed_out = false;
     while (accumulator >= epoch.fixed_delta)
     {
       Logging::TRACE("tick start: " + std::to_string(accumulator.count()));
-      epoch.last_tick_time = clock::now();
-      update(epoch);
+      epoch.last_fixedstep_time = clock::now();
+      fixedUpdate(epoch);
 
-      auto tick_delta = clock::now();
-      if (ms(tick_delta - epoch.last_frame_time) > MAX_FRAMETIME)
+      auto current_tick_time = clock::now();
+      if (ms(current_tick_time - epoch.last_frame_time) > MAX_FRAMETIME)
       {
+        timed_out = true;
         break; // time to render a frame i.e. slideshow alert
       }
 
-      accumulator -= ms(epoch.fixed_delta - (tick_delta - epoch.last_tick_time));
+      accumulator -= ms(epoch.fixed_delta - (current_tick_time - epoch.last_fixedstep_time));
     }
 
     // how far along are we to the next "fixed" step
     epoch.distance = accumulator / epoch.fixed_delta;
+
 
     /*
      * Render Loop
@@ -148,10 +151,12 @@ int ASGE::Game::run()
      * time-step for simulating render related logic, such as particle systems
      * and for drawing to the GPU.
      */
-    epoch.frame_delta = ms(clock::now() - epoch.last_frame_time);
-    if (epoch.frame_delta.count() >= (1.0 / static_cast<double>(ASGE::SETTINGS.fps_limit)) * MILLI_IN_SEC)
+
+    epoch.frame_delta = timed_out ? MAX_FRAMETIME: ms(clock::now() - epoch.last_frame_time);
+    if (timed_out || epoch.frame_delta.count() >= (1.0 / static_cast<double>(ASGE::SETTINGS.fps_limit)) * MILLI_IN_SEC)
     {
       epoch.last_frame_time = clock::now();
+      update(epoch);
       beginFrame();
       render(epoch);
       endFrame();
@@ -177,4 +182,9 @@ ASGE::Game::Game(const GameSettings& game_settings)
 ASGE::Game::~Game()
 {
   PhysFS::deinit();
+}
+
+void ASGE::Game::fixedUpdate(const ASGE::GameTime &us)
+{
+
 }
