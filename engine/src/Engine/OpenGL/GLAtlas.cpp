@@ -33,7 +33,7 @@ ASGE::FontTextureAtlas::~FontTextureAtlas()
 bool ASGE::FontTextureAtlas::init(const FT_Face& face, int h)
 {
   FT_Set_Pixel_Sizes(face, 0, h);
-  memset(characters, 0, sizeof(Character));
+  memset(characters, 0, sizeof(Character)*128);
   calculateTextureSize(face);
 
   if (width == 0 && height == 0)
@@ -77,7 +77,7 @@ void ASGE::FontTextureAtlas::calculateTextureSize(const FT_Face& face)
   // run through ASCII and calculate texture size
   for (int i = 32; i < 128; i++)
   {
-    if (FT_Load_Char(face, i, FT_LOAD_RENDER) != 0)
+    if (FT_Load_Char(face, i, FT_RENDER_MODE_NORMAL) != 0)
     {
       Logging::ERRORS("FT: Loading char " + std::to_string(i) + "failed");
       continue;
@@ -93,7 +93,7 @@ void ASGE::FontTextureAtlas::calculateTextureSize(const FT_Face& face)
     }
 
     roww += glyph_slot->bitmap.width + 1;
-    rowh = std::max(rowh, glyph_slot->bitmap.rows);
+    rowh = std::max(rowh, glyph_slot->bitmap.rows + 1) ;
   }
 
   // set the texture's width and height
@@ -108,10 +108,7 @@ bool ASGE::FontTextureAtlas::generateTexture()
   GLVCMD(glActiveTexture, GL_TEXTURE0 + texture);
 
   GLVMSG(__PRETTY_FUNCTION__, glBindTexture, GL_TEXTURE_2D, texture);
-  // GLVCMD(glBindTexture, GL_TEXTURE_2D, texture);
-
-  GLVCMD(
-    glTexImage2D, GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, nullptr);
+  GLVCMD(glTexImage2D, GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, nullptr);
 
   return true;
 }
@@ -119,10 +116,10 @@ bool ASGE::FontTextureAtlas::generateTexture()
 void ASGE::FontTextureAtlas::setSampleParams()
 {
   GLVMSG(__PRETTY_FUNCTION__, glPixelStorei, GL_UNPACK_ALIGNMENT, 1);
-  GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,  GL_CLAMP_TO_BORDER);
+  GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,  GL_CLAMP_TO_BORDER);
   GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
   float ansio_levels;
   GLVMSG(__PRETTY_FUNCTION__, glGetFloatv, GL_MAX_TEXTURE_MAX_ANISOTROPY, &ansio_levels);
@@ -154,12 +151,9 @@ bool ASGE::FontTextureAtlas::calculateFontFace(const FT_Face& face)
     }
 
     glTexSubImage2D(
-      GL_TEXTURE_2D,
-      0,
-      x,
-      y,
-      glyph_slot->bitmap.width,
-      glyph_slot->bitmap.rows,
+      GL_TEXTURE_2D, 0,
+      x, y,
+      glyph_slot->bitmap.width, glyph_slot->bitmap.rows,
       GL_RED,
       GL_UNSIGNED_BYTE,
       glyph_slot->bitmap.buffer);
@@ -186,7 +180,7 @@ bool ASGE::FontTextureAtlas::calculateFontFace(const FT_Face& face)
     c.UV.z = uv_offset_x + uv_width;
     c.UV.w = uv_offset_y + uv_height;
 
-    row_height = std::max(row_height, glyph_slot->bitmap.rows);
+    row_height = std::max(row_height, glyph_slot->bitmap.rows + 1);
     x += glyph_slot->bitmap.width + 1;
   }
 

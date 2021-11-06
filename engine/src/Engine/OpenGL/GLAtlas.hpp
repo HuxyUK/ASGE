@@ -19,7 +19,7 @@ namespace ASGE
 	/// Holds all state information relevant to a character as loaded using FreeType
 	struct Character
 	{
-    glm::dvec4 UV;		  // UV coordinates of glyph
+        glm::dvec4 UV;      // UV coordinates of glyph
 		glm::ivec2 Size;    // Size of glyph
 		glm::ivec2 Bearing; // Offset from baseline to left/top of glyph
 		glm::ivec2 Advance; // Offset to the next glyph
@@ -39,7 +39,7 @@ namespace ASGE
 
 	private:
 		bool generateTexture();
-    void setSampleParams();
+        void setSampleParams();
 		bool calculateFontFace(const FT_Face& face);
 		void calculateTextureSize(const FT_Face& face);
 
