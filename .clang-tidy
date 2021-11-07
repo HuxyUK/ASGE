@@ -44,17 +44,3 @@ CheckOptions:
 
   - key:    misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
     value:  '1'
-
-# CHANGELOG
-# DISABLED
-# -hicpp-special-member-functions: CREATING A NON-DEFAULT DESTRUCTOR DOES NOT MEAN A CLASS NEEDS CUSTOM EVERYTHING
-# -readability-redundant-access-specifiers: ALLOW MULTIPLE USE OF PUBLIC/PRIVATE IN HEADERS
-# -cppcoreguidelines-avoid-magic-numbers: DUPLICATE OF READABILITY
-#  misc-non-private-member-variables-in-classes; IGNORE ALL PUBLIC DATA CLASSES
-# -cppcoreguidelines-owning-memory: ITS OKAY TO USE RAW POINTERS IMHO
-# -cppcoreguidelines-pro-bounds-constant-array-index: GSL::AT?? REALLY?
-# -hicpp-signed-bitwise: IGNORE THE SIGNED BITMAPPING ERRORS. THIS IS AN ANNOYING INTERPRETATION OF HIC++ STANDARD
-# WARNING ONLY
-# -readability-magic-numbers: SHOULDN'T USE THEM, BUT LETS NOT CRY OVER IT TOO BADLY
-# -misc-unused-parameters: YEAH, BUT HERE WE ARE!
-

@@ -20,7 +20,7 @@ bool ASGE::GLSprite::loadTexture(const std::string& file)
 	{
 		// sane defaults
 		dimensions()[0] = texture->getWidth();
-    dimensions()[1] = texture->getHeight();
+        dimensions()[1] = texture->getHeight();
 
 		// source rectangle
 		srcRect()[2] = dimensions()[0];

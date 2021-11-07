@@ -4,6 +4,17 @@ namespace ASGE {
 
 @tableofcontents
 
+@section changelog-210 v2.1.0
+Released 07/11/2021
+
+@subsection changelog-210-changes Enhancements
+- Introduction of Unity style time steps [[3aa4fd4]](https://github.com/HuxyUK/ASGE/commit/3aa4fd479558795ca11ab81898ceb6e0d2b964eb)
+
+@subsection changelog-210-bugs Bug Fixes
+- Add y spacing in font atlas to prevent sampling issues when scaling
+
+---
+
 @section changelog-202 v2.0.2
 Released 01/11/2021
 
@@ -12,6 +23,10 @@ Released 01/11/2021
 
 @subsection changelog-202-changes-misc Misc
 - Disable altera warnings for clang-tidy
+
+@subsection changelog-202-bugs Bug Fixes
+- Using a custom shader no longer causes an issue when reset to nullptr
+- Flip flags now apply correctly to sprites when using custom source rectangles
 
 ---
 
