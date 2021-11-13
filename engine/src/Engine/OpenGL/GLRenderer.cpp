@@ -98,7 +98,6 @@ bool ASGE::GLRenderer::init()
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-  glfwWindowHint(GLFW_SAMPLES, ASGE::SETTINGS.msaa_level);
 
   using GLVERSION = std::pair<int, int>;
   std::map<GLVERSION, std::function<void()>, std::greater<>> my_map;
@@ -118,16 +117,15 @@ bool ASGE::GLRenderer::init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, item.first.first);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, item.first.second);
 
-    window = glfwCreateWindow(target_width, target_height, "ASGE", nullptr, nullptr);
-    if (window != nullptr)
+    GLFWwindow* msaa_window = glfwCreateWindow(640, 480, "MSAA Check", nullptr, nullptr);
+    if (msaa_window != nullptr)
     {
       Logging::INFO(
-        "Launching Window with GLVERSION: " +
-        std::to_string(item.first.first) + "." +
-        std::to_string(item.first.second) + " Support");
+              "Launching Window with GLVERSION: " +
+              std::to_string(item.first.first) + "." +
+              std::to_string(item.first.second) + " Support");
 
-      glfwMakeContextCurrent(window);
-
+      glfwMakeContextCurrent(msaa_window);
       if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == 0)
       {
         Logging::ERRORS("Failed to initialise GLAD");
@@ -137,19 +135,31 @@ bool ASGE::GLRenderer::init()
 
       Logging::INFO("=> " + std::string(reinterpret_cast<const char*>(glGetString(GL_RENDERER))));
 
+      // Calculate MAX MSAA
+      GLint max_samples = 0;
+      glGetIntegerv ( GL_MAX_SAMPLES, &max_samples );
+      Logging::INFO(std::string("Max Supported Samples: ") + std::to_string(max_samples));
+      ASGE::SETTINGS.msaa_level = std::min(ASGE::SETTINGS.msaa_level, max_samples);
+      glfwWindowHint(GLFW_SAMPLES, ASGE::SETTINGS.msaa_level);
+
+      // Create the actual window and close temporary one
+      window = glfwCreateWindow(target_width, target_height, "ASGE", nullptr, msaa_window);
+      glfwMakeContextCurrent(window);
+      glfwDestroyWindow(msaa_window);
+
       updateMonitorInfo(glfwGetPrimaryMonitor());
       centerWindow();
       setWindowedMode(ASGE::SETTINGS.mode);
       glfwShowWindow(this->window);
+
+      // Initialise the GL Sprite Renderer
       item.second();
       RENDER_LIB = sprite_renderer->getRenderLib();
       break;
     }
   }
 
-  setProjectionMatrix(0, 0,
-                      static_cast<float>(target_width),
-                      static_cast<float>(target_height));
+  setProjectionMatrix(0, 0, static_cast<float>(target_width), static_cast<float>(target_height));
 
   text_renderer = std::make_unique<GLAtlasManager>();
   text_renderer->init();
