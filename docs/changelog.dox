@@ -4,6 +4,18 @@ namespace ASGE {
 
 @tableofcontents
 
+@section changelog-300 v3.0.0
+Released 16/11/2021
+
+@subsection changelog-300-changes Enhancements
+- Fix for long-standing input bug [[053d425]](https://github.com/HuxyUK/ASGE/commit/053d425cfe2998483264bb5a0bc2565b5c32664e)
+- Fix issue with bounds calculation for fonts [[ab418f7]](https://github.com/HuxyUK/ASGE/commit/ab418f7cfe394c3ae49b03394818be399a841107)
+
+@subsection changelog-300-changes-misc Misc
+- Added stduuid library [[06c4b93]](https://github.com/HuxyUK/ASGE/commit/06c4b93bdc894e8e9dec4a51388461d8b9b2319d)
+
+---
+
 @section changelog-220 v2.2.0
 Released 15/11/2021
 
