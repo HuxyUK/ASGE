@@ -90,6 +90,7 @@ namespace ASGE
     SHADER_LIB::GLShader* getActiveShader();
 
     ASGE::Texture2D* createNonCachedTexture(int width, int height, ASGE::Texture2D::Format pixel_format, void* data) override;
+    ASGE::Texture2D* createNonCachedMSAATexture(int width, int height, ASGE::Texture2D::Format pixel_format) override;
     ASGE::Texture2D* createNonCachedTexture(const std::string& path) override;
     ASGE::Texture2D* createCachedTexture(std::string id, int width, int height, ASGE::Texture2D::Format pixel_format, void* data) override;
     ASGE::Texture2D* createCachedTexture(const std::string& path) override;

@@ -36,9 +36,7 @@ void ASGE::GLTextureCache::reset()
 			texture.second = nullptr;
 		}
 	}
-
 	cache.clear();
-
 }
 
 ASGE::GLTexture* ASGE::GLTextureCache::createCached(const std::string& path)
@@ -81,6 +79,13 @@ ASGE::GLTexture* ASGE::GLTextureCache::createNonCached(
 {
   return allocateTexture(img_width, img_height, format, data);
 }
+
+ASGE::GLTexture* ASGE::GLTextureCache::createNonCachedMSAA(
+  int img_width, int img_height, ASGE::Texture2D::Format format)
+{
+  return allocateMSAATexture(img_width, img_height, format);
+}
+
 
 ASGE::GLTexture* ASGE::GLTextureCache::allocateTexture(const std::string& file)
 {
@@ -144,15 +149,13 @@ ASGE::GLTextureCache::allocateTexture(
     data);
 
   // Set texture options
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
   // Use the default game settings for mag filtering
-  glTexParameteri(
-    GL_TEXTURE_2D,
-    GL_TEXTURE_MAG_FILTER,
-    GLTexture::GL_MAG_LOOKUP.at(ASGE::SETTINGS.mag_filter));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                  GLTexture::GL_MAG_LOOKUP.at(ASGE::SETTINGS.mag_filter));
 
   if(data != nullptr)
   {
@@ -162,12 +165,26 @@ ASGE::GLTextureCache::allocateTexture(
   if (ASGE::GLRenderer::RENDER_LIB == ASGE::GLRenderer::RenderLib::GL_MODERN)
   {
     // Anisotropic filtering
-    float ansio_levels = 0;
-    glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &ansio_levels);
-    ansio_levels = std::min(float(ASGE::SETTINGS.anisotropic), ansio_levels);
-    glTextureParameterf(texture->getID(), GL_TEXTURE_MAX_ANISOTROPY, ansio_levels);
+    float aniso_level = 16;
+    glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &aniso_level);
+    aniso_level = std::min(float(ASGE::SETTINGS.anisotropic), aniso_level);
+    glTextureParameterf(texture->getID(), GL_TEXTURE_MAX_ANISOTROPY, aniso_level);
   }
 
   glBindTexture(GL_TEXTURE_2D, 0);
+  return texture;
+}
+
+ASGE::GLTexture* ASGE::GLTextureCache::allocateMSAATexture(
+  int img_width, int img_height, ASGE::Texture2D::Format format)
+{
+  auto *texture = new GLTexture(img_width, img_height);
+  texture->setFormat(format);
+
+  // Allocate a texture
+  glGenTextures(1, &texture->getID());
+  glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, texture->getID());
+  glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, ASGE::SETTINGS.msaa_level, GLFORMAT[texture->getFormat()], img_width, img_height, GL_TRUE);
+  glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
   return texture;
 }

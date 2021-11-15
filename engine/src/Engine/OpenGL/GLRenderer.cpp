@@ -640,6 +640,12 @@ ASGE::Texture2D* ASGE::GLRenderer::createCachedTexture(
   return GLTextureCache::getInstance().createCached(id, width, height, pixel_format, data);
 }
 
+ASGE::Texture2D*
+ASGE::GLRenderer::createNonCachedMSAATexture(int width, int height, ASGE::Texture2D::Format pixel_format)
+{
+  return GLTextureCache::getInstance().createNonCachedMSAA(width, height, pixel_format);
+}
+
 ASGE::Texture2D* ASGE::GLRenderer::createNonCachedTexture(const std::string& path)
 {
   return GLTextureCache::getInstance().createNonCached(path);

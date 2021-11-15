@@ -34,13 +34,15 @@ namespace ASGE
     ASGE::GLTexture* createCached(const std::string& path);
     ASGE::GLTexture* createNonCached(int img_width, int img_height, Texture2D::Format format, void* data);
     ASGE::GLTexture* createNonCached(const std::string& path);
+    ASGE::GLTexture* createNonCachedMSAA(int img_width, int img_height, Texture2D::Format format);
     ASGE::GLTexture* createCached(const std::string& id, int img_width, int img_height, GLTexture::Format format, void* data);
     void reset();
 
    private:
-		GLTextureCache() = default;
-		~GLTextureCache();
+    GLTextureCache() = default;
+    ~GLTextureCache();
 
+    ASGE::GLTexture* allocateMSAATexture(int img_width, int img_height, Texture2D::Format format);
     ASGE::GLTexture* allocateTexture(int img_width, int img_height, Texture2D::Format format, const void* data);
     ASGE::GLTexture* allocateTexture(const std::string& file);
 

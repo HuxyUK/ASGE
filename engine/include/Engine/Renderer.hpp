@@ -341,6 +341,23 @@ namespace ASGE {
     virtual ASGE::Texture2D* createNonCachedTexture(int width, int height, ASGE::Texture2D::Format format, void* data) = 0;
 
     /**
+     * @brief Creates a non-cached multi-sampling texture.
+     *
+     * A non-cached texture is created and assigned to the GPU.
+     * The size of the allocation depends on both the dimensions and
+     * the pixel format. As the texture is not cached by ASGE,
+     * responsibility for its destruction is left to the callee.
+     *
+     * @param[in] width The width of the newly created MSAA texture.
+     * @param[in] height The height of the newly created MSAA texture.
+     * @param[in] format The pixel format.
+     *
+     * @return The newly created Texture.
+     * @warning Don't forget to deallocate the memory the function call allocates.
+     */
+    virtual ASGE::Texture2D* createNonCachedMSAATexture(int width, int height, ASGE::Texture2D::Format format) = 0;
+
+    /**
      * @brief Attempts to create a non-cached texture from a file.
      *
      * A non-cached texture is created and assigned to the GPU.
