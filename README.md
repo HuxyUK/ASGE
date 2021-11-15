@@ -2,6 +2,8 @@
 Simple OpenGL Engine
 
 ---
+## v2.2.0
+Released on 15/11/2021
 
 ## v2.1.0
 Released on 07/11/2021

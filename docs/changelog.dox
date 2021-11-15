@@ -4,6 +4,21 @@ namespace ASGE {
 
 @tableofcontents
 
+@section changelog-220 v2.2.0
+Released 15/11/2021
+
+@subsection changelog-220-changes Enhancements
+- Support for MSAA rendering [[1a67df7]](https://github.com/HuxyUK/ASGE/commit/1a67df7b393fc27bc465fd60a4fa5573ec18c01a)
+- Support for MSAA frame buffers [[211783c]](https://github.com/HuxyUK/ASGE/commit/211783c6d54252ea3507852c520f77f9156ec724)
+
+@subsection changelog-220-bugs Bug Fixes
+- Swap correct UV coordinates when x-axis flipped [[9f92a9c]](https://github.com/HuxyUK/ASGE/commit/9f92a9ca8e85abeaeaa152cae416683930027a93)
+
+@subsection changelog-220-changes-misc Misc
+- Don't clamp sub-pixel positions [[e6621d6]](https://github.com/HuxyUK/ASGE/commit/e6621d6e32f80e052b091dba54a667b93b299fb4)
+
+---
+
 @section changelog-210 v2.1.0
 Released 07/11/2021
 
