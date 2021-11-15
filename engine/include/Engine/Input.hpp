@@ -17,10 +17,9 @@
 
 #pragma once
 #include <functional>
-#include <vector>
 #include <memory>
-#include <map>
-
+#include <unordered_map>
+#include <uuid.h>
 #include "Gamepad.hpp"
 #include "InputEvents.hpp"
 #include "Mouse.hpp"
@@ -64,6 +63,8 @@ namespace ASGE {
 	{
 
 	public:
+
+   using CallbackID = std::string;
 
 		/**
 		* Default Constructor.
@@ -155,7 +156,7 @@ namespace ASGE {
 		* @return The handle for the registered callback.
 		*/
 		template<typename T, typename T2>
-		int addCallbackFnc(EventType type, T fncPtr, T2* obj)
+    CallbackID addCallbackFnc(EventType type, T fncPtr, T2* obj)
 		{
 			using namespace std::placeholders;
 
@@ -174,7 +175,7 @@ namespace ASGE {
 		* @return the handle for the registered callback.
 		*/
 		template<typename T>
-		int addCallbackFnc(EventType type, T fncPtr)
+    CallbackID addCallbackFnc(EventType type, T fncPtr)
 		{
 			using namespace std::placeholders;
 			return this->registerCallback(type, std::bind(fncPtr, _1));
@@ -190,7 +191,7 @@ namespace ASGE {
 		 *
 		 * @param[in] id The handle for the registered callback.
 		 */
-		void unregisterCallback(unsigned int id);
+		void unregisterCallback(CallbackID id);
 
 		/**
 		* Allows events to use threads. 
@@ -204,9 +205,8 @@ namespace ASGE {
 
 	private:
     using InputFnc = std::function<void(SharedEventData)>;
-    using InputFncPair = std::pair<EventType, InputFnc>;
-    using InputFncs = std::vector<InputFncPair>;
-
+    using InputFncPair = std::tuple<EventType, InputFnc>;
+    using InputFncs = std::unordered_map<uuids::uuid, InputFncPair>;
 
     /**
      * Registers a callback function with an event.
@@ -214,8 +214,9 @@ namespace ASGE {
      * @param inputFnc The function to call when event happens.
      * @return The handler to the registered event.
      */
-		int registerCallback(EventType eventType, InputFnc inputFnc);
+		std::string registerCallback(EventType eventType, InputFnc inputFnc);
 		InputFncs callback_funcs; //!< The registered callbacks.
+    uuids::uuid_random_generator UUIDGen; //!< The UUID random generator.
 	};
 }  // namespace ASGE
 

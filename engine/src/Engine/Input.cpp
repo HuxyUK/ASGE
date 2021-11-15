@@ -13,7 +13,18 @@
 #include "Engine/Input.hpp"
 #include <future>
 
+uuids::uuid_random_generator uuidGenerator() {
+  std::random_device rd;
+  auto seed_data = std::array<int, std::mt19937::state_size>{};
+  std::generate(std::begin(seed_data), std::end(seed_data), std::ref(rd));
+  std::seed_seq seq(std::begin(seed_data), std::end(seed_data));
+  static std::mt19937 engine(seq);
+  static uuids::uuid_random_generator uuid_random_generator(&engine);
+  return uuid_random_generator;
+}
+
 ASGE::Input::Input()
+: UUIDGen(uuidGenerator())
 {
   callback_funcs.reserve(50);
 }
@@ -23,45 +34,38 @@ ASGE::Input::~Input()
   callback_funcs.clear();
 }
 
-int ASGE::Input::registerCallback(EventType type, InputFnc fnc)
+ASGE::Input::CallbackID ASGE::Input::registerCallback(EventType type, InputFnc fnc)
 {
-  callback_funcs.push_back(InputFncPair(type, fnc));
-  return static_cast<int>(callback_funcs.size() - 1);
+  auto uuid = UUIDGen();
+  callback_funcs[uuid] = InputFncPair(type, fnc);
+  return to_string(uuid);
 }
 
 void ASGE::Input::sendEvent(EventType type, SharedEventData data)
 {
+  auto send = [](InputFncs& callbacks, EventType type, SharedEventData& data) {
+    for (const auto &[uuid, callback] : callbacks)
+    {
+      const auto&[callback_type, callback_function] = callback;
+      if (callback_type == type)
+      {
+        callback_function(data);
+      }
+    }
+  };
+
   if (use_threads)
   {
-    // run callbacks in new thread
-    auto clbk = [](InputFncs& fncs, EventType type, SharedEventData& data) {
-      for (const auto& callback : fncs)
-      {
-        if (callback.first == type)
-        {
-          callback.second(data);
-        }
-      }
-    };
-
-    auto task = std::async([&] { return clbk(callback_funcs, type, data); });
+    auto task = std::async([&] { return send(callback_funcs, type, data); });
   }
   else
   {
-    for (const auto& callback : callback_funcs)
-    {
-      if (callback.first == type)
-      {
-        callback.second(data);
-      }
-    }
+    send(callback_funcs, type, data);
   }
 }
 
-void ASGE::Input::unregisterCallback(unsigned int id)
+void ASGE::Input::unregisterCallback(CallbackID id)
 {
-  if (id > 0 && id < callback_funcs.size())
-  {
-    callback_funcs.erase(callback_funcs.begin() + id);
-  }
+  auto uuid = uuids::uuid::from_string(id).value();
+  callback_funcs.erase(uuid);
 }
