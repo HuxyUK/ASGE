@@ -13,7 +13,7 @@ set(ASGE_VERSION_FULL "${ASGE_VERSION}.${ASGE_VERSION_PATCH}${ASGE_VERSION_EXTRA
 set(CMAKE_DEBUG_POSTFIX d)
 
 # Setup the libs that the game engine are reliant on
-list(APPEND LINK_LIBS "magic_enum::magic_enum")
+list(APPEND LINK_LIBS "magic_enum::magic_enum" "stduuid::stduuid")
 add_subdirectory(libs)
 
 set( PROJECT_HEADERS
