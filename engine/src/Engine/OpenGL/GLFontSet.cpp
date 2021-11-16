@@ -89,11 +89,11 @@ float ASGE::GLFontSet::pxHeight(const std::string& string, float scale) const
   float height               = 0;
   std::string::size_type pos = 0;
   std::string target         = "\n";
-  while ((pos = string.find(target, pos)) != std::string::npos)
+  do
   {
     height += (float)line_height * scale;
     pos += target.length();
-  }
+  } while ((pos = string.find(target, pos)) != std::string::npos);
 
   return height;
 }
