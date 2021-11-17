@@ -12,6 +12,10 @@
 
 #include "GLAtlas.hpp"
 
+constexpr int PADDING_X = 4;
+constexpr int PADDING_Y = 4;
+constexpr int TEXTURE_WIDTH = 2048;
+
 // FreeType
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -41,7 +45,9 @@ bool ASGE::FontTextureAtlas::init(const FT_Face& face, int h)
     return false;
   }
 
-  if (!generateTexture() || !calculateFontFace(face))
+  generateTexture();
+
+  if (!calculateFontFace(face))
   {
     return false;
   }
@@ -83,8 +89,8 @@ void ASGE::FontTextureAtlas::calculateTextureSize(const FT_Face& face)
       continue;
     }
 
-    // ensure the next glpyh would fit in 1024 width
-    if (roww + glyph_slot->bitmap.width + 1 >= 1024)
+    // ensure the next glpyh would fit in the texture's width
+    if (roww + glyph_slot->bitmap.width > TEXTURE_WIDTH)
     {
       width = std::max(width, roww);
       height += rowh;
@@ -92,8 +98,8 @@ void ASGE::FontTextureAtlas::calculateTextureSize(const FT_Face& face)
       rowh = 0;
     }
 
-    roww += glyph_slot->bitmap.width + 1;
-    rowh = std::max(rowh, glyph_slot->bitmap.rows + 1) ;
+    roww += glyph_slot->bitmap.width + PADDING_X;
+    rowh = std::max(rowh, glyph_slot->bitmap.rows + PADDING_Y) ;
   }
 
   // set the texture's width and height
@@ -101,7 +107,7 @@ void ASGE::FontTextureAtlas::calculateTextureSize(const FT_Face& face)
   height += rowh;
 }
 
-bool ASGE::FontTextureAtlas::generateTexture()
+void ASGE::FontTextureAtlas::generateTexture()
 {
   glActiveTexture(GL_TEXTURE0);
   GLVCMD(glGenTextures, 1, &texture);
@@ -109,8 +115,6 @@ bool ASGE::FontTextureAtlas::generateTexture()
 
   GLVMSG(__PRETTY_FUNCTION__, glBindTexture, GL_TEXTURE_2D, texture);
   GLVCMD(glTexImage2D, GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, nullptr);
-
-  return true;
 }
 
 void ASGE::FontTextureAtlas::setSampleParams()
@@ -118,32 +122,40 @@ void ASGE::FontTextureAtlas::setSampleParams()
   GLVMSG(__PRETTY_FUNCTION__, glPixelStorei, GL_UNPACK_ALIGNMENT, 1);
   GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,  GL_CLAMP_TO_BORDER);
   GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,  GL_CLAMP_TO_BORDER);
-  GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
   GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-  float ansio_levels;
-  GLVMSG(__PRETTY_FUNCTION__, glGetFloatv, GL_MAX_TEXTURE_MAX_ANISOTROPY, &ansio_levels);
-  GLVMSG(__PRETTY_FUNCTION__, glTexParameterf, GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY, ansio_levels);
+  float anisotropy_level = 0;
+  GLVMSG(__PRETTY_FUNCTION__, glGetFloatv, GL_MAX_TEXTURE_MAX_ANISOTROPY, &anisotropy_level);
+  GLVMSG(__PRETTY_FUNCTION__, glTexParameterf, GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY,
+    anisotropy_level);
 }
 
 bool ASGE::FontTextureAtlas::calculateFontFace(const FT_Face& face)
 {
   setSampleParams();
 
-  auto glyph_slot         = face->glyph;
+  auto *glyph_slot        = face->glyph;
   unsigned int x          = 0;
   unsigned int y          = 0;
   unsigned int row_height = 0;
 
+  if(glyph_slot->bitmap.width > TEXTURE_WIDTH)
+  {
+    Logging::ERRORS("Font atlas can not be generated:");
+    Logging::ERRORS(" Individual glyph is larger than texture width");
+    return false;
+  }
+
   for (int i = 32; i < 128; i++)
   {
-    if (FT_Load_Char(face, i, FT_LOAD_RENDER))
+    if (FT_Load_Char(face, i, FT_LOAD_RENDER) != 0)
     {
       std::cout << "Loading character " << char(i) << " failed\n";
       continue;
     }
 
-    if (x + glyph_slot->bitmap.width + 1 >= 1024)
+    if (x + glyph_slot->bitmap.width > TEXTURE_WIDTH)
     {
       y += row_height;
       row_height = 0;
@@ -180,9 +192,10 @@ bool ASGE::FontTextureAtlas::calculateFontFace(const FT_Face& face)
     c.UV.z = uv_offset_x + uv_width;
     c.UV.w = uv_offset_y + uv_height;
 
-    row_height = std::max(row_height, glyph_slot->bitmap.rows + 1);
-    x += glyph_slot->bitmap.width + 1;
+    row_height = std::max(row_height, glyph_slot->bitmap.rows + PADDING_Y);
+    x += glyph_slot->bitmap.width + PADDING_X;
   }
 
+  GLVMSG("Rebuilding Mips", glGenerateMipmap, GL_TEXTURE_2D);
   return true;
 }
