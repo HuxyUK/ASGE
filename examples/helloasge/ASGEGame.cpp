@@ -1,3 +1,4 @@
+#include <map>
 #include <Engine/GameSettings.hpp>
 #include <Engine/Logger.hpp>
 #include <Engine/OGLGame.hpp>
@@ -29,6 +30,8 @@ class ASGENetGame : public ASGE::OGLGame
     rh_camera.resize(1024 / 2.0F, 768);
     lh_camera.lookAt({1024 * 0.25F, 768 / 2.0F});
     rh_camera.lookAt({1024 * 0.50F, 768 / 2.0F});
+
+    toggleFPS();
   }
 
   ~ASGENetGame() override = default;
