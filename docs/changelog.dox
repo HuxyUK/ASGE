@@ -4,6 +4,16 @@ namespace ASGE {
 
 @tableofcontents
 
+@section changelog-310 v3.1.0
+Released 17/11/2021
+
+@subsection changelog-310-changes Enhancements
+- 2nd fix for bounds calculation on fonts [[81a7ce9]](https://github.com/HuxyUK/ASGE/commit/18f744f2cf2d6888de041e38723194a2587cdccd)
+- Enable mipmaps for font atlases [[5d5adb]](https://github.com/HuxyUK/ASGE/commit/5d5adbe2ae253ecac83b26432d750e47297f547c)
+- Add new function for calculation max deviation in the Y axis for font rendering `boundsY`
+
+---
+
 @section changelog-300 v3.0.0
 Released 16/11/2021
 
