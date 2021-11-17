@@ -172,14 +172,14 @@ ASGE::TextBounds ASGE::Text::getLocalBounds() const
   TextBounds bounds;
   if (validFont())
   {
-    auto width  = static_cast<float>(font->pxWide(string));
-    auto height = static_cast<float>(font->pxHeight(string));
+    auto width     = getWidth();
+    auto [min,max] = font->boundsY(string, scale);
 
     // clang-format off
-    bounds.v1 = {0, 0};
-    bounds.v2 = {width,0};
-    bounds.v3 = {width, height};
-    bounds.v4 = {0,  height};
+    bounds.v1 = {0,     0      };
+    bounds.v2 = {width, 0      };
+    bounds.v3 = {width, min+max};
+    bounds.v4 = {0,     min+max};
     // clang-format on
   }
   return bounds;
@@ -187,23 +187,30 @@ ASGE::TextBounds ASGE::Text::getLocalBounds() const
 
 ASGE::TextBounds ASGE::Text::getWorldBounds() const
 {
-  auto width  = getWidth();
-  auto height = getHeight();
-
-  // clang-format off
   TextBounds bounds;
-  bounds.v1 = {this->position.x,         this->position.y};
-  bounds.v2 = {this->position.x + width, this->position.y};
-  bounds.v3 = {this->position.x + width, this->position.y + height};
-  bounds.v4 = {this->position.x,         this->position.y + height};
-  // clang-format on
+  if (validFont())
+  {
+    auto width      = getWidth();
+    auto [min, max] = font->boundsY(string, scale);
 
+    // clang-format off
+    bounds.v1 = {this->position.x,         this->position.y - min};
+    bounds.v2 = {this->position.x + width, this->position.y - min};
+    bounds.v3 = {this->position.x + width, this->position.y + max};
+    bounds.v4 = {this->position.x,         this->position.y + max};
+    // clang-format on
+  }
   return bounds;
 }
 
 ASGE::Text::Text(ASGE::Text&& rhs) noexcept :
-  string(std::move(rhs.string)), colour(rhs.colour), position(std::move(rhs.position)),
-  opacity(rhs.opacity), scale(rhs.scale), z_order(rhs.z_order), font(rhs.font)
+  string(std::move(rhs.string)),
+  colour(rhs.colour),
+  position(std::move(rhs.position)),
+  opacity(rhs.opacity),
+  scale(rhs.scale),
+  z_order(rhs.z_order),
+  font(rhs.font)
 {
   rhs.font = nullptr;
 }
@@ -241,3 +248,4 @@ float ASGE::Text::getHeight() const noexcept
 
   return 0;
 }
+

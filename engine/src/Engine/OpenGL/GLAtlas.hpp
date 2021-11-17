@@ -37,9 +37,9 @@ namespace ASGE
 		[[nodiscard]] GLuint getTextureID() const noexcept;
 		[[nodiscard]] const Character& getCharacter(int idx) const;
 
-	private:
-		bool generateTexture();
-        void setSampleParams();
+   private:
+    void generateTexture();
+    void setSampleParams();
 		bool calculateFontFace(const FT_Face& face);
 		void calculateTextureSize(const FT_Face& face);
 

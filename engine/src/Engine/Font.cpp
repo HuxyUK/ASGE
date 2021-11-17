@@ -30,3 +30,8 @@ int ASGE::Font::pxHeight(const char* ch, float scale) const
 {
   return static_cast<int>(pxHeight(std::string(ch), scale));
 }
+
+std::tuple<float, float> ASGE::Font::boundsY(const char* ch, float scale) const
+{
+  return boundsY(std::string(ch), scale);
+}

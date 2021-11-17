@@ -12,6 +12,7 @@
 
 #include "GLFontSet.hpp"
 #include "GLAtlas.hpp"
+#include <vector>
 
 ASGE::GLFontSet::GLFontSet(GLFontSet&& rhs) noexcept : atlas(std::move(rhs.atlas))
 {
@@ -33,7 +34,7 @@ const ASGE::FontTextureAtlas* ASGE::GLFontSet::getAtlas() const noexcept
 float ASGE::GLFontSet::pxWide(char ch, float scale) const noexcept
 {
   const auto* atlas_ch = &atlas->getCharacter(ch);
-  return atlas_ch->Advance.x * powf(scale, 2);
+  return atlas_ch->Advance.x * scale;
 }
 
 float ASGE::GLFontSet::pxWide(const std::string& string, float scale) const
@@ -49,8 +50,9 @@ float ASGE::GLFontSet::pxWide(const std::string& string, float scale) const
   float length    = 0;
   float max_width = 0;
 
-  auto update_length = [&]() {
-    length -= float(ch->Advance.x - ch->Size.x) * powf(scale, 2);
+  auto update_length = [&]()
+  {
+    length -= float(ch->Advance.x - ch->Size.x) * scale;
     if (length > max_width)
     {
       max_width = length;
@@ -67,7 +69,7 @@ float ASGE::GLFontSet::pxWide(const std::string& string, float scale) const
     }
 
     ch = &atlas->getCharacter(C);
-    length += ch->Advance.x * powf(scale, 2);
+    length += ch->Advance.x * scale;
   }
 
   update_length();
@@ -86,16 +88,20 @@ float ASGE::GLFontSet::pxHeight(const std::string& string, float scale) const
     return 0;
   }
 
-  float height               = 0;
-  std::string::size_type pos = 0;
-  std::string target         = "\n";
-  do
+  int height            = 0;
+  std::string delimiter = "\n";
+  for (const auto& c : string)
   {
-    height += (float)line_height * scale;
-    pos += target.length();
-  } while ((pos = string.find(target, pos)) != std::string::npos);
+    if (std::to_string(c) == delimiter)
+    {
+      break;
+    }
 
-  return height;
+    const auto* ch = &atlas->getCharacter(c);
+    height         = std::max(height, ch->Bearing.y);
+  }
+
+  return static_cast<float>(height) * scale;
 }
 
 ASGE::GLFontSet& ASGE::GLFontSet::operator=(ASGE::GLFontSet&& rhs) noexcept
@@ -105,4 +111,47 @@ ASGE::GLFontSet& ASGE::GLFontSet::operator=(ASGE::GLFontSet&& rhs) noexcept
   this->line_height = rhs.line_height;
   this->atlas       = std::move(rhs.atlas);
   return *this;
+}
+
+std::tuple<float, float> ASGE::GLFontSet::boundsY(const std::string& string, float scale) const
+{
+  if (string.empty())
+  {
+    return std::make_tuple(0, 0);
+  }
+
+  std::tuple<float, float> bounds(0, 0);
+  auto& [min_y, max_y] = bounds;
+
+  std::string delimiter       = "\n";
+  std::string::size_type prev = 0;
+  std::string::size_type pos  = 0;
+  std::vector<std::string> lines;
+
+  while ((pos = string.find(delimiter, prev)) != std::string::npos)
+  {
+    lines.emplace_back(string.substr(prev, pos));
+    prev = pos + delimiter.size();
+  }
+
+  lines.emplace_back(string.substr(prev, pos));
+
+  // first line tells us the low y value
+  for (const auto& c : lines.front())
+  {
+    const auto* ch = &atlas->getCharacter(c);
+    min_y = std::max(min_y, static_cast<float>(ch->Bearing.y));
+  }
+
+  // last line tells us the high y value
+  for (const auto& c : lines.back())
+  {
+    const auto* ch = &atlas->getCharacter(c);
+    max_y          = std::max(max_y, static_cast<float>(ch->Size.y - ch->Bearing.y));
+  }
+
+  float line_count = static_cast<float>(lines.size()) - 1;
+  max_y = (max_y + (line_count * line_height)) * scale;
+  min_y *= scale;
+  return bounds;
 }

@@ -32,7 +32,7 @@ namespace ASGE
     GLFontSet(GLFontSet&&) noexcept;
     GLFontSet(const GLFontSet&) = delete;
     GLFontSet& operator=(const GLFontSet&) = delete;
-    GLFontSet& operator=(GLFontSet&&) noexcept;
+    GLFontSet& operator                    =(GLFontSet&&) noexcept;
     ~GLFontSet() override;
 
     /**
@@ -60,8 +60,9 @@ namespace ASGE
     [[nodiscard]] float pxWide(const std::string& string, float scale) const override;
     [[nodiscard]] float pxWide(char ch, float scale) const noexcept;
     [[nodiscard]] float pxHeight(const std::string& string, float scale) const override;
+    [[nodiscard]] std::tuple<float, float> boundsY(const std::string& string, float scale) const override;
 
    private:
     std::unique_ptr<FontTextureAtlas> atlas;
   };
-}  // namespace ASGE
+} // namespace ASGE

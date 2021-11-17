@@ -18,15 +18,15 @@ bool ASGE::GLSprite::loadTexture(const std::string& file)
 	texture = GLTextureCache::getInstance().createCached(file);
 	if (texture != nullptr)
 	{
-		// sane defaults
-		dimensions()[0] = texture->getWidth();
-        dimensions()[1] = texture->getHeight();
+    // sane defaults
+    dimensions()[0] = texture->getWidth();
+    dimensions()[1] = texture->getHeight();
 
-		// source rectangle
-		srcRect()[2] = dimensions()[0];
-		srcRect()[3] = dimensions()[1];
-		return true;
-	}
+    // source rectangle
+    srcRect()[2] = dimensions()[0];
+    srcRect()[3] = dimensions()[1];
+    return true;
+  }
 
 	return false;
 }

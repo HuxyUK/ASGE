@@ -17,6 +17,7 @@
 #pragma once
 #include "NonCopyable.hpp"
 #include <string>
+#include <tuple>
 //#include "Align.hpp"
 namespace ASGE
 {
@@ -105,6 +106,35 @@ namespace ASGE
     [[nodiscard]] int pxHeight(const char* ch, float scale) const;
 
     /**
+     * @brief Returns the distance from the baseline in the y axis.
+     *
+     * Font's use a baseline for positioning the main body of text. This function
+     * calculates the max distance on the Y axis required to render the text. It
+     * returns both the deviation in the -Y and deviation in the +Y axis. This can
+     * be used to create bounding boxes. It will also correctly parse new lines.
+     *
+     * @param[in] ch The character used in the calculations.
+     * @param[in] scale Any scaling to apply.
+     * @return The number of pixels required in the Y axis to render the string.
+     */
+    [[nodiscard]] std::tuple<float, float> boundsY(const char* ch, float scale) const;
+
+    /**
+     * @brief Returns the distance from the baseline in the y axis.
+     *
+     * Font's use a baseline for positioning the main body of text. This function
+     * calculates the max distance on the Y axis required to render the text. It
+     * returns both the deviation in the -Y and deviation in the +Y axis. This can
+     * be used to create bounding boxes. It will also correctly parse new lines.
+     *
+     * @param[in] str The string used in the calculations.
+     * @param[in] scale Any scaling to apply.
+     * @return The number of pixels required in the Y axis to render the string.
+     */
+    [[nodiscard]] virtual std::tuple<float, float>
+    boundsY(const std::string& string, float scale) const = 0;
+
+    /**
      * @brief Returns the distance scaled in x pixels.
      *
      * Sometimes it's useful to know how wide a string  placing text etc. This
@@ -136,6 +166,6 @@ namespace ASGE
    public:
     const char* font_name = ""; //!< The name of the font loaded.
     int font_size = 0;          //!< The size of the font imported.
-    int line_height = 0;        //!< The recommended height of each line.
+    float line_height = 0;      //!< The recommended height of each line.
   };
 }  // namespace ASGE

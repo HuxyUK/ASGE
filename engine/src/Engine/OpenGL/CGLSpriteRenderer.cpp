@@ -194,22 +194,20 @@ void ASGE::CGLSpriteRenderer::createCharQuad(
   const ASGE::GLCharRender& character, const ASGE::Colour& colour, ASGE::GPUQuad& quad) const
 {
   // locate the character and set x,y positions
-  auto& ch     = character.font->getAtlas()->getCharacter(character.ch);
-  GLfloat xpos = character.x + ch.Bearing.x * powf(character.scale, 2);
-  GLfloat ypos = character.y - ch.Bearing.y * powf(character.scale, 2);
-  // GLfloat ypos = character.y - ch.Bearing.y *(ch.Size.y - ch.Bearing.y);
+  const auto& ch = character.font->getAtlas()->getCharacter(character.ch);
+  float x_pos    = character.x + ch.Bearing.x * character.scale;
+  float y_pos    = character.y - ch.Bearing.y * character.scale;
 
   // generate the matrix
   auto& model_matrix = quad.position;
-  model_matrix       = { glm::mat4(1.f) };
+  model_matrix       = { glm::mat4(1.F) };
 
-  model_matrix = glm::translate(model_matrix, glm::vec3(xpos, ypos, 0.0f));
+  model_matrix = glm::translate(model_matrix, glm::vec3(x_pos, y_pos, 0.0F));
 
   GLfloat w = ch.Size.x * character.scale;
   GLfloat h = ch.Size.y * character.scale;
 
-  model_matrix =
-    glm::scale(model_matrix, glm::vec3(w * character.scale, h * character.scale, 1.0f));
+  model_matrix = glm::scale(model_matrix, glm::vec3(w, h,1.0F));
 
   // Calculate texture coords for each character
   quad.uv_data[0] = glm::vec4{ (float)ch.UV.x, (float)ch.UV.w, GPUQuad::PADDING }; // v1

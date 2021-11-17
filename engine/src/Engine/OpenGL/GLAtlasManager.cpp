@@ -134,8 +134,7 @@ int ASGE::GLAtlasManager::createAtlas(FT_Face& face, const char* name, int pt)
 
   // store the line spacing
   set.line_height =
-    static_cast<int>(
-      (face->size->metrics.ascender - face->size->metrics.descender)) / 64;
+      static_cast<float>(face->size->metrics.ascender - face->size->metrics.descender) / 64.0F;
 
   FT_Done_Face(face);
 
