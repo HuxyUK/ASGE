@@ -153,7 +153,7 @@ write_basic_package_version_file(
 )
 
 # Compiler requirements for this library,
-target_compile_features( ${PROJECT_NAME} PUBLIC cxx_std_17 )
+target_compile_features( ${PROJECT_NAME} PUBLIC cxx_std_20 )
 
 # Compilation settings
 target_compile_options(

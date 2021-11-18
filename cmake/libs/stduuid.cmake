@@ -12,6 +12,7 @@ FetchContent_Declare(
 FetchContent_GetProperties(stduuid)
 if(NOT stduuid_POPULATED)
     set(UUID_BUILD_TESTS OFF  CACHE BOOL "" FORCE)
+    set(UUID_USING_CXX20_SPAN ON CACHE BOOL "" FORCE)
     message(STATUS "+ CONFIGURING STDUUID....")
     list(APPEND CMAKE_MESSAGE_INDENT "  ")
 
