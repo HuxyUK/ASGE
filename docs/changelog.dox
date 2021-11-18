@@ -4,6 +4,16 @@ namespace ASGE {
 
 @tableofcontents
 
+@section changelog-311 v3.1.1
+Released 18/11/2021
+
+@subsection changelog-311-changes Enhancements
+- Monolithic builds now disable shared by default [[81a7ce9]](https://github.com/HuxyUK/ASGE/commit/27d30f32eecf5b5fcb355bdfdd24f305c6ac0790)
+- Enable C++20 support for Engine builds [[6177e74]](https://github.com/HuxyUK/ASGE/commit/6177e74989963bfe3da554f94d8b76c79cd1d331)
+- Remove dependency that was added in error [[fed6275]](https://github.com/HuxyUK/ASGE/commit/fed6275eb8a4a0d561d0a00df9c58f7f03cae272)
+
+---
+
 @section changelog-310 v3.1.0
 Released 17/11/2021
 
