@@ -19,7 +19,6 @@
 #include <functional>
 #include <memory>
 #include <unordered_map>
-#include <uuid.h>
 #include "Gamepad.hpp"
 #include "InputEvents.hpp"
 #include "Mouse.hpp"
@@ -206,7 +205,7 @@ namespace ASGE {
 	private:
     using InputFnc = std::function<void(SharedEventData)>;
     using InputFncPair = std::tuple<EventType, InputFnc>;
-    using InputFncs = std::unordered_map<uuids::uuid, InputFncPair>;
+    using InputFncs = std::unordered_map<std::string, InputFncPair>;
 
     /**
      * Registers a callback function with an event.
@@ -216,7 +215,6 @@ namespace ASGE {
      */
 		std::string registerCallback(EventType eventType, InputFnc inputFnc);
 		InputFncs callback_funcs; //!< The registered callbacks.
-    uuids::uuid_random_generator UUIDGen; //!< The UUID random generator.
 	};
 }  // namespace ASGE
 

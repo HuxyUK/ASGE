@@ -12,6 +12,8 @@
 
 #include "Engine/Input.hpp"
 #include <future>
+#include <uuid.h>
+
 
 uuids::uuid_random_generator uuidGenerator() {
   std::random_device rd;
@@ -24,7 +26,6 @@ uuids::uuid_random_generator uuidGenerator() {
 }
 
 ASGE::Input::Input()
-: UUIDGen(uuidGenerator())
 {
   callback_funcs.reserve(50);
 }
@@ -36,8 +37,9 @@ ASGE::Input::~Input()
 
 ASGE::Input::CallbackID ASGE::Input::registerCallback(EventType type, InputFnc fnc)
 {
-  auto uuid = UUIDGen();
-  callback_funcs[uuid] = InputFncPair(type, fnc);
+  static auto uuid_gen = uuidGenerator();
+  auto uuid = uuid_gen();
+  callback_funcs[uuids::to_string(uuid)] = InputFncPair(type, fnc);
   return to_string(uuid);
 }
 
@@ -66,6 +68,5 @@ void ASGE::Input::sendEvent(EventType type, SharedEventData data)
 
 void ASGE::Input::unregisterCallback(CallbackID id)
 {
-  auto uuid = uuids::uuid::from_string(id).value();
-  callback_funcs.erase(uuid);
+  callback_funcs.erase(id);
 }
