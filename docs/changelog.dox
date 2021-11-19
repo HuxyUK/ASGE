@@ -12,7 +12,7 @@ Released 18/11/2021
 - Enable C++20 support for Engine builds [[6177e74]](https://github.com/HuxyUK/ASGE/commit/6177e74989963bfe3da554f94d8b76c79cd1d331)
 - Remove dependency that was added in error [[fed6275]](https://github.com/HuxyUK/ASGE/commit/fed6275eb8a4a0d561d0a00df9c58f7f03cae272)
 
----
+<br>
 
 @section changelog-310 v3.1.0
 Released 17/11/2021
@@ -22,7 +22,7 @@ Released 17/11/2021
 - Enable mipmaps for font atlases [[5d5adb]](https://github.com/HuxyUK/ASGE/commit/5d5adbe2ae253ecac83b26432d750e47297f547c)
 - Add new function for calculation max deviation in the Y axis for font rendering `boundsY`
 
----
+<br>
 
 @section changelog-300 v3.0.0
 Released 16/11/2021
@@ -34,7 +34,7 @@ Released 16/11/2021
 @subsection changelog-300-changes-misc Misc
 - Added stduuid library [[06c4b93]](https://github.com/HuxyUK/ASGE/commit/06c4b93bdc894e8e9dec4a51388461d8b9b2319d)
 
----
+<br>
 
 @section changelog-220 v2.2.0
 Released 15/11/2021
@@ -49,7 +49,7 @@ Released 15/11/2021
 @subsection changelog-220-changes-misc Misc
 - Don't clamp sub-pixel positions [[e6621d6]](https://github.com/HuxyUK/ASGE/commit/e6621d6e32f80e052b091dba54a667b93b299fb4)
 
----
+<br>
 
 @section changelog-210 v2.1.0
 Released 07/11/2021
@@ -60,7 +60,7 @@ Released 07/11/2021
 @subsection changelog-210-bugs Bug Fixes
 - Add y spacing in font atlas to prevent sampling issues when scaling
 
----
+<br>
 
 @section changelog-202 v2.0.2
 Released 01/11/2021
@@ -75,7 +75,7 @@ Released 01/11/2021
 - Using a custom shader no longer causes an issue when reset to nullptr
 - Flip flags now apply correctly to sprites when using custom source rectangles
 
----
+<br>
 
 @section changelog-201 v2.0.1
 Released 31/10/2021
@@ -90,12 +90,12 @@ Released 31/10/2021
 - Upgrade to a non-broken Freetype2 repository
 - Working MacOS build
 
----
+<br>
 
 @section changelog-200 v2.0.0
 Released 18/10/2021
 
----
+<br>
 
 @section changelog-200a4 v2.0.0.alpha.4
 Released 14/05/2021
@@ -112,7 +112,7 @@ Released 14/05/2021
 - Using a custom shader no longer causes an issue when reset to nullptr
 - Flip flags now apply correctly to sprites when using custom source rectangles
 
----
+<br>
 
 @section changelog-200a3 v2.0.0.alpha.3
 Released 10/05/2021
@@ -125,7 +125,7 @@ Released 10/05/2021
 - Camera zoom now works correctly, thanks @olihewi
 - NVIDIA rendering under Linux no longer causes artefacts
 
----
+<br>
 
 @section changelog-200a2 v2.0.0.alpha.2
 Released 23/04/2021
@@ -153,7 +153,7 @@ Released 23/04/2021
 - Time-steps and frame pacing improvements
 - Z-ordering now works correctly
 
----
+<br>
 
 @section changelog-200a1 v2.0.0.alpha.1
 Released 29/02/2020
@@ -202,7 +202,7 @@ Released 29/02/2020
 - Flip flags now work correctly
 - Fixed issue with sprite sheets and deferred rendering
 
----
+<br>
 
 @section changelog-032 v0.3.2
 Released 20/02/2019
@@ -216,7 +216,7 @@ Released 20/02/2019
 - Fixed build warning
 - Added debug message when performing monolithic builds
 
----
+<br>
 
 @section changelog-031 v0.3.1
 Released 08/01/2019
@@ -227,7 +227,7 @@ Released 08/01/2019
 @subsection changelog-031-bugs Bug Fixes
 - Fixes issue with PhysFS and latest version of Crapindows 10 and its API changes
 
----
+<br>
 
 @section changelog-030 v0.3.0
 Released 12/12/2018
@@ -244,7 +244,7 @@ Released 12/12/2018
 @subsection changelog-030-bugs Bug Fixes
 - Fixed some compilation errors in specific configurations.
 
----
+<br>
 
 @section changelog-024 v0.2.4
 Released 12/11/2018
@@ -264,7 +264,7 @@ Released 12/11/2018
 @subsection changelog-024-bugs Bug Fixes
 - Buffer size was not being increased when data was appended
 
----
+<br>
 
 @section changelog-023 v0.2.3
 Released 12/11/2018
@@ -275,7 +275,7 @@ Released 12/11/2018
 - New function to retrieve local bounds of a sprite
 - New function to retrieve global bounds of a sprite
 
----
+<br>
 
 @section changelog-022 v0.2.2
 Released 16/10/2018
@@ -283,7 +283,7 @@ Released 16/10/2018
 @subsection changelog-022-hotfix Hotfix
 - Reworked FileIO to remove dependency on PhysFS headers
 
----
+<br>
 
 @section changelog-021 v0.2.1
 Released 10/10/2018
@@ -295,7 +295,7 @@ Released 10/10/2018
 @subsection changelog-021-bugs Bug Fixes
 - Fixed build issues for Linux 
 
----
+<br>
 
 @section changelog-020 v0.2.0
 Released 14/09/2018
@@ -315,7 +315,7 @@ Released 14/09/2018
 - Some minor code tidy (static analysis)
 - Fixed build issue with missing include
 
----
+<br>
 
 @section changelog-016 v0.1.6
 Released 28/06/2018
@@ -326,7 +326,7 @@ Released 28/06/2018
 - Removed VS projects and solutions
 - Upgraded external libraries 
 
----
+<br>
 
 @section changelog-015a v0.1.5a
 Released 03/04/2018
@@ -334,7 +334,7 @@ Released 03/04/2018
 @subsection changelog-015a-hotfix Hotfix
 - Ensure mouse co-ordinates are correctly gathered when sending the click event
 
----
+<br>
 
 @section changelog-015 v0.1.5
 Released 14/03/2018
@@ -346,7 +346,7 @@ Released 14/03/2018
 - Mouse co-ordinates will now always be unprojected back into orthogonal space
 - Fixed issue with subpixel positions causing texel offsets by rounding up vertex positions
 
----
+<br>
 
 @section changelog-014 v0.1.4
 Released 07/03/2018
@@ -354,7 +354,7 @@ Released 07/03/2018
 @subsection changelog-014-bugs Bug Fixes
 - Fixed an issue with the wrong UV mapping when using source rectangles for rendering sprites
 
----
+<br>
 
 @section changelog-013 v0.1.3
 Released 15/02/2018
@@ -363,7 +363,7 @@ Released 15/02/2018
 - Added the ability to hide the mouse cursor
 - Added the ability to lock the mouse cursor to the window
 
----
+<br>
 
 @section changelog-012 v0.1.2
 Released 18/12/2017
@@ -371,7 +371,7 @@ Released 18/12/2017
 @subsection changelog-012-bugs Bug Fixes
 - Resolved issue with string destruction after storing the texture in the cache  
 
----
+<br>
 
 @section changelog-011 v0.1.1
 Released 14/09/2018

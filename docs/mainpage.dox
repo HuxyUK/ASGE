@@ -12,12 +12,10 @@ to be quickly and easily prototyped, whilst providing the minimum amount of hand
 Curious about what was added or improved recently? Check out the
 @ref changelog "Changelog".
 
-@section mainpage-getting-started Getting started
-
 The best way to get started is to read the thorough
 @ref getting-started guide. 
 
-@note In the near future, it is hoped to include some examples.
+@note In the near future, it is hoped to include additional examples.
 */
 }
 

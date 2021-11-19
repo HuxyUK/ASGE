@@ -1,8 +1,62 @@
 namespace ASGE {
 /** @page getting-started Getting started
-@brief Get started with ASGE and ace your degree!
+@brief Get started with you first ASGE Game.
 
-@note Coming SOooOn!
+```
+  #include <Engine/GameSettings.hpp>
+  #include <Engine/OGLGame.hpp>
+
+  class MyFirstASGEGame : public ASGE::OGLGame
+  {
+   public:
+    explicit MyFirstASGEGame(const ASGE::GameSettings& settings) :
+      OGLGame(settings)
+    {
+      key_callback_id = inputs->addCallbackFnc(ASGE::EventType::E_KEY, &MyFirstASGEGame::keyHandler, this);
+    }
+
+    ~MyFirstASGEGame() override = default;
+    MyFirstASGEGame(const MyFirstASGEGame&) = delete;
+    MyFirstASGEGame& operator=(const MyFirstASGEGame&) = delete;
+
+   private:
+    void keyHandler(ASGE::SharedEventData data)
+    {
+      const auto* key_event = dynamic_cast<const ASGE::KeyEvent*>(data.get());
+      auto key              = key_event->key;
+      auto action           = key_event->action;
+
+      if (action == ASGE::KEYS::KEY_PRESSED && key == ASGE::KEYS::KEY_ESCAPE)
+      {
+        signalExit();
+      }
+    }
+
+    void fixedUpdate(const ASGE::GameTime& us) override {};  // constant time-steps defined with fixed_ts
+    void update(const ASGE::GameTime& us) override {};       // variable defined with fps_limit
+    void render(const ASGE::GameTime& us) override {};       // variable defined with fps_limit
+
+   private:
+    std::string key_callback_id{}; // Key Input Callback ID.
+  };
+
+  int main()
+  {
+    ASGE::GameSettings game_settings;
+    game_settings.window_title  = "ASGEGame";
+    game_settings.window_width  = 1024;
+    game_settings.window_height = 768;
+    game_settings.mode          = ASGE::GameSettings::WindowMode::WINDOWED;
+    game_settings.fixed_ts      = 60;
+    game_settings.fps_limit     = 120;
+    game_settings.msaa_level    = 16;
+    game_settings.vsync         = ASGE::GameSettings::Vsync::DISABLED;
+
+    Logging::INFO("Launching Game!");
+    MyFirstASGEGame game(game_settings);
+    return game.run();
+  }
+```
 */
 }
 
