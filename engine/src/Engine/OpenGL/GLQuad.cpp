@@ -30,18 +30,18 @@ ASGE::GPUQuad& ASGE::GPUQuad::operator=(const ASGE::GPUQuad& rhs)
 }
 
 ASGE::GPUQuad::GPUQuad(ASGE::GPUQuad&& rhs) noexcept  :
-  position(std::exchange(rhs.position, glm::mat4{1})),
-  color(std::exchange(rhs.color, glm::vec4{1})),
-  uv_data(std::move(rhs.uv_data))
+  position(rhs.position),
+  color(rhs.color),
+  uv_data(rhs.uv_data)
 {
 }
 
 
 ASGE::RenderQuad::RenderQuad(ASGE::RenderQuad&& rhs) noexcept :
-  shader_id(std::exchange(rhs.shader_id, 0)),
-  texture_id(std::exchange(rhs.texture_id, 0)),
-  z_order(std::exchange(rhs.z_order, 0)),
-  gpu_data(std::move(rhs.gpu_data))
+  shader_id(rhs.shader_id),
+  texture_id(rhs.texture_id),
+  z_order(rhs.z_order),
+  gpu_data(rhs.gpu_data)
 {
 
 }
@@ -66,17 +66,17 @@ ASGE::RenderQuad& ASGE::RenderQuad::operator=(const ASGE::RenderQuad& rhs)
 
 ASGE::GPUQuad& ASGE::GPUQuad::operator=(ASGE::GPUQuad&& rhs) noexcept
 {
-  this->position = std::exchange(rhs.position, glm::mat4{1.f});
-  this->color    = std::exchange(rhs.color, glm::vec4{1,1,1,1});
+  this->position = rhs.position;
+  this->color    = rhs.color;
   this->uv_data  = rhs.uv_data;
   return *this;
 }
 
 ASGE::RenderQuad& ASGE::RenderQuad::operator=(ASGE::RenderQuad&& rhs) noexcept
 {
-  this->shader_id  = std::exchange(rhs.shader_id, 0);
-  this->texture_id = std::exchange(rhs.texture_id, 0);
-  this->z_order    = std::exchange(rhs.z_order, 0);
+  this->shader_id  = rhs.shader_id;
+  this->texture_id = rhs.texture_id;
+  this->z_order    = rhs.z_order;
   this->gpu_data   = std::move(rhs.gpu_data);
   return *this;
 }
