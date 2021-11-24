@@ -168,7 +168,8 @@ void ASGE::GLSpriteBatch::sortQuads()
     }
   };
 
-  std::stable_sort(quads.begin(), quads.end(), predicate);
+  gfx::timsort(quads, predicate);
+  //std::stable_sort(std::execution::par, quads.begin(), quads.end(), predicate);
   return;
 }
 

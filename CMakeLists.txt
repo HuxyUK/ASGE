@@ -26,8 +26,9 @@ else()
 endif()
 
 ## some additional settings and libs
-set(ENABLE_PIE ON)
 set(ENABLE_MAGIC_ENUM ON )
+set(ENABLE_PIE ON)
+set(ENABLE_TIMSORT ON)
 
 # stored libs in /lib and binary files in /bin
 # bin
