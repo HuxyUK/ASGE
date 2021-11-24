@@ -25,7 +25,7 @@ namespace ASGE
    * These quads are directly copied from CPU to GPU memory when batches
    * are uploaded.
    */
-  struct GPUQuad
+  struct alignas(16) GPUQuad
   {
     GPUQuad() = default;
     GPUQuad(const GPUQuad&);
@@ -43,6 +43,8 @@ namespace ASGE
       glm::vec4{ 1.0F, 0.0F, PADDING },
       glm::vec4{ 1.0F, 1.0F, PADDING }
     };
+
+//    glm::vec4 padding = glm::vec4{PADDING,PADDING};
   };
 
   static constexpr GLsizei QUAD_STORAGE_SIZE = sizeof(GPUQuad);
@@ -69,7 +71,7 @@ namespace ASGE
   //      glm::vec4{ 1.0f, 0.0f, padding_t}, glm::vec4{ 1.0f, 0.0f, padding_t },
   //      glm::vec4{ 1.0f, 1.0f, padding_t}, glm::vec4{ 0.0f, 1.0f, padding_t } };
 
-  struct RenderQuad
+  struct alignas(32) RenderQuad
   {
     RenderQuad() = default;
     RenderQuad(const RenderQuad&);
@@ -82,6 +84,7 @@ namespace ASGE
     GLuint  shader_id  = 0;
     GLuint  texture_id = 0;
     GLshort z_order    = 0;
+    GLshort padding[3] {0};
   };
 
   enum BufferState : unsigned int
