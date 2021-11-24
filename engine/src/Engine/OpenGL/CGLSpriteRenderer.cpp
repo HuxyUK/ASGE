@@ -231,8 +231,8 @@ void ASGE::CGLSpriteRenderer::quadGen(const ASGE::GLSprite& sprite, ASGE::GPUQua
   auto* gpu_uv_data     = reinterpret_cast<float*>(&dest.uv_data[0]);
 
   generateSpriteMatrixData(sprite, gpu_model_data);
-  generateColourData(sprite, gpu_colour_data);
   generateUvData(sprite, &gpu_uv_data[0]);
+  generateColourData(sprite, gpu_colour_data);
 }
 
 void ASGE::CGLSpriteRenderer::setActiveShader(ASGE::SHADER_LIB::GLShader* shader)

@@ -14,6 +14,7 @@
 #include "GLQuad.hpp"
 #include "GLRenderBatch.hpp"
 #include <Engine/Text.hpp>
+#include <thread>
 #include <vector>
 
 namespace ASGE {
@@ -36,7 +37,7 @@ namespace ASGE {
 
    public:
     GLSpriteBatch();
-    ~GLSpriteBatch() = default;
+    ~GLSpriteBatch();
 
     void begin();
     void renderSprite(const ASGE::Sprite&);
@@ -56,5 +57,13 @@ namespace ASGE {
     generateRenderBatches(const QuadRange& range);
     void sortQuads();
     QuadList quads;
+
+    // job system for generating quad data
+    std::vector<std::reference_wrapper<const ASGE::GLSprite>> sprites;
+    std::atomic<bool> running = true;
+    std::array<std::thread, 4> workers;
+    std::array<std::atomic<bool>, 4> work { false};
+    std::atomic<bool> task_ready = false;
+    std::atomic<int> tasks_completed = 0;
   };
 }

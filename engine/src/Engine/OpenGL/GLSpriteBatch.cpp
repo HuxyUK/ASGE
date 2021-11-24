@@ -11,7 +11,9 @@
 //  SOFTWARE.
 
 #include <algorithm>
+#include <gfx/timsort.hpp>
 
+#include "GLSpriteBatch.hpp"
 #include "GLAtlas.hpp"
 #include "GLAtlasManager.h"
 #include "GLFontSet.hpp"
@@ -19,7 +21,6 @@
 #include "GLModernSpriteRenderer.hpp"
 #include "GLRenderBatch.hpp"
 #include "GLSprite.hpp"
-#include "GLSpriteBatch.hpp"
 
 /**
  *  The constructor for the sprite batch.
@@ -40,6 +41,41 @@
 ASGE::GLSpriteBatch::GLSpriteBatch()
 {
   quads.reserve(GLRenderConstants::MAX_BATCH_COUNT);
+
+  int thread_index = 0;
+  for (auto& thread : workers)
+  {
+    thread = std::move(std::thread(
+      [this, thread_index]()
+      {
+        auto& task = work[thread_index];
+        while (running)
+        {
+          task_ready.wait(false);
+
+          if (task)
+          {
+            // divide the workload evenly between workers
+            unsigned int workload  = ceil(double(sprites.size())  / double(workers.size())+0.5);
+            unsigned int start_idx = workload * thread_index;
+            unsigned int end_idx   = start_idx + workload;
+            end_idx                = std::min(unsigned(sprites.size()), end_idx);
+
+            while (start_idx < end_idx)
+            {
+              sprite_renderer->quadGen(sprites[start_idx].get(), quads[start_idx].gpu_data);
+              start_idx++;
+            }
+
+            task = false;
+            ++tasks_completed;
+         }
+
+         std::this_thread::yield();
+        }
+      }));
+    thread_index++;
+  }
 }
 
 /**
@@ -79,30 +115,7 @@ void ASGE::GLSpriteBatch::begin()
  */
 void ASGE::GLSpriteBatch::renderSprite(const ASGE::Sprite& sprite)
 {
-  /// todo: thread the render quad generation process
-  auto gl_sprite = dynamic_cast<const ASGE::GLSprite&>(sprite);
-
-  // generate a render quad from sprite
-  RenderQuad& quad = quads.emplace_back();
-  quad.texture_id  = gl_sprite.asGLTexture()->getID();
-  quad.z_order     = gl_sprite.getGlobalZOrder();
-
-  if (gl_sprite.asGLShader() != nullptr)
-  {
-    quad.shader_id = gl_sprite.asGLShader()->getShaderID();
-  }
-  else if (
-    sprite_renderer->activeShader() != nullptr &&
-    sprite_renderer->activeShader()->getShaderID() != sprite_renderer->getDefaultTextShaderID())
-  {
-    quad.shader_id = sprite_renderer->activeShader()->getShaderID();
-  }
-  else
-  {
-    quad.shader_id = sprite_renderer->getBasicSpriteShaderID();
-  }
-
-  sprite_renderer->quadGen(gl_sprite, quad.gpu_data);
+  this->sprites.emplace_back(dynamic_cast<const ASGE::GLSprite&>(sprite));
   if (render_mode == SpriteSortMode::IMMEDIATE)
   {
     flush();
@@ -160,16 +173,13 @@ void ASGE::GLSpriteBatch::sortQuads()
       return (lhs_z_order < rhs_z_order) ||
              (lhs_z_order == rhs_z_order && lhs_texture_id < rhs_texture_id);
     }
-    else
-    {
-      // if z order is higher
-      return (lhs_z_order > rhs_z_order) ||
-             (lhs_z_order == rhs_z_order && lhs_texture_id < rhs_texture_id);
-    }
+
+    // if z order is higher
+    return (lhs_z_order > rhs_z_order) ||
+           (lhs_z_order == rhs_z_order && lhs_texture_id < rhs_texture_id);
   };
 
   gfx::timsort(quads, predicate);
-  //std::stable_sort(std::execution::par, quads.begin(), quads.end(), predicate);
   return;
 }
 
@@ -184,19 +194,66 @@ void ASGE::GLSpriteBatch::sortQuads()
  */
 void ASGE::GLSpriteBatch::flush()
 {
+  // generate the render quads
+  for(auto& sprite_ref : sprites)
+  {
+    const auto& gl_sprite = sprite_ref.get();
+
+    // generate a render quad from sprite
+    RenderQuad& quad = quads.emplace_back();
+    quad.texture_id  = gl_sprite.asGLTexture()->getID();
+    quad.z_order     = gl_sprite.getGlobalZOrder();
+
+    if (gl_sprite.asGLShader() != nullptr)
+    {
+      quad.shader_id = gl_sprite.asGLShader()->getShaderID();
+    }
+    else if (
+      sprite_renderer->activeShader() != nullptr &&
+      sprite_renderer->activeShader()->getShaderID() != sprite_renderer->getDefaultTextShaderID())
+    {
+      quad.shader_id = sprite_renderer->activeShader()->getShaderID();
+    }
+    else
+    {
+      quad.shader_id = sprite_renderer->getBasicSpriteShaderID();
+    }
+  }
+
+  if(!sprites.empty())
+  {
+    // make sure all tasks finished
+    for(auto& work_flag : work)
+    {
+      work_flag = true;
+    }
+
+    task_ready.store(true);
+    task_ready.notify_all();
+
+    while(tasks_completed != workers.size())
+    {
+      std::this_thread::yield();
+    }
+
+    task_ready.store(false);
+    tasks_completed.store(0);
+  }
+
   if (!quads.empty())
   {
     sortQuads();
     QuadRange upload_range{ quads.cbegin(), std::prev(quads.cend())};
     while(upload_range.begin != quads.cend())
     {
-      const auto last_uploaded_quad = sprite_renderer->upload(upload_range);
-      auto&& batches = generateRenderBatches({upload_range.begin, last_uploaded_quad});
+      const auto LAST_UPLOADED_QUAD = sprite_renderer->upload(upload_range);
+      auto&& batches = generateRenderBatches({upload_range.begin, LAST_UPLOADED_QUAD});
       current_draw_count += sprite_renderer->render(std::move(batches));
-      upload_range.begin = std::next(last_uploaded_quad);
+      upload_range.begin = std::next(LAST_UPLOADED_QUAD);
     }
     quads.clear();
   }
+  sprites.clear();
 }
 
 /**
@@ -315,5 +372,17 @@ void ASGE::GLSpriteBatch::renderText(const ASGE::Text& text)
   if (render_mode == SpriteSortMode::IMMEDIATE)
   {
     flush();
+  }
+}
+
+ASGE::GLSpriteBatch::~GLSpriteBatch()
+{
+  sprites.clear();
+  running.store(false);
+  task_ready.store(true);
+  task_ready.notify_all();
+  for (auto& thread : workers)
+  {
+    thread.join();
   }
 }
