@@ -758,7 +758,7 @@ void ASGE::GLRenderer::render(ASGE::Texture2D& texture, int x, int y)
   ASGE::GLSprite sprite;
   sprite.xPos(static_cast<float>(x));
   sprite.yPos(static_cast<float>(y));
-  sprite.attach(&texture);
+  sprite.attach(&texture, Sprite::DEFAULT);
   sprite.width(texture.getWidth());
   sprite.height(texture.getHeight());
   renderSprite(sprite);

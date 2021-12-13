@@ -13,22 +13,49 @@
 #include "GLSprite.hpp"
 #include "GLTextureCache.hpp"
 
-bool ASGE::GLSprite::loadTexture(const std::string& file)
+bool ASGE::GLSprite::loadTexture(const std::string& file, AttachMode mode)
 {
 	texture = GLTextureCache::getInstance().createCached(file);
 	if (texture != nullptr)
-	{
-    // sane defaults
-    dimensions()[0] = texture->getWidth();
-    dimensions()[1] = texture->getHeight();
-
-    // source rectangle
-    srcRect()[2] = dimensions()[0];
-    srcRect()[3] = dimensions()[1];
+  {
+    attach(mode);
     return true;
   }
 
+  texture = GLTextureCache::getInstance().createCached("__asge__debug__texture__");
 	return false;
+}
+
+void ASGE::GLSprite::attach(const ASGE::Sprite::AttachMode& mode)
+{
+  if ((mode & KEEP_UVS) != KEEP_UVS)
+  {
+    srcRect()[0] = 0;
+    srcRect()[1] = 0;
+    srcRect()[2] = texture->getWidth();
+    srcRect()[3] = texture->getHeight();
+  }
+
+  if ((mode & KEEP_DIMS) != KEEP_DIMS)
+  {
+    dimensions()[0] = texture->getWidth();
+    dimensions()[1] = texture->getHeight();
+  }
+
+  if ((mode & KEEP_ROTATION) != KEEP_ROTATION)
+  {
+    rotationInRadians(0.0F);
+  }
+
+  if ((mode & KEEP_TINT) != KEEP_TINT)
+  {
+    colour(COLOURS::WHITE);
+  }
+
+  if ((mode & GENERATE_MIPS) == GENERATE_MIPS)
+  {
+    texture->updateMips();
+  }
 }
 
 ASGE::Texture2D* ASGE::GLSprite::getTexture() const
@@ -36,18 +63,16 @@ ASGE::Texture2D* ASGE::GLSprite::getTexture() const
   return texture;
 }
 
-bool ASGE::GLSprite::attach(ASGE::Texture2D* texture_to_attach) noexcept
+bool ASGE::GLSprite::attach(ASGE::Texture2D* texture_to_attach, AttachMode mode) noexcept
 {
-  auto* correct_type = dynamic_cast<ASGE::GLTexture*> (texture_to_attach);
-  if(correct_type == nullptr)
+  auto* as_gl_texture = dynamic_cast<ASGE::GLTexture*> (texture_to_attach);
+  if(as_gl_texture == nullptr)
   {
     return false;
   }
 
-  this->texture = correct_type;
-  srcRect()[2] = texture->getWidth();
-  srcRect()[3] = texture->getHeight();
-  this->texture->updateMips();
+  this->texture = as_gl_texture;
+  attach(mode);
   return true;
 }
 

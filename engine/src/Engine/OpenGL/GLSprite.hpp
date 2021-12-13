@@ -26,13 +26,14 @@ namespace ASGE
    public:
     GLSprite();
     ~GLSprite() override = default;
-    bool attach(Texture2D* texture_to_attach) noexcept override;
-    bool loadTexture(const std::string& file) override;
+    bool attach(ASGE::Texture2D* texture_to_attach, AttachMode mode) noexcept override;
+    bool loadTexture(const std::string& file, AttachMode mode) override;
     [[nodiscard]] Texture2D* getTexture() const override;
     [[nodiscard]] const GLTexture* asGLTexture() const noexcept;
     [[nodiscard]] const SHADER_LIB::GLShader* asGLShader() const;
 
   private:
 		GLTexture* texture = nullptr;
-	};
+    void attach(const AttachMode& mode);
+  };
 }

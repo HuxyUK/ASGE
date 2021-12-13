@@ -229,3 +229,13 @@ std::tuple<int, int> ASGE::Sprite::dimensions() const noexcept
 {
   return std::make_tuple(static_cast<int>(width()), static_cast<int>(height()));
 }
+
+bool ASGE::Sprite::loadTexture(const std::string& id)
+{
+  return loadTexture(id, AttachMode(AttachMode::DEFAULT));
+}
+
+bool ASGE::Sprite::attach(ASGE::Texture2D* texture2D) noexcept
+{
+  return attach(texture2D, AttachMode(AttachMode::DEFAULT));
+}

@@ -76,6 +76,22 @@ namespace ASGE
     };
 
     /**
+     * @brief Flags to control the flipping of the sprite
+     *
+     * Used to flip the texture's UV coordinates.
+     * The flip is performed on the CPU when calculating the UVs.
+     */
+    enum AttachMode
+    {
+      DEFAULT   = 0x00,
+      KEEP_DIMS = 0x01,           /**< Retain the sprite's dimensions. */
+      KEEP_UVS  = 0x02,           /**< Retain the sprite's UV settings. */
+      KEEP_TINT = 0x04,           /**< Retain the sprite's tint. */
+      KEEP_ROTATION = 0x08,
+      GENERATE_MIPS = 0x10,
+    };
+
+    /**
      * @brief Default destructor.
      *
      * The destructor does not free the memory used on the GPU.
@@ -90,7 +106,14 @@ namespace ASGE
      *
      * * @return The result of the load operation.
      */
-    virtual bool loadTexture(const std::string&) = 0;
+    virtual bool loadTexture(const std::string&, AttachMode mode) = 0;
+
+    /**
+     * @brief
+     * @return The result of the load operation.
+     */
+    bool loadTexture(const std::string&);
+
 
     /**
      * @brief Pure virtual function for retrieving the loaded texture.
@@ -414,8 +437,9 @@ namespace ASGE
      * @param texture2D The texture to attach.
      * @return True if successful.
      */
-    virtual bool attach(Texture2D* texture2D) noexcept = 0;
+    virtual bool attach(ASGE::Texture2D* texture2D, AttachMode mode) noexcept = 0;
 
+    virtual bool attach(ASGE::Texture2D* texture2D) noexcept;
     /**
      * @brief Retrieves the rendering order (layer) of the sprite.
      * @return The sprite's current z-order.
