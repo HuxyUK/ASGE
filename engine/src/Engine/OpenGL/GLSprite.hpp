@@ -24,7 +24,7 @@ namespace ASGE
 	class GLSprite final: public ASGE::Sprite
 	{
    public:
-    GLSprite() = default;
+    GLSprite();
     ~GLSprite() override = default;
     bool attach(Texture2D* texture_to_attach) noexcept override;
     bool loadTexture(const std::string& file) override;

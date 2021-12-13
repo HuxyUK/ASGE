@@ -112,6 +112,7 @@ namespace ASGE
 
    private:
     std::unique_ptr<Input> inputPtr() override;
+    void allocateDebugTexture();
     void centerWindow();
     void fit(Viewport& viewport);
     void postRender() override;

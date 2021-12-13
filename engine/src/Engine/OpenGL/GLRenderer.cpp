@@ -180,7 +180,26 @@ bool ASGE::GLRenderer::init()
   glClearColor(cls.r, cls.g, cls.b, 1.0F);
   glEnable(GL_MULTISAMPLE);
   ClearGLErrors(__PRETTY_FUNCTION__);
+  allocateDebugTexture();
   return true;
+}
+
+void ASGE::GLRenderer::allocateDebugTexture()
+{ // Create one pixel texture
+  auto *blank_texture =
+    createCachedTexture("__asge__debug__texture__", 1, 1, GLTexture::RGBA, nullptr);
+  auto *pixel_buffer  = blank_texture->getPixelBuffer();
+  pixel_buffer->download(0);
+
+  const static std::array<std::byte, 4> PIXEL{
+    static_cast<std::byte>(255),  // R
+    static_cast<std::byte>(152),  // G
+    static_cast<std::byte>(180),  // B
+    static_cast<std::byte>(128)}; // A
+
+  memcpy(pixel_buffer->getPixelData(), PIXEL.data(), sizeof(std::byte) * PIXEL.size());
+  pixel_buffer->upload(0);
+  ClearGLErrors(__PRETTY_FUNCTION__);
 }
 
 /**

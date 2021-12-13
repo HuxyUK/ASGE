@@ -73,3 +73,13 @@ const ASGE::SHADER_LIB::GLShader* ASGE::GLSprite::asGLShader() const
 
   return gl_shader;
 }
+
+ASGE::GLSprite::GLSprite()
+{
+  Sprite::loadTexture("__asge__debug__texture__");
+  auto ratio = std::max(
+    static_cast<float>(ASGE::SETTINGS.window_width)  / 1920.F,
+    static_cast<float>(ASGE::SETTINGS.window_height) / 1080.F);
+  width(50 * ratio);
+  height(50 * ratio);
+}
