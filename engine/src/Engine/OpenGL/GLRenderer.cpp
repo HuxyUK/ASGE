@@ -753,14 +753,16 @@ void ASGE::GLRenderer::setRenderTarget(const ASGE::RenderTarget* render_target)
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void ASGE::GLRenderer::render(ASGE::Texture2D& texture, int x, int y)
+void
+ASGE::GLRenderer::render(ASGE::Texture2D &texture, std::array<float, 4> rect, const Point2D &xy, int width, int height)
 {
   ASGE::GLSprite sprite;
-  sprite.xPos(static_cast<float>(x));
-  sprite.yPos(static_cast<float>(y));
+  sprite.xPos(static_cast<float>(xy.x));
+  sprite.yPos(static_cast<float>(xy.y));
   sprite.attach(&texture, Sprite::DEFAULT);
-  sprite.width(texture.getWidth());
-  sprite.height(texture.getHeight());
+  sprite.width(static_cast<float>(width));
+  sprite.height(static_cast<float>(height));
+  memcpy(sprite.srcRect(), rect.data(), sizeof(float) * 4);
   renderSprite(sprite);
 }
 

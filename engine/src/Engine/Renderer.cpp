@@ -70,3 +70,12 @@ void ASGE::Renderer::render(const ASGE::Text&& text)
 {
   renderText(text);
 }
+
+void ASGE::Renderer::render(ASGE::Texture2D& texture, const ASGE::Point2D& xy)
+{
+    render(
+            texture,
+            {0, 0, texture.getWidth(), texture.getHeight()}, xy,
+            texture.getWidth(),
+            texture.getHeight());
+}

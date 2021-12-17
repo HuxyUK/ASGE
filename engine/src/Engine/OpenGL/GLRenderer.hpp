@@ -101,7 +101,7 @@ namespace ASGE
     void setProjectionMatrix(float min_x, float max_x, float min_y, float max_y) override;
     void setProjectionMatrix(const Camera::CameraView& view) override;
     void renderSprite(const Sprite& sprite) override;
-    void render(ASGE::Texture2D& texture,  int x, int y) override;
+    void render(ASGE::Texture2D &texture, std::array<float, 4> rect, const Point2D &xy, int width, int height) override;
 
     ASGE::Viewport getViewport() const override;
     void setViewport(const ASGE::Viewport& viewport) override;

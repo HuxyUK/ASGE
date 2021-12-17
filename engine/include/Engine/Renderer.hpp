@@ -314,13 +314,59 @@ namespace ASGE {
     virtual void render(const ASGE::Text&& text);
 
     /**
-     * Renders a texture.
+     * @brief Renders a texture.
+     *
+     * Acts as as simple proxy function for rendering textures. This shorthand
+     * function actually calls the longhand version of the function using the
+     * texture's own properties to define sensible defaults i.e. sample the
+     * whole texture and render it at the same width and height it was originally
+     * defined as.
      *
      * @param[in] texture The texture to render.
-     * @param[in] x The x position of the rendered texture.
-     * @param[in] y The y position of the rendered texture.
+     * @param[in] xy The xy position of the rendered texture in 2D Space.
      */
-    virtual void render(ASGE::Texture2D& texture, int x, int y) = 0;
+    void render(ASGE::Texture2D& texture, const ASGE::Point2D& xy);
+
+    /**
+     * @brief Renders a texture to the screen or attached buffer.
+     *
+     * Typically an ASGE::Sprite is used for rendering. Textures are attached
+     * to these objects and the positional and source rectangle information
+     * is used to generate the matrices required for rendering. However, on
+     * occasion it might be preferable to store a texture directly without the
+     * extra positional data. For example a tile map can be made up from a list
+     * or array of textures. When rendering the absolute position can be
+     * forwarded on to the renderer along with the UV mapping and this function
+     * will take care of the rest (it basically maps to a temporary sprite object).
+     *
+     * <example>
+     * @code
+     *   auto [width, height, std::ignore] = renderer->screenRes();
+     *   struct Tile
+     *   {
+     *     public:
+     *       ASGE::Texture2D* texture = nullptr;
+     *       std::array<float,4> source_rectangle {0};
+     *    };
+     *
+     *    // create a tile with a texture and source rectangle
+     *    Tile tile;
+     *    tile.texture = renderer->createCachedTexture("/data/img/tile_sheet.png");
+     *    tile.source_rectangle = {0, 0, 64, 64};
+     *
+     *    // some moments later
+     *    renderer->render(*tile.texture, tile.source_rectangle, ASGE::Point2D{0,0}, 64, 64);
+     * @endcode
+     * </example>
+     *
+     * @param[in] texture The texture to be sampled.
+     * @param[in] rect The source rectangle to use when sampling.
+     * @param[in] xy The position to render the texture in 2D space.
+     * @param[in] width How wide to render it.
+     * @param[in] height How tall to render it.
+     */
+    virtual void
+    render(ASGE::Texture2D& texture, std::array<float, 4> rect, const Point2D& xy, int width, int height) = 0;
 
     /**
      * @brief Creates a non-cached texture.

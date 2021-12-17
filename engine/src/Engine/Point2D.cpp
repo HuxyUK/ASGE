@@ -75,5 +75,5 @@ std::string ASGE::Point2D::toString() const
 
 ASGE::Point2D ASGE::operator*(float f, const ASGE::Point2D& v)
 {
-  return Point2D(f * v.x, f * v.y);
+  return {f * v.x, f * v.y};
 }
