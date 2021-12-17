@@ -96,11 +96,12 @@ namespace ASGE
     ASGE::Texture2D* createCachedTexture(const std::string& path) override;
 
     const Font& getFont(int idx) const override;
-    void renderText(const Text& string) override;
-    void renderText(Text&& string) override;
+
     void setProjectionMatrix(float min_x, float max_x, float min_y, float max_y) override;
     void setProjectionMatrix(const Camera::CameraView& view) override;
-    void renderSprite(const Sprite& sprite) override;
+    void render(const Sprite& sprite) override;
+    void render(const Text& string) override;
+    void render(Text&& string) override;
     void render(ASGE::Texture2D &texture, std::array<float, 4> rect, const Point2D &xy, int width, int height) override;
 
     ASGE::Viewport getViewport() const override;

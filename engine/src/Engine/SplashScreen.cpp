@@ -57,7 +57,7 @@ void ASGE::SplashScreen::render(float /*delta_time*/)
   }
 
   this->image->opacity(opacity);
-  renderer->renderSprite(*this->image);
+  renderer->render(*this->image);
 }
 
 bool ASGE::SplashScreen::finished() const noexcept

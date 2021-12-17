@@ -46,31 +46,6 @@ ASGE::SHADER_LIB::Shader* ASGE::Renderer::initPixelShaderFromFile(const std::str
 	return initPixelShader(std::string(buffer.data.get(), buffer.length));
 }
 
-void ASGE::Renderer::renderText(std::string str, int x, int y)
-{
-  renderText({getDefaultFont(), std::move(str), x, y, default_text_colour});
-}
-
-void ASGE::Renderer::renderText(std::string str, int x, int y, const Colour& colour)
-{
-  renderText({getDefaultFont(), std::move(str), x, y, colour});
-}
-
-void ASGE::Renderer::render(const ASGE::Sprite& sprite)
-{
-  renderSprite(sprite);
-}
-
-void ASGE::Renderer::render(const ASGE::Text& text)
-{
-  renderText(text);
-}
-
-void ASGE::Renderer::render(const ASGE::Text&& text)
-{
-  renderText(text);
-}
-
 void ASGE::Renderer::render(ASGE::Texture2D& texture, const ASGE::Point2D& xy)
 {
     render(

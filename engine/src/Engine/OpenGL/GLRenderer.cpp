@@ -362,20 +362,6 @@ std::unique_ptr<ASGE::Input> ASGE::GLRenderer::inputPtr()
 }
 
 /**
- *  Renders a sprite.
- *  The renderer will take a sprite and proxy it on to the batch
- *  where depending on the render mode it will either be rendered
- *  or batched for later.
- *
- *  @param [in] spr The sprite to render.
- *  @param [in] z_order The order used when sorting draw calls.
- */
-void ASGE::GLRenderer::renderSprite(const Sprite& spr)
-{
-  batch.renderSprite(spr);
-}
-
-/**
  *  Post render function.
  *  Tidies up the render state and any data that still hasn't been
  *  flushed. In turn it will call the render batch's end function
@@ -690,12 +676,26 @@ float ASGE::GLRenderer::windowWidth() const noexcept
   return target_width;
 }
 
-void ASGE::GLRenderer::renderText(const ASGE::Text& text)
+/**
+ *  Renders a sprite.
+ *  The renderer will take a sprite and proxy it on to the batch
+ *  where depending on the render mode it will either be rendered
+ *  or batched for later.
+ *
+ *  @param [in] spr The sprite to render.
+ *  @param [in] z_order The order used when sorting draw calls.
+ */
+void ASGE::GLRenderer::render(const Sprite& spr)
+{
+    batch.renderSprite(spr);
+}
+
+void ASGE::GLRenderer::render(const ASGE::Text& text)
 {
   this->batch.renderText(text);
 }
 
-void ASGE::GLRenderer::renderText(ASGE::Text&& text)
+void ASGE::GLRenderer::render(ASGE::Text&& text)
 {
   this->batch.renderText(text);
 }
@@ -763,7 +763,7 @@ ASGE::GLRenderer::render(ASGE::Texture2D &texture, std::array<float, 4> rect, co
   sprite.width(static_cast<float>(width));
   sprite.height(static_cast<float>(height));
   memcpy(sprite.srcRect(), rect.data(), sizeof(float) * 4);
-  renderSprite(sprite);
+  render(sprite);
 }
 
 void ASGE::GLRenderer::centerWindow()

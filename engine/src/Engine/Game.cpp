@@ -42,7 +42,7 @@ void ASGE::Game::updateFPS()
     text.setString(fps_str);
     text.setColour({ 1.0F, 0.2F, 0.5F });
     text.setPosition({ POS_X, POS_Y });
-    renderer->renderText(std::move(text));
+    renderer->render(std::move(text));
 
     if (delta_accumulator >= 1000)
     {

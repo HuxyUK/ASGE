@@ -136,41 +136,6 @@ namespace ASGE {
     virtual void postRender() = 0;
 
    /**
-    *  Renders a string to the screen.
-    *  @deprecated since 2.0
-    *  @see RenderString
-    *
-    *  @param [in] str The text to render.
-    *  @param [in] x The text position in the X axis.
-    *  @param [in] y The text starting position in the Y axis.
-    *  @param [in] colour The colour to use for rendering.
-    */
-   void renderText(std::string str, int x, int y, const Colour& colour);
-
-    /**
-     *  Renders a string to the screen.
-     *  @deprecated since 2.0
-     *  @see RenderString
-     *
-     *  @param [in] str The text to render.
-     *  @param [in] x The text position in the X axis.
-     *  @param [in] y The text starting position in the Y axis.
-     */
-    void renderText(std::string str, int x, int y);
-
-    /**
-     * Renders a text object.
-     * @param[in] text The temporary text object to render.
-     */
-    virtual void renderText(Text&& text) = 0;
-
-    /**
-     * Renders a text object.
-     * @param[in] text The text object to render.
-     */
-    virtual void renderText(const Text& text) = 0;
-
-    /**
      *  @brief Sets the default text colour.
      *
      *  When rendering text, if a colour is not specified the default one will
@@ -230,18 +195,6 @@ namespace ASGE {
     virtual void setFont(int id) = 0;
 
     /**
-     *  @brief Renders a sprite to the screen.
-     *
-     *  All the rendering params are stored within the sprite
-     *  class itself.
-     *
-     *  @param [in] sprite A reference to the sprite to render.
-     *  @see Sprite
-     *  @deprecated since 2.1
-     */
-    virtual void renderSprite(const Sprite& sprite) = 0;
-
-    /**
      *  Sets the sprite rendering mode. Useful for batching.
      *  @param[in] mode The SpriteSortMode used for rendering.
      *  @see SpriteSortMode
@@ -296,22 +249,27 @@ namespace ASGE {
     virtual Sprite*	createRawSprite() = 0;
 
     /**
-     * Renders a sprite.
-     * @param[in] sprite The sprite to render.
+     *  @brief Renders a sprite to the screen.
+     *
+     *  All the rendering params are stored within the sprite
+     *  class itself.
+     *
+     *  @param [in] sprite A reference to the sprite to render.
+     *  @see Sprite
      */
-    virtual void render(const ASGE::Sprite& sprite);
+    virtual void render(const ASGE::Sprite& sprite) = 0;
 
     /**
      * Renders a text object.
      * @param[in] text The text object to render.
      */
-    virtual void render(const ASGE::Text& text);
+    virtual void render(const ASGE::Text& text) = 0;
 
     /**
      * Renders a temporary text object.
      * @param[in] text The temporary text object to render.
      */
-    virtual void render(const ASGE::Text&& text);
+    virtual void render(ASGE::Text&& text) = 0;
 
     /**
      * @brief Renders a texture.
