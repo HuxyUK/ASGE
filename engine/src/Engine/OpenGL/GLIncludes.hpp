@@ -14,13 +14,14 @@
 #ifndef ASGE_DEBUGPR2INTER_H
 #define ASGE_DEBUGPR2INTER_H
 
-#include <Engine/Logger.hpp>
+#include "Logger.hpp"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/mat4x4.hpp>
+#include <string>
 
 namespace ASGE
 {

@@ -10,8 +10,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-#include <Engine/Logger.hpp>
-#include <Engine/Sprite.hpp>
+#include "Logger.hpp"
+#include "Sprite.hpp"
 #include <cmath>
 
 float ASGE::Sprite::xPos() const noexcept

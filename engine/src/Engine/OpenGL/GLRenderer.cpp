@@ -10,17 +10,18 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-#include "GLRenderer.hpp"
+#include "Camera.hpp"
 #include "GLAtlasManager.h"
 #include "GLFontSet.hpp"
 #include "GLInput.hpp"
 #include "GLLegacySpriteRenderer.hpp"
 #include "GLModernSpriteRenderer.hpp"
 #include "GLRenderTarget.hpp"
+#include "GLRenderer.hpp"
 #include "GLSprite.hpp"
 #include "GLTextureCache.hpp"
-#include <Engine/Camera.hpp>
-#include <OpenGL/Shaders/GLShaders.vs>
+#include "Logger.hpp"
+#include "OpenGL/Shaders/GLShaders.vs"
 #include <memory>
 
 namespace ASGE

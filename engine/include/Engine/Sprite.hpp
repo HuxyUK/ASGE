@@ -18,8 +18,8 @@
 
 #pragma once
 #include "Texture.hpp"
-#include <Engine/Colours.hpp>
-#include <Engine/SpriteBounds.hpp>
+#include "Colours.hpp"
+#include "SpriteBounds.hpp"
 #include <memory>
 #include <string>
 

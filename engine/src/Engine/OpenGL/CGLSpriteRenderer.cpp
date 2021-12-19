@@ -12,10 +12,10 @@
 
 #include "CGLSpriteRenderer.hpp"
 #include "GLRenderer.hpp"
-
-#include <OpenGL/GLAtlas.hpp>
-#include <OpenGL/GLFontSet.hpp>
-#include <OpenGL/GLSprite.hpp>
+#include "Logger.hpp"
+#include "OpenGL/GLAtlas.hpp"
+#include "OpenGL/GLFontSet.hpp"
+#include "OpenGL/GLSprite.hpp"
 
 void ASGE::CGLSpriteRenderer::checkForErrors() const
 {

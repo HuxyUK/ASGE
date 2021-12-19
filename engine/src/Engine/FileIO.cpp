@@ -10,11 +10,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-#include <Engine/FileIO.hpp>
-#include <Engine/Logger.hpp>
 #include <PhysFS/PhysFS.hpp>
 #include <cstring>
 #include <string>
+#include "FileIO.hpp"
+#include "Logger.hpp"
 
 using namespace PhysFS;
 using namespace ASGE;

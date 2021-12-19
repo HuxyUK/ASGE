@@ -10,7 +10,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-#include "Engine/Input.hpp"
+#include "Input.hpp"
 #include <future>
 #include <uuid.h>
 

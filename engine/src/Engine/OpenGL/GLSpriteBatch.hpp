@@ -13,7 +13,7 @@
 #pragma once
 #include "GLQuad.hpp"
 #include "GLRenderBatch.hpp"
-#include <Engine/Text.hpp>
+#include "Text.hpp"
 #include <vector>
 
 namespace ASGE {

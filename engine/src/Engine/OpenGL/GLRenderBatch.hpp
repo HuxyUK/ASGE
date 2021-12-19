@@ -1,7 +1,7 @@
 #pragma once
 #include "GLIncludes.hpp"
 #include "GLQuad.hpp"
-#include <Engine/Sprite.hpp>
+#include "Sprite.hpp"
 #include <bitset>
 #include <list>
 #include <variant>

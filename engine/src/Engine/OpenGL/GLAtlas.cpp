@@ -22,6 +22,7 @@ constexpr int TEXTURE_WIDTH = 2048;
 
 #include <algorithm>
 #include <iostream>
+#include "Logger.hpp"
 
 ASGE::FontTextureAtlas::FontTextureAtlas()
   : texture(0), width(0), height(0) {}

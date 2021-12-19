@@ -15,8 +15,8 @@
 #include <map>
 #include <memory>
 #include <string>
-#include "Engine/NonCopyable.hpp"
 #include "GLTexture.hpp"
+#include "NonCopyable.hpp"
 
 namespace ASGE
 {

@@ -12,7 +12,7 @@
 
 #pragma once
 #include "GLPixelBuffer.hpp"
-#include <Engine/Texture.hpp>
+#include "Texture.hpp"
 #include <map>
 #include <memory>
 

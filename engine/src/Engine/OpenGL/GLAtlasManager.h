@@ -15,15 +15,13 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <freetype/freetype.h>
-
-#include "GLFontSet.hpp"
-#include <Engine/Texture.hpp>
 #include <deque>
 #include <string>
-
+#include "GLFontSet.hpp"
 #include "GLIncludes.hpp"
 #include "GLRenderBatch.hpp"
 #include "GLShader.hpp"
+#include "Texture.hpp"
 
 namespace ASGE
 {

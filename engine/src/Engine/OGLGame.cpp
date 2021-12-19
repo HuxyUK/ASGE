@@ -10,10 +10,10 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
+#include "OGLGame.hpp"
 #include "OpenGL/GLRenderer.hpp"
 #include "OpenGL/GLSprite.hpp"
 #include "SplashScreen.hpp"
-#include <Engine/OGLGame.hpp>
 #include <thread>
 
 bool ASGE::OGLGame::initAPI()

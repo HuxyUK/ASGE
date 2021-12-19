@@ -10,8 +10,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-#include <Engine/Logger.hpp>
-#include <Engine/Text.hpp>
+#include "Logger.hpp"
+#include "Text.hpp"
 #include <utility>
 ASGE::Text::Text(const ASGE::Font& font) : font(&font) {}
 

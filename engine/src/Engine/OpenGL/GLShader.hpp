@@ -13,11 +13,10 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <Engine/Shader.hpp>
 #include <functional>
 #include <string>
-
 #include "GLIncludes.hpp"
+#include "Shader.hpp"
 
 namespace ASGE
 {

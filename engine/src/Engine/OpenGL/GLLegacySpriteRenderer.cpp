@@ -10,10 +10,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
+#include "FileIO.hpp"
 #include "GLLegacySpriteRenderer.hpp"
 #include "GLRenderer.hpp"
-#include <OpenGL/Shaders/GLShaders.fs>
-#include <OpenGL/Shaders/GLShaders.vs>
+#include "Logger.hpp"
+#include "OpenGL/Shaders/GLShaders.fs"
+#include "OpenGL/Shaders/GLShaders.vs"
 
 ASGE::GLLegacySpriteRenderer::GLLegacySpriteRenderer()
 {

@@ -10,6 +10,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
+#include "Logger.hpp"
 #include "GLRenderTarget.hpp"
 #include "GLRenderer.hpp"
 #include "GLTexture.hpp"

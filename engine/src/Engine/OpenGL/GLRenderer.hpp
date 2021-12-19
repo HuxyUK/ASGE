@@ -12,9 +12,9 @@
 
 #pragma once
 
-#include "Engine/Renderer.hpp"
+#include "Renderer.hpp"
 #include "GLSpriteBatch.hpp"
-#include <Engine/Camera.hpp>
+#include "Camera.hpp"
 #include <iostream>
 #include <memory>
 #include <vector>

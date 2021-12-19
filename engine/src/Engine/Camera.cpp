@@ -10,7 +10,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-#include <Engine/Camera.hpp>
+#include "Camera.hpp"
 ASGE::Camera::Camera(float width, float height) :
   xy_pos{ 0, 0 },
   dimensions{ width, height } {}

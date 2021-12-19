@@ -10,6 +10,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
+#include "Logger.hpp"
 #include <OpenGL/GLAtlas.hpp>
 #include <OpenGL/GLFontSet.hpp>
 #include <OpenGL/GLModernSpriteRenderer.hpp>

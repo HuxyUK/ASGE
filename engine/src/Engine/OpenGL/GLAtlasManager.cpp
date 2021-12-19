@@ -10,12 +10,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-#include "GLAtlasManager.h"
-#include "GLAtlas.hpp"
-#include "GLFontSet.hpp"
-#include <Engine/FileIO.hpp>
-
+#include "FileIO.hpp"
 #include "Fonts/Hermit.font"
+#include "GLAtlas.hpp"
+#include "GLAtlasManager.h"
+#include "GLFontSet.hpp"
+#include "Logger.hpp"
 #include "Shaders/GLShaders.fs"
 #include "Shaders/GLShaders.vs"
 

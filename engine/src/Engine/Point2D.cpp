@@ -10,8 +10,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-#include <Engine/Point2D.hpp>
 #include <cmath>
+#include "Point2D.hpp"
 
 ASGE::Point2D::Point2D(float x, float y) : x(x), y(y) {}
 

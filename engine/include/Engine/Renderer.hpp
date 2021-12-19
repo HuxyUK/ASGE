@@ -15,10 +15,10 @@
 
 #pragma once
 #include "Camera.hpp"
-#include "Engine/Colours.hpp"
-#include "Engine/Texture.hpp"
+#include "Colours.hpp"
 #include "GameSettings.hpp"
 #include "Text.hpp"
+#include "Texture.hpp"
 #include "Viewport.hpp"
 #include <memory>
 #include <string>

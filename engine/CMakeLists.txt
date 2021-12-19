@@ -132,12 +132,14 @@ target_sources( ${PROJECT_NAME}
 # compiling the library and added to build paths. 
 target_include_directories( ${PROJECT_NAME}
 		SYSTEM
-		PUBLIC
+		INTERFACE
         $<INSTALL_INTERFACE:include>
 		"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+		PUBLIC
 		"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libs/physfs++/include>"
 		"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libs/physfs/src>"
       	PRIVATE
+		"${CMAKE_CURRENT_SOURCE_DIR}/include/Engine"
 		"${CMAKE_CURRENT_SOURCE_DIR}/src/Engine"
 		"${CMAKE_CURRENT_SOURCE_DIR}/libs/glfw/include"
 		"${CMAKE_CURRENT_SOURCE_DIR}/libs/glm"

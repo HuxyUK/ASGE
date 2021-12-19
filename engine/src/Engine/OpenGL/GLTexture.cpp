@@ -10,11 +10,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
+#include "Logger.hpp"
 #include "GLTexture.hpp"
 #include "GLFormat.hpp"
 #include "GLIncludes.hpp"
 #include "GLPixelBuffer.hpp"
-#include <cassert>
 
 ASGE::GLTexture::GLTexture(int width, int height) : Texture2D(width, height) {}
 

@@ -13,7 +13,7 @@
 #ifndef ASGE_MOVIE_H
 #define ASGE_MOVIE_H
 
-#include <Engine/Sprite.hpp>
+#include "Sprite.hpp"
 namespace ASGE
 {
   class SplashScreen

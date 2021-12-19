@@ -14,7 +14,7 @@
 //! @brief Class @ref ASGE::OGLGame
 
 #pragma once
-#include <Engine/Game.hpp>
+#include "Game.hpp"
 
 namespace ASGE {
 	/**

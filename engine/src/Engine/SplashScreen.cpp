@@ -10,9 +10,10 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
+#include "Logger.hpp"
+#include "Renderer.hpp"
 #include "SplashScreen.hpp"
-#include <Engine/Logger.hpp>
-#include <Engine/Renderer.hpp>
+
 void ASGE::SplashScreen::update(float delta_time)
 {
   if (!animation.isFinished())

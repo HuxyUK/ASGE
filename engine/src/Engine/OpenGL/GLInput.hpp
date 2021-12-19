@@ -11,7 +11,7 @@
 //  SOFTWARE.
 
 #pragma once
-#include "Engine/Input.hpp"
+#include "Input.hpp"
 #include "GLIncludes.hpp"
 
 struct GLFWwindow;

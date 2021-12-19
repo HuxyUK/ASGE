@@ -16,7 +16,7 @@
 #include "GLQuad.hpp"
 #include "GLRenderBatch.hpp"
 #include "GLShader.hpp"
-#include <Engine/Texture.hpp>
+#include "Texture.hpp"
 #include <future>
 #include <vector>
 

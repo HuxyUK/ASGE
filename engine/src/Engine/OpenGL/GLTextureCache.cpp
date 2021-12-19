@@ -12,15 +12,17 @@
 
 // STB
 #define STB_IMAGE_IMPLEMENTATION
-#include "GLTextureCache.hpp"
-#include "Engine/FileIO.hpp"
+#include <cmath>
+#include <memory>
+#include <stb_image.h>
+
+#include "FileIO.hpp"
+#include "Logger.hpp"
 #include "GLFormat.hpp"
 #include "GLIncludes.hpp"
 #include "GLRenderer.hpp"
 #include "GLTexture.hpp"
-#include <cmath>
-#include <memory>
-#include <stb_image.h>
+#include "GLTextureCache.hpp"
 
 ASGE::GLTextureCache::~GLTextureCache()
 {

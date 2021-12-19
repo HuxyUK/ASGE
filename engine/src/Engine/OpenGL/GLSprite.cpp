@@ -12,6 +12,7 @@
 
 #include "GLSprite.hpp"
 #include "GLTextureCache.hpp"
+#include "Logger.hpp"
 
 bool ASGE::GLSprite::loadTexture(const std::string& file, AttachMode mode)
 {

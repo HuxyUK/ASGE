@@ -16,7 +16,8 @@
 #ifndef ASGE_RENDERTARGET_H
 #define ASGE_RENDERTARGET_H
 
-#include "Engine/Texture.hpp"
+#include "Texture.hpp"
+#include "Viewport.hpp"
 #include <memory>
 #include <vector>
 namespace ASGE

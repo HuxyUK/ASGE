@@ -13,8 +13,8 @@
 #ifndef ASGE_GLPIXELBUFFER_HPP
 #define ASGE_GLPIXELBUFFER_HPP
 #include "GLIncludes.hpp"
-#include <Engine/NonCopyable.hpp>
-#include <Engine/PixelBuffer.hpp>
+#include "NonCopyable.hpp"
+#include "PixelBuffer.hpp"
 #include <memory>
 
 namespace ASGE

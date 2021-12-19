@@ -13,7 +13,7 @@
 #pragma once
 #include "GLShader.hpp"
 #include "GLTexture.hpp"
-#include <Engine/Sprite.hpp>
+#include "Sprite.hpp"
 #include <string>
 
 namespace ASGE
