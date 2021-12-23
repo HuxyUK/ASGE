@@ -206,6 +206,20 @@ namespace ASGE
      */
     [[nodiscard]] const ASGE::Point2D& position() const;
 
+    /**
+     * @brief Clamps the camera view.
+     *
+     * It is often desirable to clamp the field of vision for the camera to
+     * ensure only specific regions of the game screen are shown. Consider a
+     * tile map where the camera should not exceed the width or height of the
+     * map. This function can be used to clamp the view to a set of predefined
+     * values, representing `min_x`, `max_x`, `min_y` and `max_y`. These would
+     * then be used to simply clamp the view's x and y positions.
+     *
+     * @param[in] view_bounds The four bounds to use in xy space.
+     */
+    void clamp(const CameraView&);
+
    private:
     ASGE::Point2D xy_pos{ 0, 0 };
     std::array<float, 2> dimensions{ 0, 0 };

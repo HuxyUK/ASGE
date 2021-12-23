@@ -10,6 +10,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
+#include <algorithm>
 #include "Camera.hpp"
 ASGE::Camera::Camera(float width, float height) :
   xy_pos{ 0, 0 },
@@ -22,6 +23,12 @@ ASGE::Camera::Camera(ASGE::Point2D focal_point, float width, float height) :
 void ASGE::Camera::update(const ASGE::GameTime& /*game_time*/)
 {
 
+}
+
+void ASGE::Camera::clamp(const ASGE::Camera::CameraView& view_bounds)
+{
+  this->xy_pos.x  = std::clamp(this->xy_pos.x, view_bounds.min_x, view_bounds.max_x);
+  this->xy_pos.y  = std::clamp(this->xy_pos.y, view_bounds.min_y, view_bounds.max_y);
 }
 
 void ASGE::Camera::lookAt(ASGE::Point2D pos)
