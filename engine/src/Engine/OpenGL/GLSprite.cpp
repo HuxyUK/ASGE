@@ -13,6 +13,7 @@
 #include "GLSprite.hpp"
 #include "GLTextureCache.hpp"
 #include "Logger.hpp"
+#include "Tile.hpp"
 
 bool ASGE::GLSprite::loadTexture(const std::string& file, AttachMode mode)
 {
@@ -108,4 +109,22 @@ ASGE::GLSprite::GLSprite()
     static_cast<float>(ASGE::SETTINGS.window_height) / 1080.F);
   width(50 * ratio);
   height(50 * ratio);
+}
+
+
+ASGE::GLSprite::GLSprite(const ASGE::Tile& tile) :
+  texture(dynamic_cast<GLTexture*>(tile.texture))
+{
+  this->opacity(tile.opacity);
+  this->dimensions()[0] = static_cast<float>(tile.width);
+  this->dimensions()[1] = static_cast<float>(tile.height);
+  this->setGlobalZOrder(tile.z);
+  this->colour(tile.tint);
+  this->rotationInRadians(tile.rotation);
+  std::copy(tile.src_rect.begin(), tile.src_rect.end(), this->srcRect());
+
+  if(texture == nullptr)
+  {
+    Sprite::loadTexture("__asge__debug__texture__");
+  }
 }

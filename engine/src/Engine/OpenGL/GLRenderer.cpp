@@ -754,6 +754,14 @@ void ASGE::GLRenderer::setRenderTarget(const ASGE::RenderTarget* render_target)
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+void ASGE::GLRenderer::render(const ASGE::Tile& tile, const ASGE::Point2D& xy)
+{
+  ASGE::GLSprite sprite {tile};
+  sprite.xPos(xy.x);
+  sprite.yPos(xy.y);
+  render(sprite);
+}
+
 void ASGE::GLRenderer::render(
   ASGE::Texture2D& texture, std::array<float, 4> rect,
   const Point2D& xy, int width, int height, int16_t z_order)

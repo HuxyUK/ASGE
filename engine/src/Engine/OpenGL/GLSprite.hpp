@@ -18,6 +18,8 @@
 
 namespace ASGE
 {
+  class Tile;
+
   /**
    * GLSprite is the OpenGL implementation of an ASGE::Sprite
    */
@@ -26,6 +28,7 @@ namespace ASGE
    public:
     GLSprite();
     ~GLSprite() override = default;
+    explicit GLSprite(const ASGE::Tile&);
     bool attach(ASGE::Texture2D* texture_to_attach, AttachMode mode) noexcept override;
     bool loadTexture(const std::string& file, AttachMode mode) override;
     [[nodiscard]] Texture2D* getTexture() const override;

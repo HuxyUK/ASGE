@@ -19,6 +19,7 @@
 #include "GameSettings.hpp"
 #include "Text.hpp"
 #include "Texture.hpp"
+#include "Tile.hpp"
 #include "Viewport.hpp"
 #include <memory>
 #include <string>
@@ -258,6 +259,12 @@ namespace ASGE {
      *  @see Sprite
      */
     virtual void render(const ASGE::Sprite& sprite) = 0;
+
+    /**
+     * Renders a tile object.
+     * @param[in] tile The text object to render.
+     */
+    virtual void render(const ASGE::Tile& tile, const ASGE::Point2D& xy) = 0;
 
     /**
      * Renders a text object.

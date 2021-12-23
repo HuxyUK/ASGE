@@ -102,7 +102,8 @@ namespace ASGE
     void render(const Sprite& sprite) override;
     void render(const Text& string) override;
     void render(Text&& string) override;
-    void render(ASGE::Texture2D &texture, std::array<float, 4> rect, const Point2D &xy, int width, int height) override;
+    void render(const ASGE::Tile& tile, const ASGE::Point2D& xy) override;
+    void render(ASGE::Texture2D &texture, std::array<float, 4> rect, const Point2D &xy, int width, int height, int16_t z) override;
 
     ASGE::Viewport getViewport() const override;
     void setViewport(const ASGE::Viewport& viewport) override;
