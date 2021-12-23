@@ -75,7 +75,8 @@ namespace ASGE
     Point2D(const Point2D&) = default;
     Point2D(Point2D&&) noexcept;
     Point2D& operator=(Point2D&&) noexcept;
-
+    bool operator== (const Point2D& rhs) const;
+    bool operator!= (const Point2D& rhs) const;
 
     /**
      * Converts to string.

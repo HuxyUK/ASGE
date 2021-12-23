@@ -77,3 +77,13 @@ ASGE::Point2D ASGE::operator*(float f, const ASGE::Point2D& v)
 {
   return {f * v.x, f * v.y};
 }
+
+bool ASGE::Point2D::operator==(const ASGE::Point2D& rhs) const
+{
+  return (this->x == rhs.x && this->y == rhs.y);
+}
+
+bool ASGE::Point2D::operator!=(const ASGE::Point2D& rhs) const
+{
+  return (this->x != rhs.x || this->y == rhs.y);
+}
