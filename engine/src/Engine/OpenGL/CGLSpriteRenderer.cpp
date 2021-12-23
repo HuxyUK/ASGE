@@ -177,13 +177,13 @@ void ASGE::CGLSpriteRenderer::generateUvData(
     uvs[i] = uv_y;
   }
 
-  if (sprite.isFlippedOnX())
+  if (sprite.isFlippedOnX() || sprite.isFlippedOnXY())
   {
     std::swap(uvs[0], uvs[12]);
     std::swap(uvs[4], uvs[8]);
   }
 
-  if (sprite.isFlippedOnY())
+  if (sprite.isFlippedOnY() || sprite.isFlippedOnXY())
   {
     std::swap(uvs[1], uvs[5]);
     std::swap(uvs[9], uvs[13]);

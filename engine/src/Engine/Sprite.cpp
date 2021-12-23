@@ -100,6 +100,11 @@ bool ASGE::Sprite::isFlippedOnY() const noexcept
   return (flip_flags & FLIP_Y) == FLIP_Y;
 }
 
+bool ASGE::Sprite::isFlippedOnXY() const noexcept
+{
+  return (flip_flags & FLIP_XY) == FLIP_XY;
+}
+
 void ASGE::Sprite::setFlipFlags(FlipFlags flip) noexcept
 {
   flip_flags = flip;

@@ -56,6 +56,7 @@ namespace ASGE
       NORMAL    = 0x00,           /**< texture is not flipped. */
       FLIP_X    = 0x01,           /**< texture is flipped on the x axis. */
       FLIP_Y    = 0x02,           /**< texture is flipped on the y axis. */
+      FLIP_XY   = 0x04,           /**< texture is flipped diagonally. */
       FLIP_BOTH = FLIP_X | FLIP_Y /**< texture is flipped on both axis.  */
     };
 
@@ -324,6 +325,12 @@ namespace ASGE
      * @return If the texture is flipped on the Y axis.
      */
     [[nodiscard]] bool isFlippedOnY() const noexcept;
+
+    /**
+     * @brief Checks to see if the texture is flipped diagonally.
+     * @return If the texture is flipped on the Y axis.
+     */
+    [[nodiscard]] bool isFlippedOnXY() const noexcept;
 
     /**
      * @brief Sets the flip state of the texture.
