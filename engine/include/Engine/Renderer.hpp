@@ -281,9 +281,10 @@ namespace ASGE {
      * defined as.
      *
      * @param[in] texture The texture to render.
-     * @param[in] xy The xy position of the rendered texture in 2D Space.
+     * @param[in] pos_xy The xy position of the rendered texture in 2D Space.
+     * @param[in] z_order The z-ordering to use.
      */
-    void render(ASGE::Texture2D& texture, const ASGE::Point2D& xy);
+    void render(ASGE::Texture2D& texture, const ASGE::Point2D& pos_xy, int16_t z_order);
 
     /**
      * @brief Renders a texture to the screen or attached buffer.
@@ -319,12 +320,13 @@ namespace ASGE {
      *
      * @param[in] texture The texture to be sampled.
      * @param[in] rect The source rectangle to use when sampling.
-     * @param[in] xy The position to render the texture in 2D space.
+     * @param[in] pos_xy The position to render the texture in 2D space.
      * @param[in] width How wide to render it.
      * @param[in] height How tall to render it.
+     * @param[in] z_order The z ordering to use.
      */
     virtual void
-    render(ASGE::Texture2D& texture, std::array<float, 4> rect, const Point2D& xy, int width, int height) = 0;
+    render(ASGE::Texture2D& texture, std::array<float, 4> rect, const Point2D& pos_xy, int width, int height, int16_t z_order) = 0;
 
     /**
      * @brief Creates a non-cached texture.

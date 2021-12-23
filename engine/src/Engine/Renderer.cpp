@@ -46,11 +46,9 @@ ASGE::SHADER_LIB::Shader* ASGE::Renderer::initPixelShaderFromFile(const std::str
 	return initPixelShader(std::string(buffer.data.get(), buffer.length));
 }
 
-void ASGE::Renderer::render(ASGE::Texture2D& texture, const ASGE::Point2D& xy)
+void ASGE::Renderer::render(ASGE::Texture2D& texture, const ASGE::Point2D& pos_xy, int16_t z_order)
 {
-    render(
-            texture,
-            {0, 0, texture.getWidth(), texture.getHeight()}, xy,
-            texture.getWidth(),
-            texture.getHeight());
+  render(
+    texture, { 0, 0, texture.getWidth(), texture.getHeight() }, pos_xy,
+    static_cast<int>(texture.getWidth()), static_cast<int>(texture.getHeight()), z_order);
 }
