@@ -447,6 +447,20 @@ namespace ASGE
     virtual bool attach(ASGE::Texture2D* texture2D, AttachMode mode) noexcept = 0;
 
     virtual bool attach(ASGE::Texture2D* texture2D) noexcept;
+
+    /**
+     * @brief Calculates the mid-point of the sprite.
+     *
+     * Sprites origins are normally 0,0, which maps to the top left.
+     * This function returns the mid-point of the sprite based on
+     * its with and height and its current position in the world.
+     *
+     * @note This midpoint is scaled using the sprites scale factor.
+     * @return The midpoint as an ASGE::Point2D
+     * @see ASGE::Point2D
+     */
+    ASGE::Point2D midpoint() const;
+
     /**
      * @brief Retrieves the rendering order (layer) of the sprite.
      * @return The sprite's current z-order.

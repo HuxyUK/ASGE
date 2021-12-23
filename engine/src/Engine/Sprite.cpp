@@ -244,3 +244,11 @@ bool ASGE::Sprite::attach(ASGE::Texture2D* texture2D) noexcept
 {
   return attach(texture2D, AttachMode(AttachMode::DEFAULT));
 }
+
+ASGE::Point2D ASGE::Sprite::midpoint() const
+{
+  return {
+    xPos() + width() * scale_factor * 0.5F,
+    yPos() + height() * scale_factor * 0.5F
+  };
+}
