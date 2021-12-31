@@ -950,18 +950,29 @@ void ASGE::GLRenderer::render(const ASGE::Tile& tile, const ASGE::Point2D& xy)
   render(sprite);
 }
 
+/**
+ * Renders a texture.
+ * Instead of using a Sprite or Tile, one can manually render a texture
+ * if they so wish. Though the other approaches are preferable.
+ * @param texture The texture to render.
+ * @param rect The source rectangle to use.
+ * @param pos_xy The position of the texture in world space.
+ * @param width The resultant width to render.
+ * @param height The resultant height to render.
+ * @param z_order The z-order to apply.
+ */
 void ASGE::GLRenderer::render(
   ASGE::Texture2D& texture, std::array<float, 4> rect,
-  const Point2D& xy, int width, int height, int16_t z_order)
+  const Point2D& pos_xy, int width, int height, int16_t z_order)
 {
   ASGE::GLSprite sprite;
-  sprite.xPos(static_cast<float>(xy.x));
-  sprite.yPos(static_cast<float>(xy.y));
+  sprite.xPos(static_cast<float>(pos_xy.x));
+  sprite.yPos(static_cast<float>(pos_xy.y));
   sprite.attach(&texture, Sprite::DEFAULT);
   sprite.width(static_cast<float>(width));
   sprite.height(static_cast<float>(height));
   sprite.setGlobalZOrder(z_order);
-  memcpy(sprite.srcRect(), rect.data(), sizeof(float) * 4);
+  std::copy(rect.begin(), rect.end(), sprite.srcRect());
   render(sprite);
 }
 
