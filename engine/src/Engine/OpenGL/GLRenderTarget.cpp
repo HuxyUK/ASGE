@@ -14,6 +14,7 @@
 #include "GLRenderTarget.hpp"
 #include "GLRenderer.hpp"
 #include "GLTexture.hpp"
+
 ASGE::GLRenderTarget::GLRenderTarget(
   ASGE::Renderer* renderer, int width, int height, ASGE::Texture2D::Format format, int count)
 {

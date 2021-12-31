@@ -34,6 +34,7 @@ set( PROJECT_HEADERS
 		"${CMAKE_CURRENT_LIST_DIR}/include/Engine/Point2D.hpp"
 		"${CMAKE_CURRENT_LIST_DIR}/include/Engine/RenderTarget.hpp"
 		"${CMAKE_CURRENT_LIST_DIR}/include/Engine/Renderer.hpp"
+		"${CMAKE_CURRENT_LIST_DIR}/include/Engine/Resolution.hpp"
 		"${CMAKE_CURRENT_LIST_DIR}/include/Engine/Shader.hpp"
 		"${CMAKE_CURRENT_LIST_DIR}/include/Engine/Sprite.hpp"
 		"${CMAKE_CURRENT_LIST_DIR}/include/Engine/Texture.hpp"
@@ -53,6 +54,7 @@ set( PROJECT_SOURCES
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OGLGame.cpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/Point2D.cpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/Renderer.cpp"
+		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/Resolution.cpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/Shader.cpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/Sprite.cpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/Text.cpp"
@@ -92,7 +94,8 @@ set( PROJECT_SOURCES
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLTextureCache.hpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLTextureCache.cpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLLegacySpriteRenderer.hpp"
-		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLLegacySpriteRenderer.cpp"	)
+		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLLegacySpriteRenderer.cpp"
+		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLWindowData.hpp")
 
 set(PROJECT_CONFIG
     CMakeLists.txt LICENSE

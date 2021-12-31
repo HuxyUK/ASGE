@@ -25,7 +25,6 @@ bool ASGE::GLInput::init(Renderer* renderer)
 
   projection_matrix = &glrenderer->getProjectionMatrix();
   window            = glrenderer->getWindow();
-  glfwSetWindowUserPointer(window, this);
 
   auto kFunc = [](GLFWwindow* window, int key, int scancode, int action, int mods) {
     auto event      = std::make_shared<KeyEvent>();
@@ -33,7 +32,9 @@ bool ASGE::GLInput::init(Renderer* renderer)
     event->scancode = scancode;
     event->action   = action;
     event->mods     = mods;
-    static_cast<GLInput*>(glfwGetWindowUserPointer(window))->sendEvent(EventType::E_KEY, event);
+
+    auto* input = static_cast<WindowData*>(glfwGetWindowUserPointer(window))->input;
+    input->sendEvent(EventType::E_KEY, event);
   };
 
   auto mButtonEvent = [](GLFWwindow* window, int button, int action, int mods) {
@@ -42,8 +43,7 @@ bool ASGE::GLInput::init(Renderer* renderer)
     event->action = action;
     event->mods   = mods;
 
-    auto* input = static_cast<GLInput*>(glfwGetWindowUserPointer(window));
-
+    auto* input = static_cast<WindowData*>(glfwGetWindowUserPointer(window))->input;
     input->getCursorPos(event->xpos, event->ypos);
     input->sendEvent(EventType::E_MOUSE_CLICK, event);
   };
@@ -53,8 +53,7 @@ bool ASGE::GLInput::init(Renderer* renderer)
     event->xpos = xpos;
     event->ypos = ypos;
 
-    auto* input = static_cast<GLInput*>(glfwGetWindowUserPointer(window));
-
+    auto* input = static_cast<WindowData*>(glfwGetWindowUserPointer(window))->input;
     input->getCursorPos(event->xpos, event->ypos);
     input->sendEvent(EventType::E_MOUSE_MOVE, event);
   };
@@ -63,8 +62,8 @@ bool ASGE::GLInput::init(Renderer* renderer)
     auto event     = std::make_shared<ScrollEvent>();
     event->xoffset = xoffset;
     event->yoffset = yoffset;
-    static_cast<GLInput*>(glfwGetWindowUserPointer(window))
-      ->sendEvent(EventType::E_MOUSE_SCROLL, event);
+    auto* input = static_cast<WindowData*>(glfwGetWindowUserPointer(window))->input;
+    input->sendEvent(EventType::E_MOUSE_SCROLL, event);
   };
 
   glfwSetKeyCallback(glrenderer->getWindow(), kFunc);
@@ -91,7 +90,7 @@ void ASGE::GLInput::unProjectCursor(double& xpos, double& ypos) const
   glm::vec3 pos          = glm::vec3(xpos, viewportdata.w - ypos, 0.0F);
   glm::mat4 model        = glm::mat4(1.0F);
 
-  auto unprojected = glm::unProject(pos, model, *projection_matrix, viewportdata);
+  auto unprojected = glm::unProject(pos, model, * projection_matrix, viewportdata);
   xpos             = unprojected[0];
   ypos             = unprojected[1];
 }

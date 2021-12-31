@@ -203,7 +203,7 @@ namespace ASGE
      *  Update the FPS calculation every tick. Uses the average number
      *  of frames over a single second.
      */
-    void updateFPS();
+    int updateFPS();
 
     /**
      * Initialises the file system.

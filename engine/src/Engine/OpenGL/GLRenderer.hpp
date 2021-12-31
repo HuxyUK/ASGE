@@ -15,9 +15,11 @@
 #include "Renderer.hpp"
 #include "GLSpriteBatch.hpp"
 #include "Camera.hpp"
+#include "GLWindowData.hpp"
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <Resolution.hpp>
 
 struct GLFWwindow;
 namespace ASGE
@@ -30,9 +32,8 @@ namespace ASGE
 
   struct Font;
   class  Sprite;
-  class  Input;
   class  CGLSpriteRenderer;
-  class GLAtlasManager;
+  class  GLAtlasManager;
 
   /**
    * The heart and soul of the OpenGL ASGE renderer. Creates
@@ -51,7 +52,7 @@ namespace ASGE
       GL_LEGACY = 2
     }; static RenderLib RENDER_LIB;
 
-	public:
+   public:
 
     SHADER_LIB::Shader* getShader() override;
 
@@ -65,7 +66,7 @@ namespace ASGE
     void setDefaultTextColour(const Colour& rgb) override;
     void preRender() override;
     void swapBuffers() override;
-    void renderDebug();
+    void renderDebug(int fps);
 
     std::unique_ptr<Sprite> createUniqueSprite() override;
     Sprite* createRawSprite() override;
@@ -80,6 +81,7 @@ namespace ASGE
     void    setSpriteMode(SpriteSortMode sort_mode) override;
     void    setWindowedMode(GameSettings::WindowMode window_mode) override;
     void    setClearColour(ASGE::Colour rgb) override;
+    void    setBaseResolution(int width, int height, Resolution::Policy policy) override;
     const   Font& getDefaultFont() const override;
 
     // TODO create central shader storage, this is bad design
@@ -96,6 +98,8 @@ namespace ASGE
     ASGE::Texture2D* createCachedTexture(const std::string& path) override;
 
     const Font& getFont(int idx) const override;
+    const Resolution& resolution() const override;
+    void setResolutionPolicy(Resolution::Policy) override;
 
     void setProjectionMatrix(float min_x, float max_x, float min_y, float max_y) override;
     void setProjectionMatrix(const Camera::CameraView& view) override;
@@ -106,31 +110,31 @@ namespace ASGE
     void render(ASGE::Texture2D &texture, std::array<float, 4> rect, const Point2D &xy, int width, int height, int16_t z) override;
 
     ASGE::Viewport getViewport() const override;
-    void setViewport(const ASGE::Viewport& viewport) override;
-    void setRenderTarget(const ASGE::RenderTarget* /*unused*/) override;
-    [[nodiscard]] float windowHeight() const noexcept override;
-    [[nodiscard]] float windowWidth() const noexcept override;
+    void setViewport(const ASGE::Viewport &viewport) override;
+    void setRenderTarget(RenderTarget* render_target) override;
+    [[nodiscard]] int windowHeight() const noexcept override;
+    [[nodiscard]] int windowWidth() const noexcept override;
     std::tuple<int32_t,int32_t,int16_t> screenRes() override;
+    void fillViewPort(const Viewport& viewport);
+    void fitViewPort(const Viewport& viewport);
+    void centerViewPort(const ASGE::Viewport& viewport);
 
    private:
     std::unique_ptr<Input> inputPtr() override;
     void allocateDebugTexture();
     void centerWindow();
-    void fit(Viewport& viewport);
     void postRender() override;
     void updateMonitorInfo(GLFWmonitor* monitor);
 
    private:
     GLSpriteBatch batch{};
-    glm::mat4 projection_matrix{};
+    Resolution resolution_info{};
+    WindowData window_data{};
+    Resolution::Policy resolution_policy{ Resolution::Policy::MAINTAIN };
     std::unique_ptr<CGLSpriteRenderer> sprite_renderer{};
     std::unique_ptr<GLAtlasManager> text_renderer{};
-    std::array<int32_t, 2> desktop_res{ 0, 0 };
-    int target_width         = 640;
-    int target_height        = 480;
-    int16_t desktop_refresh  = 60;
-    Colour debug_text_colour = COLOURS::DEEPPINK;
-    GLFWwindow* window       = nullptr;
-    GLuint projection_ubo    = -1;
+    Colour debug_text_colour{ COLOURS::DEEPPINK };
+    GLFWwindow* window{ nullptr };
+    GLuint projection_ubo = -1;
   };
 }  // namespace ASGE

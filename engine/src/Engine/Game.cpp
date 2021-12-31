@@ -20,13 +20,13 @@
 
 void ASGE::Game::toggleFPS() noexcept
 {
-  show_fps = !show_fps;
+  show_fps.store(!show_fps.load());
 }
 
-void ASGE::Game::updateFPS()
+int ASGE::Game::updateFPS()
 {
   static double delta_accumulator = 0;
-  static int fps                  = 0;
+  static int fps                  = 60;
   static int frames               = 0;
 
   if (show_fps)
@@ -34,22 +34,14 @@ void ASGE::Game::updateFPS()
     frames++;
     delta_accumulator += epoch.frame_delta.count();
 
-    std::string fps_str = std::to_string(fps);
-    const auto POS_X    = 0.F;
-    const auto POS_Y    = 34.F; // renderer->getDefaultFont().line_height;
-
-    auto text = ASGE::Text{ renderer->getFont(0) };
-    text.setString(fps_str);
-    text.setColour({ 1.0F, 0.2F, 0.5F });
-    text.setPosition({ POS_X, POS_Y });
-    renderer->render(std::move(text));
-
     if (delta_accumulator >= 1000)
     {
       fps    = static_cast<int>(lround(static_cast<float>(frames) / (delta_accumulator / 1000.0)));
       frames = 0;
       delta_accumulator = 0;
     }
+
+    return fps;
   }
 }
 
@@ -182,7 +174,7 @@ ASGE::Game::~Game()
   PhysFS::deinit();
 }
 
-void ASGE::Game::fixedUpdate(const ASGE::GameTime &us)
+void ASGE::Game::fixedUpdate(const ASGE::GameTime &/*us*/)
 {
 
 }

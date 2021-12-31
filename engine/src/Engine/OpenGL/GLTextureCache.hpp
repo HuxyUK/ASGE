@@ -20,9 +20,11 @@
 
 namespace ASGE
 {
+  class GLRenderer;
   class GLTextureCache final : public NonCopyable
   {
    public:
+    friend class GLRenderer;
     GLTextureCache(const GLTextureCache&) = delete;
     GLTextureCache operator=(const GLTextureCache&) = delete;
     static GLTextureCache& getInstance()
@@ -46,7 +48,7 @@ namespace ASGE
     ASGE::GLTexture* allocateTexture(int img_width, int img_height, Texture2D::Format format, const void* data);
     ASGE::GLTexture* allocateTexture(const std::string& file);
 
-    // the cache
+    // the cache and renderer to use
 		std::map<const std::string, std::unique_ptr<GLTexture>> cache;
     ASGE::GLRenderer* renderer {nullptr};
   };

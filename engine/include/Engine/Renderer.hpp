@@ -21,6 +21,7 @@
 #include "Texture.hpp"
 #include "Tile.hpp"
 #include "Viewport.hpp"
+#include "Resolution.hpp"
 #include <memory>
 #include <string>
 
@@ -481,13 +482,13 @@ namespace ASGE {
      * Retrieves the window height.
      * @return The window height.
      */
-    [[nodiscard]] virtual float windowHeight() const noexcept = 0;
+    [[nodiscard]] virtual int windowHeight() const noexcept = 0;
 
     /**
      * Retrieves the window width.
      * @return The window width.
      */
-    [[nodiscard]] virtual float windowWidth()  const noexcept = 0;
+    [[nodiscard]] virtual int windowWidth()  const noexcept = 0;
 
     /**
      * @brief Sets the projection matrix
@@ -525,7 +526,7 @@ namespace ASGE {
     [[nodiscard]] virtual ASGE::Viewport getViewport() const = 0;
 
     /**
-     * @brief Sets the viewport used to map the renderer to the window.
+     * @brief Sets the viewport used to map the x,y ndc to the window or buffer.
      * @param[in] viewport Sets the viewport.
      */
     virtual void setViewport(const ASGE::Viewport& viewport) = 0;
@@ -539,7 +540,7 @@ namespace ASGE {
      *
     *  @param[in] render_target. The destination target.
     */
-    virtual void setRenderTarget(const ASGE::RenderTarget*) = 0;
+    virtual void setRenderTarget(RenderTarget*) = 0;
 
 
     /**
@@ -563,6 +564,97 @@ namespace ASGE {
      */
     virtual std::tuple<int32_t, int32_t, int16_t> screenRes() = 0;
 
+    /**
+     * @brief Sets the base (game) resolution.
+     *
+     * When designing the game, the positioning, scaling and logic
+     * will be implemented with a specific "resolution" in mind. However,
+     * when rendering the window size may not match the base resolution
+     * correctly, resulting in scaling. Setting this will allow the
+     * window to resize correctly, depending on the policy used. Designing
+     * games to support multiple resolutions is quite tricky and this
+     * function aims to help with this complexity. Simply set your game
+     * resolution and let the policy do the work for you.
+     *
+     * @note The base resolution is not in pixels, rather game units.
+     * @param width. The width the game was designed in.
+     * @param height. The height the game was designed in.
+     * @param policy. The scaling policy to apply when window size does not match.
+     *
+     * <example>
+     * @code
+     *   // game is 1024,768 units; scale to window but retain its aspect ratio
+     *   renderer->setBaseResolution(1024, 768, ASGE::Resolution::Policy::MAINTAIN);
+     * @endcode
+     * </example>
+     *
+     * @see Resolution::Policy
+     */
+    virtual void setBaseResolution(int width, int height, Resolution::Policy policy) = 0;
+
+    /**
+     * Retrieves the resolution information.
+     * The resolution data structure stores information such as
+     * the current active viewport, the window width and height,
+     * the base resolution and the desktop resolution.
+     *
+     * @return The resolution information.
+     * @see ASGE::Resolution
+     */
+    [[nodiscard]] virtual const ASGE::Resolution& resolution() const = 0;
+
+    /**
+     * Sets the resolution policy.
+     * Defines how scaling should take place. There are a number
+     * of policies that control how mapping of the game's resolution
+     * to the window should take place.
+     *
+     * @param [in] policy. The policy to apply.
+     * @note Changing the policy will reset the current viewport.
+     * @see ASGE::Resolution::Policy
+     */
+    virtual void setResolutionPolicy(ASGE::Resolution::Policy) = 0;
+
+    /**
+     * Gets any active render target.
+     * Retrieves the active buffer object. This will be nullptr if
+     * there is currently no render target active.
+     *
+     * @return The active render target.
+     */
+    [[nodiscard]] ASGE::RenderTarget* renderTarget() { return active_buffer; }
+
+    /**
+     * Gets any active render target.
+     * Retrieves the active buffer object. This will be nullptr if
+     * there is currently no render target active.
+     *
+     * @return The active render target.
+     */
+    [[nodiscard]] const ASGE::RenderTarget* renderTarget() const { return active_buffer; }
+
+    /**
+     * Gets the MSAA level.
+     * When the game is setup the MSAA level is set on the
+     * window. This can't be adjusted during runtime, however,
+     * its value can be retrieved and used to create additional
+     * MSAA buffers.
+     *
+     * @return The MSAA level to use.
+     */
+    [[nodiscard]] int msaa() const;
+
+    /**
+     * Gets the default MagFilter.
+     * All textures when sampled beyond their resolution need to
+     * be magnified. This is the default value the game will use
+     * when no filter has been individually set on a texture.
+     *
+     * @return The default magnification filter.
+     * @see ASGE::Texture2D::MagFilter
+     */
+    [[nodiscard]] ASGE::Texture2D::MagFilter magFilter() const;
+
 	private:
     GameSettings::WindowMode window_mode{ GameSettings::WindowMode::WINDOWED }; /**< The window mode being used. */
     Colour cls{ COLOURS::STEELBLUE }; /**< The clear colour. Used to blank the window every redraw. */
@@ -580,5 +672,7 @@ namespace ASGE {
     [[nodiscard]] const Colour& clearColour() const { return cls; }
     [[nodiscard]] Colour& defTextColour() { return default_text_colour; }
     [[nodiscard]] const Colour& defTextColour() const { return default_text_colour; }
+
+    ASGE::RenderTarget* active_buffer{ nullptr }; /**< The attached FBO. Used when rendering offscreen to textures. */
 	};
 }  // namespace ASGE

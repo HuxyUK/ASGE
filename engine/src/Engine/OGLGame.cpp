@@ -102,8 +102,7 @@ void ASGE::OGLGame::endFrame()
 {
   if (show_fps)
   {
-    dynamic_cast<GLRenderer*>(renderer.get())->renderDebug();
-    updateFPS();
+    dynamic_cast<GLRenderer*>(renderer.get())->renderDebug(updateFPS());
   }
 
   renderer->postRender();

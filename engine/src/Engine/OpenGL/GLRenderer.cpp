@@ -22,7 +22,34 @@
 #include "GLTextureCache.hpp"
 #include "Logger.hpp"
 #include "OpenGL/Shaders/GLShaders.vs"
+#include <cmath>
 #include <memory>
+
+namespace
+{
+  void windowSizeCallback(GLFWwindow* window, int width, int height)
+  {
+    Logging::TRACE("Window resized event");
+  }
+
+  void framebufferSizeCallback(GLFWwindow* window, int width, int height)
+  {
+    Logging::TRACE("Framebuffer resized event");
+
+    auto* renderer = static_cast<ASGE::WindowData*>(glfwGetWindowUserPointer(window))->renderer;
+    auto* resolution = static_cast<ASGE::WindowData*>(glfwGetWindowUserPointer(window))->resolution;
+
+    if(renderer->getWindowMode() != ASGE::GameSettings::WindowMode::BORDERLESS_FULLSCREEN)
+    {
+      resolution->window[0] = width;
+      resolution->window[1] = height;
+    }
+
+    renderer->setViewport(ASGE::Viewport{0,0, resolution->base[0], resolution->base[1]});
+    //renderer->setProjectionMatrix(0, 0, static_cast<float>(resolution->viewport.w), static_cast<float>(resolution->viewport.h));
+    renderer->setProjectionMatrix(0, 0, static_cast<float>(resolution->base[0]), static_cast<float>(resolution->base[1]));
+  }
+}  // namespace
 
 namespace ASGE
 {
@@ -51,9 +78,11 @@ ASGE::GLRenderer::RenderLib ASGE::GLRenderer::RENDER_LIB = ASGE::GLRenderer::Ren
  *  @see ASGE::RenderBatch
  *  @see ASGE::Renderer::RenderLib
  */
-ASGE::GLRenderer::GLRenderer() : Renderer(), batch()
+ASGE::GLRenderer::GLRenderer()
 {
   shaders.reserve(20);
+  window_data.renderer = this;
+  window_data.resolution = &resolution_info;
 }
 
 /**
@@ -87,8 +116,8 @@ ASGE::GLRenderer::~GLRenderer()
 bool ASGE::GLRenderer::init(const ASGE::GameSettings& settings)
 {
   // Window size
-  target_width  = ASGE::SETTINGS.window_width;
-  target_height = ASGE::SETTINGS.window_height;
+  resolution_info.window[0] = settings.window_width;
+  resolution_info.window[1] = settings.window_height;
 
   // Init GLFW
   if (glfwInit() == GLFW_FALSE)
@@ -143,15 +172,11 @@ bool ASGE::GLRenderer::init(const ASGE::GameSettings& settings)
       msaa(std::clamp(settings.msaa_level, 4, max_samples));
       glfwWindowHint(GLFW_SAMPLES, msaa());
 
-      // Create the actual window and close temporary one
-      window = glfwCreateWindow(target_width, target_height, "ASGE", nullptr, msaa_window);
+      // Create the actual window and close the temporary one
+      auto [width, height] = resolution_info.window;
+      window = glfwCreateWindow(width, height, "ASGE", nullptr, msaa_window);
       glfwMakeContextCurrent(window);
       glfwDestroyWindow(msaa_window);
-
-      updateMonitorInfo(glfwGetPrimaryMonitor());
-      centerWindow();
-      setWindowedMode(ASGE::SETTINGS.mode);
-      glfwShowWindow(this->window);
 
       // Initialise the GL Sprite Renderer
       item.second();
@@ -160,14 +185,23 @@ bool ASGE::GLRenderer::init(const ASGE::GameSettings& settings)
     }
   }
 
-  setProjectionMatrix(0, 0, static_cast<float>(target_width), static_cast<float>(target_height));
+  glfwSetWindowUserPointer(window, &window_data);
+  glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+  updateMonitorInfo(glfwGetPrimaryMonitor());
+  centerWindow();
+
+  GLTextureCache::getInstance().renderer = this;
+  setWindowedMode(settings.mode);
+  glfwShowWindow(this->window);
+  magFilter(settings.mag_filter);
+  glGetIntegerv(GL_VIEWPORT, &resolution_info.viewport.x);
 
   text_renderer = std::make_unique<GLAtlasManager>();
   text_renderer->init();
   sprite_renderer->init();
   batch.sprite_renderer = sprite_renderer.get();
 
-  switch(SETTINGS.vsync)
+  switch(settings.vsync)
   {
     case GameSettings::Vsync::ENABLED:
       glfwSwapInterval( 1); break;
@@ -182,6 +216,9 @@ bool ASGE::GLRenderer::init(const ASGE::GameSettings& settings)
   glEnable(GL_MULTISAMPLE);
   ClearGLErrors(__PRETTY_FUNCTION__);
   allocateDebugTexture();
+  setProjectionMatrix(0, 0, resolution_info.window[0], resolution_info.window[1]);
+  //setProjectionMatrix(0, 0, resolution_info.base[0], resolution_info.base[1]);
+  glfwSetWindowSizeCallback(window, windowSizeCallback);
   return true;
 }
 
@@ -268,7 +305,7 @@ GLFWwindow* ASGE::GLRenderer::getWindow()
 
 const glm::mat4& ASGE::GLRenderer::getProjectionMatrix() const
 {
-  return projection_matrix;
+  return global_shader_data.projection;
 }
 
 /**
@@ -305,9 +342,37 @@ void ASGE::GLRenderer::swapBuffers()
  *  cycle. It will always cause any existing data to be flushed
  *  and drawn to the screen first.
  */
-void ASGE::GLRenderer::renderDebug()
+void ASGE::GLRenderer::renderDebug(int fps)
 {
   batch.flush();
+
+  int width = 0;
+  int height = 0;
+
+  if (windowMode() == GameSettings::WindowMode::BORDERLESS_FULLSCREEN)
+  {
+    width  = resolution_info.desktop[0];
+    height = resolution_info.desktop[1];
+  }
+  else
+  {
+    width  = resolution_info.window[0];
+    height = resolution_info.window[1];
+  }
+
+  auto original_projection = glm::mat4 (global_shader_data.projection);
+  glViewport(0, 0, width, height);
+  setProjectionMatrix({ 0, 0, static_cast<float>(width), static_cast<float>(height) });
+
+  std::string fps_str = std::to_string(fps);
+  constexpr auto POS_X    = 0.F;
+  constexpr auto POS_Y    = 34.F; // renderer->getDefaultFont().line_height;
+
+  auto text = ASGE::Text{ getFont(0) };
+  text.setString(fps_str);
+  text.setColour({ 1.0F, 0.2F, 0.5F });
+  text.setPosition({ POS_X, POS_Y });
+  render(std::move(text));
 
   std::string debug_string;
   switch (batch.getSpriteMode())
@@ -338,6 +403,19 @@ void ASGE::GLRenderer::renderDebug()
 
   Text debug_text = { getFont(0), debug_string.c_str(), 0, 52, ASGE::COLOURS::PINK };
   batch.renderText(debug_text);
+  batch.flush();
+
+  // restore the original settings
+  auto& vp = resolution_info.viewport;
+  glViewport(vp.x, vp.y, vp.w, vp.h);
+  global_shader_data.projection = original_projection;
+  glBindBuffer(GL_UNIFORM_BUFFER, projection_ubo);
+  glBufferSubData(
+    GL_UNIFORM_BUFFER,
+    0,
+    sizeof(glm::mat4),
+    glm::value_ptr(global_shader_data.projection));
+  glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 /**
@@ -356,6 +434,7 @@ std::unique_ptr<ASGE::Input> ASGE::GLRenderer::inputPtr()
   auto input = std::make_unique<GLInput>();
   if (input->init(this))
   {
+    window_data.input = input.get();
     return input;
   }
 
@@ -375,7 +454,45 @@ void ASGE::GLRenderer::postRender()
 }
 
 /**
- * @brief Attempts to fit viewport to window.
+ * @brief Stretches the viewport to fit within the window.
+ *
+ * @Details Given a viewport, the function will scale the viewport
+ * to fill the window, whilst maintaining its original proportions
+ * in relation to the base resolution. For example, a 50% wide viewport
+ * will be scaled to ensure 50% of the display.
+ *
+ * @note This function will stretch anything rendered inside the viewport.
+ * @param viewport[in] The requested viewport size.
+ */
+void ASGE::GLRenderer::fillViewPort(const ASGE::Viewport& viewport)
+{
+  auto window_width =
+    getWindowMode() == ASGE::GameSettings::WindowMode::BORDERLESS_FULLSCREEN
+      ? resolution_info.desktop[0]
+      : resolution_info.window[0];
+
+  auto window_height =
+    getWindowMode() == ASGE::GameSettings::WindowMode::BORDERLESS_FULLSCREEN
+      ? resolution_info.desktop[1]
+      : resolution_info.window[1];
+
+  auto scale_x = static_cast<float>(window_width)  / static_cast<float>(resolution_info.base[0]);
+  auto scale_y = static_cast<float>(window_height) / static_cast<float>(resolution_info.base[1]);
+  auto scale_w = static_cast<float>(viewport.w) / static_cast<float>(resolution_info.base[0]);
+  auto scale_h = static_cast<float>(viewport.h) / static_cast<float>(resolution_info.base[1]);
+
+  ASGE::Viewport vp_modified
+    { static_cast<int>(static_cast<float>(viewport.x) * scale_x),
+      static_cast<int>(static_cast<float>(viewport.y) * scale_y),
+      static_cast<int>(std::round(window_width * scale_w)),
+      static_cast<int>(std::round(window_height * scale_h)) };
+
+  glViewport(vp_modified.x, vp_modified.y, vp_modified.w, vp_modified.h);
+  resolution_info.viewport = vp_modified;
+}
+
+/**
+ * @brief Attempts to scale the viewport to the game window.
  *
  * @Details Given a viewport, the function will attempt to frame
  * it appropriately within the monitor's primary desktop resolution,
@@ -384,36 +501,82 @@ void ASGE::GLRenderer::postRender()
  *
  * @param viewport[in] The requested viewport size.
  */
-void ASGE::GLRenderer::fit(ASGE::Viewport& viewport)
+void ASGE::GLRenderer::fitViewPort(const ASGE::Viewport& viewport)
 {
-  updateMonitorInfo(glfwGetPrimaryMonitor());
+  auto window_width =
+    getWindowMode() == ASGE::GameSettings::WindowMode::BORDERLESS_FULLSCREEN
+      ? resolution_info.desktop[0]
+      : resolution_info.window[0];
 
-  double width  = 0;
-  double height = 0;
+  auto window_height =
+    getWindowMode() == ASGE::GameSettings::WindowMode::BORDERLESS_FULLSCREEN
+      ? resolution_info.desktop[1]
+      : resolution_info.window[1];
 
-  float screen_aspect_ratio = static_cast<float>(desktop_res[0]) / static_cast<float>(desktop_res[1]);
-  float design_aspect_ratio = static_cast<float>(target_width)   / static_cast<float>(target_height);
+  float design_aspect_ratio = resolution_info.getBaseAspectRatio();
+  float screen_aspect_ratio =
+    getWindowMode() == ASGE::GameSettings::WindowMode::BORDERLESS_FULLSCREEN
+      ? resolution_info.getDesktopAspectRatio()
+      : resolution_info.getWindowAspectRatio();
 
   float scalar =
     screen_aspect_ratio > design_aspect_ratio
-      ? static_cast<float>(desktop_res[1]) / static_cast<float>(target_height)
-      : static_cast<float>(desktop_res[0]) / static_cast<float>(target_width);
+      ? static_cast<float>(window_height) / static_cast<float>(resolution_info.base[1])
+      : static_cast<float>(window_width)  / static_cast<float>(resolution_info.base[0]);
 
-  width  = static_cast<float>(viewport.w) * scalar;
-  height = static_cast<float>(viewport.h) * scalar;
-
-  auto padding_x = (static_cast<float>(desktop_res[0]) - static_cast<float>(target_width)  * scalar) * 0.5F;
-  auto padding_y = (static_cast<float>(desktop_res[1]) - static_cast<float>(target_height) * scalar) * 0.5F;
+  auto padding_x = std::round((static_cast<float>(window_width)  - static_cast<float>(resolution_info.base[0]) * scalar) * 0.5F);
+  auto padding_y = std::round((static_cast<float>(window_height) - static_cast<float>(resolution_info.base[1]) * scalar) * 0.5F);
   auto offset_x  = (static_cast<float>(viewport.x) * scalar) + padding_x;
   auto offset_y  = (static_cast<float>(viewport.y) * scalar) + padding_y;
+  auto vp_width  = static_cast<float>(viewport.w) * scalar;
+  auto vp_height = static_cast<float>(viewport.h) * scalar;
 
-  viewport = { static_cast<int>(offset_x),
-               static_cast<int>(offset_y),
-               static_cast<int>(width),
-               static_cast<int>(height) };
+  ASGE::Viewport vp_modified
+    { static_cast<int>(offset_x),
+      static_cast<int>(offset_y),
+      static_cast<int>(vp_width),
+      static_cast<int>(vp_height) };
+
+  glViewport(vp_modified.x, vp_modified.y, vp_modified.w, vp_modified.h);
+  resolution_info.viewport = vp_modified;
 }
 
-  /**
+/**
+ * @brief Centers the viewport in the window.
+ *
+ * @Details Given a viewport, this function will center it in the
+ * middle of the screen. As it does not scale the viewport contents
+ * any contents too large to fit in the window will not be shown.
+ *
+ * @param viewport[in] The requested viewport size.
+ */
+void ASGE::GLRenderer::centerViewPort(const ASGE::Viewport& viewport)
+{
+  // find the width of the screen
+  auto window_width =
+    getWindowMode() == ASGE::GameSettings::WindowMode::BORDERLESS_FULLSCREEN
+      ? resolution_info.desktop[0]
+      : resolution_info.window[0];
+
+  auto window_height =
+    getWindowMode() == ASGE::GameSettings::WindowMode::BORDERLESS_FULLSCREEN
+      ? resolution_info.desktop[1]
+      : resolution_info.window[1];
+
+  auto offset_x = static_cast<float>(window_width  - resolution_info.base[0]) * 0.5F;
+  auto offset_y = static_cast<float>(window_height - resolution_info.base[1]) * 0.5F;
+
+  ASGE::Viewport vp_modified
+    { static_cast<int>(static_cast<float>(viewport.x) + offset_x),
+      static_cast<int>(static_cast<float>(viewport.y) + offset_y),
+      static_cast<int>(viewport.w),
+      static_cast<int>(viewport.h) };
+
+  glViewport(vp_modified.x, vp_modified.y, vp_modified.w, vp_modified.h);
+  resolution_info.viewport = vp_modified;
+}
+
+/**
  *  Sets the window mode.
  *  It is possible to display the game in a window, fullscreen or
  *  even borderless mode. This function will set the screen mode. At
@@ -431,6 +594,7 @@ void ASGE::GLRenderer::setWindowedMode(GameSettings::WindowMode mode_request)
   }
 
   auto* monitor = glfwGetPrimaryMonitor();
+  updateMonitorInfo(monitor);
   switch (mode_request)
   {
     case (GameSettings::WindowMode::EXCLUSIVE_FULLSCREEN):
@@ -438,33 +602,31 @@ void ASGE::GLRenderer::setWindowedMode(GameSettings::WindowMode mode_request)
     {
       if(mode_request == GameSettings::WindowMode::EXCLUSIVE_FULLSCREEN)
       {
-        glfwSetWindowMonitor(window, monitor, 0, 0, target_width, target_height, desktop_refresh);
+        auto [width, height] = resolution_info.window;
+        glfwSetWindowMonitor(window, monitor, 0, 0, width, height, resolution_info.desktop[2]);
       }
       else
       {
-        glfwSetWindowMonitor(window, monitor, 0, 0, desktop_res[0], desktop_res[1], desktop_refresh);
+        auto [width, height, refresh] = resolution_info.desktop;
+        glfwSetWindowMonitor(window, monitor, 0, 0, width, height, refresh);
       }
-
-      auto viewport = ASGE::Viewport{0, 0, target_width, target_height};
-      fit(viewport);
-      glViewport(viewport.x, viewport.y, viewport.w, viewport.h);
       break;
     }
 
     case (GameSettings::WindowMode::BORDERLESS_WINDOWED):
     {
+      auto [width, height] = resolution_info.window;
       glfwSetWindowAttrib(window, GLFW_DECORATED, GLFW_FALSE);
-      glfwSetWindowMonitor(window, nullptr, 0, 0, target_width, target_height, GLFW_DONT_CARE);
+      glfwSetWindowMonitor(window, nullptr, 0, 0, width, height, GLFW_DONT_CARE);
       centerWindow();
-      glViewport(0, 0, target_width, target_height);
       break;
     }
 
     case (GameSettings::WindowMode::WINDOWED):
     {
-      glfwSetWindowMonitor(window, nullptr, 0, 0, target_width, target_height, GLFW_DONT_CARE);
+      auto [width, height] = resolution_info.window;
+      glfwSetWindowMonitor(window, nullptr, 0, 0, width, height, GLFW_DONT_CARE);
       centerWindow();
-      glViewport(0, 0, target_width, target_height);
       break;
     }
   }
@@ -473,39 +635,63 @@ void ASGE::GLRenderer::setWindowedMode(GameSettings::WindowMode mode_request)
   windowMode() = mode_request;
 }
 
+/**
+ * Updates the monitor info.
+ * Currently, if no monitor is passed in it will retrieve the
+ * primary monitor and read its resolution details including
+ * refresh rate.
+ *
+ * @param [in] monitor The monitor being checked.
+ */
 void ASGE::GLRenderer::updateMonitorInfo(GLFWmonitor* monitor)
 {
   if (monitor != nullptr)
   {
     const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    desktop_res[0]          = mode->width;
-    desktop_res[1]          = mode->height;
-    desktop_refresh         = mode->refreshRate;
+    resolution_info.desktop[0]   = mode->width;
+    resolution_info.desktop[1]   = mode->height;
+    resolution_info.desktop[2]   = mode->refreshRate;
   }
 }
 
 ASGE::Viewport ASGE::GLRenderer::getViewport() const
 {
-  ASGE::Viewport viewport;
-  glGetIntegerv(GL_VIEWPORT, &viewport.x);
-  return viewport;
+  return resolution_info.viewport;
 }
 
-void ASGE::GLRenderer::setViewport(const ASGE::Viewport& viewport)
+/**
+ * Sets the viewport to use for rendering.
+ * @param vp The viewport to set.
+ */
+void ASGE::GLRenderer::setViewport(const ASGE::Viewport& vp)
 {
+  // we need to flush to ensure everything is rendered to the
+  // previous viewport dimensions.
   this->batch.flush();
 
-  if (
-    windowMode() == GameSettings::WindowMode::BORDERLESS_FULLSCREEN ||
-    windowMode() == GameSettings::WindowMode::EXCLUSIVE_FULLSCREEN)
+  if(renderTarget() == nullptr)
   {
-    Viewport vp{ viewport };
-    fit(vp);
-    glViewport(vp.x, vp.y, static_cast<int>(vp.w), static_cast<int>(vp.h));
-    return;
+    if (resolution_policy == Resolution::Policy::MAINTAIN)
+    {
+      fitViewPort(vp);
+      return;
+    }
+
+    if (resolution_policy == Resolution::Policy::FIT)
+    {
+      fillViewPort(vp);
+      return;
+    }
+
+    if (resolution_policy == Resolution::Policy::CENTER)
+    {
+      centerViewPort(vp);
+      return;
+    }
   }
 
-  glViewport(viewport.x, viewport.y, viewport.w, viewport.h);
+  glViewport(vp.x, vp.y, vp.w, vp.h);
+  resolution_info.viewport = vp;
 }
 
 /**
@@ -667,14 +853,14 @@ const ASGE::Font& ASGE::GLRenderer::getFont(int idx) const
   return this->text_renderer->getFont(idx);
 }
 
-float ASGE::GLRenderer::windowHeight() const noexcept
+int ASGE::GLRenderer::windowHeight() const noexcept
 {
-  return target_height;
+  return resolution_info.window[1];
 }
 
-float ASGE::GLRenderer::windowWidth() const noexcept
+int ASGE::GLRenderer::windowWidth() const noexcept
 {
-  return target_width;
+  return resolution_info.window[0];
 }
 
 /**
@@ -684,7 +870,6 @@ float ASGE::GLRenderer::windowWidth() const noexcept
  *  or batched for later.
  *
  *  @param [in] spr The sprite to render.
- *  @param [in] z_order The order used when sorting draw calls.
  */
 void ASGE::GLRenderer::render(const Sprite& spr)
 {
@@ -719,7 +904,7 @@ void ASGE::GLRenderer::setProjectionMatrix(const Camera::CameraView& view)
   float min = std::numeric_limits<decltype(RenderQuad::z_order)>::min();
   float max = std::numeric_limits<decltype(RenderQuad::z_order)>::max();
 
-  projection_matrix = glm::ortho<float>(view.min_x, view.max_x, view.max_y, view.min_y, min, max);
+  auto projection_matrix = glm::ortho<float>(view.min_x, view.max_x, view.max_y, view.min_y, min, max);
   global_shader_data.projection = projection_matrix;
 
   if(projection_ubo == -1)
@@ -739,19 +924,22 @@ void ASGE::GLRenderer::setProjectionMatrix(const Camera::CameraView& view)
     0,
     sizeof(glm::mat4),
     glm::value_ptr(global_shader_data.projection));
+
   glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void ASGE::GLRenderer::setRenderTarget(const ASGE::RenderTarget* render_target)
+void ASGE::GLRenderer::setRenderTarget(RenderTarget* render_target)
 {
   batch.flush();
-  if(const auto *asGLRender = dynamic_cast<const ASGE::GLRenderTarget*>(render_target); asGLRender != nullptr)
+  if(auto *asGLRender = dynamic_cast<ASGE::GLRenderTarget*>(render_target); asGLRender != nullptr)
   {
     asGLRender->use();
+    active_buffer = render_target;
     return;
   }
 
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  active_buffer = nullptr;
 }
 
 void ASGE::GLRenderer::render(const ASGE::Tile& tile, const ASGE::Point2D& xy)
@@ -777,17 +965,71 @@ void ASGE::GLRenderer::render(
   render(sprite);
 }
 
+/**
+ * Attempts to center the game window.
+ * Uses the desktop and window resolutions to offset correctly.
+ */
 void ASGE::GLRenderer::centerWindow()
 {
+  auto [window_width, window_height] = resolution_info.window;
+  auto [desktop_width, desktop_height, desktop_refresh] = resolution_info.desktop;
+
   glfwSetWindowPos(
     window,
-    desktop_res[0] * 0.5 - target_width  * 0.5,
-    desktop_res[1] * 0.5 - target_height * 0.5);
+    desktop_width * 0.5 - window_width  * 0.5,
+    desktop_height * 0.5 - window_height * 0.5);
 }
 
+/**
+ * Generates a tuple detailing the desktop's resolution settings.
+ * @return Width, Height and Refresh.
+ */
 std::tuple<int32_t, int32_t, int16_t> ASGE::GLRenderer::screenRes()
 {
-  return std::make_tuple(desktop_res[0], desktop_res[1], desktop_refresh);
+  return std::make_tuple(resolution_info.desktop[0], resolution_info.desktop[1], resolution_info.desktop[2]);
+}
+
+/**
+ * Returns the current resolution information.
+ * @return Resolutions in use.
+ */
+const ASGE::Resolution& ASGE::GLRenderer::resolution() const
+{
+  return resolution_info;
+}
+
+/**
+ * The base design resolution of the game.
+ * When designing the game this resolution is used to control how
+ * the screen is mapped when using a different resolution, whether
+ * that be smaller or larger. When used correctly sprites positioned
+ * on the screen will remain in their relative location (depending
+ * on the chosen resolution policy).
+ * @param width The width of the game's width.
+ * @param height The height of the game's height.
+ * @param policy The scaling policy to apply.
+ * @see ASGE::Resolution::Policy
+ */
+void ASGE::GLRenderer::setBaseResolution(int width, int height, ASGE::Resolution::Policy policy)
+{
+  resolution_info.base[0] = width;
+  resolution_info.base[1] = height;
+  resolution_policy = policy;
+  framebufferSizeCallback(this->window, resolution_info.window[0], resolution_info.window[1]);
+}
+
+/**
+ * Sets the resolution policy.
+ * Calling this will cause the existing viewport to be overwritten
+ * with a new one based on the window's width and height.
+ * @note If using a custom viewport, it's recommended to set it
+ * after this function call, to ensure its size is correct.
+ * @param policy The new policy to apply to scaling.
+ */
+void ASGE::GLRenderer::setResolutionPolicy(ASGE::Resolution::Policy policy)
+{
+  resolution_policy = policy;
+  framebufferSizeCallback(this->window, resolution_info.window[0], resolution_info.window[1]);
 }
 
 std::vector<ASGE::SHADER_LIB::GLShader> ASGE::GLRenderer::shaders;
