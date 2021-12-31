@@ -112,7 +112,7 @@ namespace ASGE {
     *  @return True if success.
     *  @see WindowMode
     */
-   virtual bool init() = 0;
+   virtual bool init(const ASGE::GameSettings& settings) = 0;
 
 		/**
 		*  Exits the renderer and performs clean-up. 
@@ -564,11 +564,16 @@ namespace ASGE {
     virtual std::tuple<int32_t, int32_t, int16_t> screenRes() = 0;
 
 	private:
-		GameSettings::WindowMode window_mode = GameSettings::WindowMode::WINDOWED; /**< The window mode being used. */
-		Colour cls = COLOURS::STEELBLUE; /**< The clear colour. Used to blank the window every redraw. */
-		Colour default_text_colour = COLOURS::YELLOWGREEN; /**< The default text colour. Used when no colour is specified. */
+    GameSettings::WindowMode window_mode{ GameSettings::WindowMode::WINDOWED }; /**< The window mode being used. */
+    Colour cls{ COLOURS::STEELBLUE }; /**< The clear colour. Used to blank the window every redraw. */
+    Colour default_text_colour{ COLOURS::YELLOWGREEN }; /**< The default text colour. Used when no colour is specified. */
+    ASGE::Texture2D::MagFilter mag_filter{ ASGE::Texture2D::MagFilter::LINEAR }; /**< Textures will use this filter by default. */
+    int msaa_level{ 16 };  /**< The MSAA level used. Controls the number of samples per texel taken.*/
+    int aniso_level{ 16 }; /**< Improves filtering at oblique angles. Not useful for 2D. */
 
    protected:
+    void msaa(int msaa_level);
+    void magFilter(ASGE::Texture2D::MagFilter mag);
     [[nodiscard]] GameSettings::WindowMode& windowMode() { return window_mode; }
     [[nodiscard]] const GameSettings::WindowMode& windowMode() const { return window_mode; }
     [[nodiscard]] Colour& clearColour() { return cls; }

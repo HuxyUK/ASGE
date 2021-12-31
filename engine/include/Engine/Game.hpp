@@ -159,7 +159,7 @@ namespace ASGE
      *  @return The result of the initialisation operation.
      *  @see WindowMode
      */
-    virtual bool initAPI() = 0;
+    virtual bool initAPI(const ASGE::GameSettings&) = 0;
 
     /**
      *  @brief Pure virtual function for terminating the API.
@@ -208,7 +208,33 @@ namespace ASGE
     /**
      * Initialises the file system.
      */
-    void initFileIO();
+    void initFileIO(const ASGE::GameSettings& settings);
+
+    /**
+     * Retrieves the game title.
+     * The title is used to name the window but also to control the
+     * default write directory to use.
+     * @return The game title.
+     */
+    [[nodiscard]] const std::string& title() const;
+
+    /**
+     * Retrieves the FPS limit.
+     * Each game can manually throttle the maximum FPS, this value can
+     * easily be retrieved using this function.
+     * @return The FPS limit applied to the game.
+     */
+    [[nodiscard]] uint32_t fpsLimit() const;
+
+    /**
+     * Retrieves the fixed time step.
+     * The game has two updates, one is variable and the other fixed.
+     * The fixed time step controls how much time should be simulated
+     * everytime it's called.
+     * @return The fixed time step used by the game.
+     */
+    [[nodiscard]] uint32_t fixedTimeStep() const;
+
 
    protected:
     // NOLINTNEXTLINE(cppcoreguidelines-non-private-member-variables-in-classes,misc-non-private-member-variables-in-classes)
@@ -234,5 +260,9 @@ namespace ASGE
     // used to measure the game's running time
     std::chrono::milliseconds paused_time = std::chrono::milliseconds(0);
     std::chrono::time_point<std::chrono::steady_clock> start_time = std::chrono::steady_clock::now();
+
+    std::string game_title = "My ASGE Game"; /**< The game's title. */
+    uint32_t fixed_ts      = 30;             /**< The fixed time step used. */
+    uint32_t fps_limit     = 60;             /**< The fps limit to apply to the game. */
   };
 } // namespace ASGE

@@ -52,3 +52,23 @@ void ASGE::Renderer::render(ASGE::Texture2D& texture, const ASGE::Point2D& pos_x
     texture, { 0, 0, texture.getWidth(), texture.getHeight() }, pos_xy,
     static_cast<int>(texture.getWidth()), static_cast<int>(texture.getHeight()), z_order);
 }
+
+void ASGE::Renderer::msaa(int msaa)
+{
+  this->msaa_level = msaa;
+}
+
+int ASGE::Renderer::msaa() const
+{
+  return msaa_level;
+}
+
+void ASGE::Renderer::magFilter(ASGE::Texture2D::MagFilter mag)
+{
+  this->mag_filter = mag;
+}
+
+ASGE::Texture2D::MagFilter ASGE::Renderer::magFilter() const
+{
+  return mag_filter;
+}

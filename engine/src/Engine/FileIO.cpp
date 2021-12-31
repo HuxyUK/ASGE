@@ -207,7 +207,7 @@ std::vector<std::string> ASGE::FILEIO::enumerateFiles(const std::string& dir)
     return PhysFS::enumerateFiles(dir);
   }
 
-  return std::vector<std::string>();
+  return {};
 }
 
 bool FILEIO::mount(const std::string& dir, const std::string& mount_point)

@@ -60,7 +60,7 @@ namespace ASGE
     GLRenderer(const GLRenderer&) = delete;
     GLRenderer operator=(const GLRenderer&) = delete;
 
-    bool init() override;
+    bool init(const ASGE::GameSettings& settings) override;
     bool exit() override;
     void setDefaultTextColour(const Colour& rgb) override;
     void preRender() override;

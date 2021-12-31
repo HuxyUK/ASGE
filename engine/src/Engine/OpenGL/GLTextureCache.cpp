@@ -82,12 +82,10 @@ ASGE::GLTexture* ASGE::GLTextureCache::createNonCached(
   return allocateTexture(img_width, img_height, format, data);
 }
 
-ASGE::GLTexture* ASGE::GLTextureCache::createNonCachedMSAA(
-  int img_width, int img_height, ASGE::Texture2D::Format format)
+ASGE::GLTexture* ASGE::GLTextureCache::createNonCachedMSAA(int img_width, int img_height, Texture2D::Format format)
 {
   return allocateMSAATexture(img_width, img_height, format);
 }
-
 
 ASGE::GLTexture* ASGE::GLTextureCache::allocateTexture(const std::string& file)
 {
@@ -127,7 +125,6 @@ ASGE::GLTexture* ASGE::GLTextureCache::allocateTexture(const std::string& file)
   return texture;
 }
 
-
 ASGE::GLTexture*
 ASGE::GLTextureCache::allocateTexture(
   int img_width, int img_height, Texture2D::Format format, const void* data)
@@ -157,7 +154,7 @@ ASGE::GLTextureCache::allocateTexture(
 
   // Use the default game settings for mag filtering
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-                  GLTexture::GL_MAG_LOOKUP.at(ASGE::SETTINGS.mag_filter));
+                  GLTexture::GL_MAG_LOOKUP.at(renderer->magFilter()));
 
   if(data != nullptr)
   {
@@ -169,7 +166,7 @@ ASGE::GLTextureCache::allocateTexture(
     // Anisotropic filtering
     float aniso_level = 16;
     glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &aniso_level);
-    aniso_level = std::min(float(ASGE::SETTINGS.anisotropic), aniso_level);
+    //aniso_level = std::min(float(renderer->ansio()), aniso_level);
     glTextureParameterf(texture->getID(), GL_TEXTURE_MAX_ANISOTROPY, aniso_level);
   }
 
@@ -177,8 +174,7 @@ ASGE::GLTextureCache::allocateTexture(
   return texture;
 }
 
-ASGE::GLTexture* ASGE::GLTextureCache::allocateMSAATexture(
-  int img_width, int img_height, ASGE::Texture2D::Format format)
+ASGE::GLTexture* ASGE::GLTextureCache::allocateMSAATexture(int img_width, int img_height, Texture2D::Format format)
 {
   auto *texture = new GLTexture(img_width, img_height);
   texture->setFormat(format);
@@ -186,7 +182,7 @@ ASGE::GLTexture* ASGE::GLTextureCache::allocateMSAATexture(
   // Allocate a texture
   glGenTextures(1, &texture->getID());
   glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, texture->getID());
-  glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, ASGE::SETTINGS.msaa_level, GLFORMAT[texture->getFormat()], img_width, img_height, GL_TRUE);
+  glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, renderer->msaa(), GLFORMAT[texture->getFormat()], img_width, img_height, GL_TRUE);
   glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
   return texture;
 }

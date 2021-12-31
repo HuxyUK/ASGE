@@ -77,26 +77,11 @@ namespace ASGE
     int anisotropic{ 16 }; /**< Improves filtering at oblique angles. Not useful for 2D. */  // NOLINT
 
     std::string write_dir{}; /**< The default write directory for ASGE IO. */
-    std::string window_title{ "My ASGE Game" }; /**< The window title. */
+    std::string game_title{ "My ASGE Game" }; /**< The window title. */
     WindowMode mode{ WindowMode::WINDOWED }; /**< The window mode i.e. Fullscreen. */
     MagFilter mag_filter {MagFilter::LINEAR}; /**< Textures will use this filter by default. */
     Vsync vsync {Vsync::ADAPTIVE};
   };
-
-
-  /// TODO: fix these clang warnings
-  #ifdef __clang__
-  #pragma clang diagnostic push
-  #pragma clang diagnostic ignored "-Wglobal-constructors"
-  #pragma clang diagnostic ignored "-Wexit-time-destructors"
-  #endif
-
-  /// The lazy way of grabbing the game's settings
-  inline GameSettings SETTINGS; //NOLINT
-
-  #ifdef __clang__
-  #pragma clang diagnostic pop
-  #endif
 
 }  // namespace ASGE
 #endif // ASGE_GAMESETTINGS_HPP

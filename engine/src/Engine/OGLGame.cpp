@@ -16,11 +16,11 @@
 #include "SplashScreen.hpp"
 #include <thread>
 
-bool ASGE::OGLGame::initAPI()
+bool ASGE::OGLGame::initAPI(const ASGE::GameSettings& settings)
 {
   renderer = std::make_unique<GLRenderer>();
 
-  if (!renderer->init())
+  if (!renderer->init(settings))
   {
     return false;
   }
@@ -32,7 +32,6 @@ bool ASGE::OGLGame::initAPI()
   }
 
   playSplash();
-
   renderer->setClearColour(ASGE::COLOURS::CORNFLOWERBLUE);
   return true;
 }
@@ -116,5 +115,5 @@ void ASGE::OGLGame::endFrame()
 ASGE::OGLGame::OGLGame(const ASGE::GameSettings& settings) : Game(settings)
 {
   // TODO throw exception if API fails
-  initAPI();
+  initAPI(settings);
 }

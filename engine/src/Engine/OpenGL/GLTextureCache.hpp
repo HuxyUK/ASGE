@@ -48,5 +48,6 @@ namespace ASGE
 
     // the cache
 		std::map<const std::string, std::unique_ptr<GLTexture>> cache;
+    ASGE::GLRenderer* renderer {nullptr};
   };
 }  // namespace ASGE

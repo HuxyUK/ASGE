@@ -91,7 +91,7 @@ void ASGE::GLRenderTarget::createFboWithMultiSampledAttachments(ASGE::Renderer* 
   // The depth buffer
   glGenRenderbuffers(1, &MSAA_DBO);
   glBindRenderbuffer(GL_RENDERBUFFER, MSAA_DBO);
-  glRenderbufferStorageMultisample(GL_RENDERBUFFER, ASGE::SETTINGS.msaa_level, GL_DEPTH_COMPONENT, width, height);
+  glRenderbufferStorageMultisample(GL_RENDERBUFFER, (renderer)->msaa(), GL_DEPTH_COMPONENT, width, height);
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, MSAA_DBO);
 
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)

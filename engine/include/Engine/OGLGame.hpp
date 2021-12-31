@@ -36,7 +36,7 @@ namespace ASGE {
 		* Initialises the OpenGL subsystem.
 		* @return True if successful.
 		*/
-		bool initAPI() final;
+		bool initAPI(const ASGE::GameSettings& settings) final;
 		
 		/**
 		* Terminates the OpenGL subsystem.

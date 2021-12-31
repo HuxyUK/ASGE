@@ -84,7 +84,7 @@ ASGE::GLRenderer::~GLRenderer()
 *
 *  @return True if initialisation was a success.
 */
-bool ASGE::GLRenderer::init()
+bool ASGE::GLRenderer::init(const ASGE::GameSettings& settings)
 {
   // Window size
   target_width  = ASGE::SETTINGS.window_width;
@@ -140,8 +140,8 @@ bool ASGE::GLRenderer::init()
       GLint max_samples = 0;
       glGetIntegerv ( GL_MAX_SAMPLES, &max_samples );
       Logging::INFO(std::string("Max Supported Samples: ") + std::to_string(max_samples));
-      ASGE::SETTINGS.msaa_level = std::min(ASGE::SETTINGS.msaa_level, max_samples);
-      glfwWindowHint(GLFW_SAMPLES, ASGE::SETTINGS.msaa_level);
+      msaa(std::clamp(settings.msaa_level, 4, max_samples));
+      glfwWindowHint(GLFW_SAMPLES, msaa());
 
       // Create the actual window and close temporary one
       window = glfwCreateWindow(target_width, target_height, "ASGE", nullptr, msaa_window);

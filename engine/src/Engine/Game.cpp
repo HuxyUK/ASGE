@@ -53,11 +53,11 @@ void ASGE::Game::updateFPS()
   }
 }
 
-void ASGE::Game::initFileIO()
+void ASGE::Game::initFileIO(const ASGE::GameSettings& settings)
 {
   Logging::INFO("=> Initialising File IO");
   PhysFS::init(nullptr);
-  PhysFS::setSaneConfig("ASGE", ASGE::SETTINGS.window_title, "dat", false, true);
+  PhysFS::setSaneConfig("ASGE", settings.game_title, "dat", false, true);
 
   auto base_dir = PhysFS::getBaseDir();
 
@@ -72,9 +72,9 @@ void ASGE::Game::initFileIO()
   PhysFS::mount(base_dir + "game.dat", "data", true);
   ASGE::FILEIO::printFiles("/data");
 
-  if (!ASGE::SETTINGS.write_dir.empty())
+  if (!settings.write_dir.empty())
   {
-    ASGE::FILEIO::setWriteDir(ASGE::SETTINGS.write_dir, true);
+    ASGE::FILEIO::setWriteDir(settings.write_dir, true);
   }
 
   Logging::INFO("=> File IO initialised");
@@ -91,14 +91,14 @@ std::chrono::milliseconds ASGE::Game::getGameTime() noexcept
 #include <thread>
 int ASGE::Game::run()
 {
-  renderer->setWindowTitle(ASGE::SETTINGS.window_title.c_str());
+  renderer->setWindowTitle(title().c_str());
 
   using clock               = std::chrono::steady_clock;
   using ms                  = std::chrono::duration<double, std::milli>;
-  epoch.fixed_delta         = ms((1 / float(ASGE::SETTINGS.fixed_ts)) * 1000);
+  epoch.fixed_delta         = ms((1 / float(fixedTimeStep())) * 1000);
   epoch.last_fixedstep_time = clock::now() - std::chrono::duration_cast<std::chrono::milliseconds>(epoch.fixed_delta);
   epoch.last_frame_time     = clock::now() - std::chrono::duration_cast<std::chrono::milliseconds>(
-                              ms(1.0 / static_cast<double>(ASGE::SETTINGS.fps_limit)) * 1000);
+                              ms(1.0 / static_cast<double>(fpsLimit())) * 1000);
 
   while (!exit && !renderer->exit())
   {
@@ -153,7 +153,7 @@ int ASGE::Game::run()
      */
 
     epoch.frame_delta = timed_out ? MAX_FRAMETIME: ms(clock::now() - epoch.last_frame_time);
-    if (timed_out || epoch.frame_delta.count() >= (1.0 / static_cast<double>(ASGE::SETTINGS.fps_limit)) * MILLI_IN_SEC)
+    if (timed_out || epoch.frame_delta.count() >= (1.0 / static_cast<double>(fpsLimit())) * MILLI_IN_SEC)
     {
       epoch.last_frame_time = clock::now();
       update(epoch);
@@ -173,10 +173,8 @@ void ASGE::Game::signalExit() noexcept
 
 ASGE::Game::Game(const GameSettings& game_settings)
 {
-  ASGE::SETTINGS = game_settings;
-
   // TODO throw exception if FILEIO fails
-  initFileIO();
+  initFileIO(game_settings);
 }
 
 ASGE::Game::~Game()
@@ -187,4 +185,19 @@ ASGE::Game::~Game()
 void ASGE::Game::fixedUpdate(const ASGE::GameTime &us)
 {
 
+}
+
+const std::string& ASGE::Game::title() const
+{
+  return game_title;
+}
+
+uint32_t ASGE::Game::fpsLimit() const
+{
+  return fps_limit;
+}
+
+uint32_t ASGE::Game::fixedTimeStep() const
+{
+  return fixed_ts;
 }
