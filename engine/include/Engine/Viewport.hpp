@@ -60,6 +60,12 @@ namespace ASGE
 
     }
 
+    friend bool operator!=(const Viewport& rhs, const Viewport& lhs)
+    {
+      return lhs.x != rhs.x || lhs.y != rhs.y ||
+             rhs.w != lhs.w || lhs.h != rhs.h;
+    }
+
     int32_t x = 0;  /**< The starting X position */
     int32_t y = 0;  /**< The starting Y position */
     int32_t w = 0; /**< The width of the viewport */

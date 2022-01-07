@@ -114,7 +114,8 @@ namespace ASGE
     void setRenderTarget(RenderTarget* render_target) override;
     [[nodiscard]] int windowHeight() const noexcept override;
     [[nodiscard]] int windowWidth() const noexcept override;
-    std::tuple<int32_t,int32_t,int16_t> screenRes() override;
+    [[nodiscard]] std::tuple<int32_t,int32_t,int16_t> screenRes() override;
+    [[nodiscard]] const Resolution& getResolutionInfo() const;
     void fillViewPort(const Viewport& viewport);
     void fitViewPort(const Viewport& viewport);
     void centerViewPort(const ASGE::Viewport& viewport);
@@ -125,6 +126,7 @@ namespace ASGE
     void centerWindow();
     void postRender() override;
     void updateMonitorInfo(GLFWmonitor* monitor);
+    void saveState();
 
    private:
     GLSpriteBatch batch{};

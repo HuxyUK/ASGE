@@ -86,6 +86,7 @@ void ASGE::GLSpriteBatch::renderSprite(const ASGE::Sprite& sprite)
   RenderQuad& quad = quads.emplace_back();
   quad.texture_id  = gl_sprite.asGLTexture()->getID();
   quad.z_order     = gl_sprite.getGlobalZOrder();
+  quad.state       = &states.back();
 
   if (gl_sprite.asGLShader() != nullptr)
   {
@@ -196,6 +197,9 @@ void ASGE::GLSpriteBatch::flush()
     }
     quads.clear();
   }
+
+  sprite_renderer->clearActiveRenderState();
+  states.clear();
 }
 
 /**
@@ -211,7 +215,8 @@ ASGE::GLSpriteBatch::generateRenderBatches(const QuadRange& range)
   auto should_end = [&batch_begin, &batch_end]() {
     return batch_begin->texture_id != batch_end->texture_id ||
            batch_begin->shader_id  != batch_end->shader_id  ||
-           batch_begin->distance   != batch_end->distance;
+           batch_begin->distance   != batch_end->distance   ||
+           batch_begin->state      != batch_end->state;
   };
 
   auto get_reason = [&batch_begin, &batch_end, &range]() {
@@ -230,6 +235,10 @@ ASGE::GLSpriteBatch::generateRenderBatches(const QuadRange& range)
     {
       reason.set(AnotherRenderBatch::SHADER_CHANGE);
     }
+    if (batch_begin->state != batch_end->state)
+    {
+      reason.set(AnotherRenderBatch::STATE_CHANGE);
+    }
 
     return reason;
   };
@@ -243,6 +252,7 @@ ASGE::GLSpriteBatch::generateRenderBatches(const QuadRange& range)
     batch.texture_id     = batch_begin->texture_id;
     batch.shader_id      = batch_begin->shader_id;
     batch.distance       = batch_begin->distance;
+    batch.state          = batch_begin->state;
   };
 
   do
@@ -302,6 +312,7 @@ void ASGE::GLSpriteBatch::renderText(const ASGE::Text& text)
     quad.shader_id   = sprite_renderer->getDefaultTextShaderID();
     quad.z_order     = text.getZOrder();
     quad.distance    = font.px_range * text.getScale();
+    quad.state       = &states.back();
 
     // the character we want to render
     render_char.scale = text.getScale();
@@ -320,4 +331,9 @@ void ASGE::GLSpriteBatch::renderText(const ASGE::Text& text)
   {
     flush();
   }
+}
+
+void ASGE::GLSpriteBatch::saveState(RenderState&& state)
+{
+  states.emplace_back(std::move(state));
 }

@@ -46,21 +46,9 @@ namespace
     }
 
     renderer->setViewport(ASGE::Viewport{0,0, resolution->base[0], resolution->base[1]});
-    //renderer->setProjectionMatrix(0, 0, static_cast<float>(resolution->viewport.w), static_cast<float>(resolution->viewport.h));
     renderer->setProjectionMatrix(0, 0, static_cast<float>(resolution->base[0]), static_cast<float>(resolution->base[1]));
   }
 }  // namespace
-
-namespace ASGE
-{
-  namespace
-  {
-    struct SHADER_DATA
-    {
-      glm::mat4 projection;
-    } global_shader_data;
-  }
-}
 
 /// used to find out easily which renderer is in use
 ASGE::GLRenderer::RenderLib ASGE::GLRenderer::RENDER_LIB = ASGE::GLRenderer::RenderLib::UNINITIALISED;
@@ -223,18 +211,15 @@ bool ASGE::GLRenderer::init(const ASGE::GameSettings& settings)
 }
 
 void ASGE::GLRenderer::allocateDebugTexture()
-{ // Create one pixel texture
-  auto *blank_texture =
-    createCachedTexture("__asge__debug__texture__", 1, 1, GLTexture::RGBA, nullptr);
-  auto *pixel_buffer  = blank_texture->getPixelBuffer();
-  pixel_buffer->download(0);
-
+{
+  // Create one pixel texture
+  auto *blank_texture = createCachedTexture("__asge__debug__texture__", 1, 1, GLTexture::RGBA, nullptr);
+  auto *pixel_buffer = blank_texture->getPixelBuffer();
   const static std::array<std::byte, 4> PIXEL{
     static_cast<std::byte>(255),  // R
     static_cast<std::byte>(152),  // G
     static_cast<std::byte>(180),  // B
     static_cast<std::byte>(128)}; // A
-
   memcpy(pixel_buffer->getPixelData(), PIXEL.data(), sizeof(std::byte) * PIXEL.size());
   pixel_buffer->upload(0);
   ClearGLErrors(__PRETTY_FUNCTION__);
@@ -317,6 +302,7 @@ const glm::mat4& ASGE::GLRenderer::getProjectionMatrix() const
 void ASGE::GLRenderer::preRender()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  saveState();
   batch.begin();
 }
 
@@ -360,8 +346,9 @@ void ASGE::GLRenderer::renderDebug(int fps)
     height = resolution_info.window[1];
   }
 
-  auto original_projection = glm::mat4 (global_shader_data.projection);
-  glViewport(0, 0, width, height);
+  auto original_vp         = resolution_info.viewport;
+  auto original_projection = resolution_info.view;
+  resolution_info.viewport = {0,0,width,height};
   setProjectionMatrix({ 0, 0, static_cast<float>(width), static_cast<float>(height) });
 
   std::string fps_str = std::to_string(fps);
@@ -370,8 +357,9 @@ void ASGE::GLRenderer::renderDebug(int fps)
 
   auto text = ASGE::Text{ getFont(0) };
   text.setString(fps_str);
-  text.setColour({ 1.0F, 0.2F, 0.5F });
+  text.setColour({ 1.0F, 0.2F, 0.75F });
   text.setPosition({ POS_X, POS_Y });
+  text.setScale(2);
   render(std::move(text));
 
   std::string debug_string;
@@ -406,16 +394,9 @@ void ASGE::GLRenderer::renderDebug(int fps)
   batch.flush();
 
   // restore the original settings
-  auto& vp = resolution_info.viewport;
-  glViewport(vp.x, vp.y, vp.w, vp.h);
-  global_shader_data.projection = original_projection;
-  glBindBuffer(GL_UNIFORM_BUFFER, projection_ubo);
-  glBufferSubData(
-    GL_UNIFORM_BUFFER,
-    0,
-    sizeof(glm::mat4),
-    glm::value_ptr(global_shader_data.projection));
-  glBindBuffer(GL_UNIFORM_BUFFER, 0);
+  resolution_info.viewport = original_vp;
+  glViewport(original_vp.x, original_vp.y, original_vp.w, original_vp.h);
+  setProjectionMatrix(original_projection);
 }
 
 /**
@@ -665,10 +646,6 @@ ASGE::Viewport ASGE::GLRenderer::getViewport() const
  */
 void ASGE::GLRenderer::setViewport(const ASGE::Viewport& vp)
 {
-  // we need to flush to ensure everything is rendered to the
-  // previous viewport dimensions.
-  this->batch.flush();
-
   if(renderTarget() == nullptr)
   {
     if (resolution_policy == Resolution::Policy::MAINTAIN)
@@ -690,8 +667,8 @@ void ASGE::GLRenderer::setViewport(const ASGE::Viewport& vp)
     }
   }
 
-  glViewport(vp.x, vp.y, vp.w, vp.h);
   resolution_info.viewport = vp;
+  saveState();
 }
 
 /**
@@ -899,33 +876,8 @@ void ASGE::GLRenderer::setProjectionMatrix(float min_x, float max_x, float min_y
 
 void ASGE::GLRenderer::setProjectionMatrix(const Camera::CameraView& view)
 {
-  batch.flush();
-
-  float min = std::numeric_limits<decltype(RenderQuad::z_order)>::min();
-  float max = std::numeric_limits<decltype(RenderQuad::z_order)>::max();
-
-  auto projection_matrix = glm::ortho<float>(view.min_x, view.max_x, view.max_y, view.min_y, min, max);
-  global_shader_data.projection = projection_matrix;
-
-  if(projection_ubo == -1)
-  {
-    glGenBuffers(1, &projection_ubo);
-    glBindBuffer(GL_UNIFORM_BUFFER, projection_ubo);
-    glBufferData(GL_UNIFORM_BUFFER, sizeof(global_shader_data), &global_shader_data, GL_DYNAMIC_DRAW);
-    glBindBufferBase(GL_UNIFORM_BUFFER, GLRenderConstants::PROJECTION_UBO_BIND, projection_ubo);
-  }
-  else
-  {
-    glBindBuffer(GL_UNIFORM_BUFFER, projection_ubo);
-  }
-
-  glBufferSubData(
-    GL_UNIFORM_BUFFER,
-    0,
-    sizeof(glm::mat4),
-    glm::value_ptr(global_shader_data.projection));
-
-  glBindBuffer(GL_UNIFORM_BUFFER, 0);
+  resolution_info.view = view;
+  saveState();
 }
 
 void ASGE::GLRenderer::setRenderTarget(RenderTarget* render_target)
@@ -1041,6 +993,36 @@ void ASGE::GLRenderer::setResolutionPolicy(ASGE::Resolution::Policy policy)
 {
   resolution_policy = policy;
   framebufferSizeCallback(this->window, resolution_info.window[0], resolution_info.window[1]);
+}
+
+/**
+ * Saves the current View/Projection information.
+ * These states are linked to render batches. When a render batch uses a
+ * new state, it will apply the settings stored here. This allows batching
+ * to work even when the viewport and camera view's are altered during the
+ * render stages.
+ * @see apply
+ */
+void ASGE::GLRenderer::saveState()
+{
+  RenderState state{};
+  state.viewport = getViewport();
+  constexpr float min = std::numeric_limits<decltype(RenderQuad::z_order)>::min();
+  constexpr float max = std::numeric_limits<decltype(RenderQuad::z_order)>::max();
+  auto view  = resolution_info.view;
+  state.projection = glm::ortho(view.min_x, view.max_x, view.max_y, view.min_y, min, max);
+  batch.saveState(std::move(state));
+}
+
+/**
+ * Returns the current resolution settings.
+ * These settings refer to the most recent user requested viewports,
+ * views as well as the window and desktop resolutions.
+ * @return The renderer's current resolution settings.
+ */
+const ASGE::Resolution& ASGE::GLRenderer::getResolutionInfo() const
+{
+  return resolution_info;
 }
 
 std::vector<ASGE::SHADER_LIB::GLShader> ASGE::GLRenderer::shaders;

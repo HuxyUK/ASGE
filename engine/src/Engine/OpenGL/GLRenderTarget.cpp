@@ -81,8 +81,7 @@ void ASGE::GLRenderTarget::createFboWithMultiSampledAttachments(ASGE::Renderer* 
       Logging::ERRORS("Trying to attach a texture to framebuffer which is not valid");
       continue;
     }
-    glFramebufferTexture2D(
-      GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D_MULTISAMPLE, buffer->getID(), 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D_MULTISAMPLE, buffer->getID(), 0);
     draw_buffers.emplace_back(GL_COLOR_ATTACHMENT0 + i);
   }
 

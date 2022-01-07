@@ -14,6 +14,7 @@
 #include "GLQuad.hpp"
 #include "GLRenderBatch.hpp"
 #include "Text.hpp"
+#include "GLRenderState.hpp"
 #include <vector>
 
 namespace ASGE {
@@ -55,6 +56,8 @@ namespace ASGE {
     std::vector<ASGE::AnotherRenderBatch>
     generateRenderBatches(const QuadRange& range);
     void sortQuads();
+    void saveState(RenderState&& state);
     QuadList quads;
+    std::list<RenderState> states{};
   };
 }

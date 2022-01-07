@@ -23,7 +23,6 @@ bool ASGE::GLInput::init(Renderer* renderer)
     return false;
   }
 
-  projection_matrix = &glrenderer->getProjectionMatrix();
   window            = glrenderer->getWindow();
 
   auto kFunc = [](GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -83,14 +82,20 @@ void ASGE::GLInput::getCursorPos(double& xpos, double& ypos) const
 
 void ASGE::GLInput::unProjectCursor(double& xpos, double& ypos) const
 {
-  GLint viewport[4];
-  glGetIntegerv(GL_VIEWPORT, viewport);
+  auto& resolution = static_cast<WindowData*>(glfwGetWindowUserPointer(window))->resolution;
 
-  glm::vec4 viewportdata = glm::vec4(viewport[0], viewport[1], viewport[2], viewport[3]);
-  glm::vec3 pos          = glm::vec3(xpos, viewportdata.w - ypos, 0.0F);
+  auto view  = resolution->view;
+  constexpr float min = std::numeric_limits<decltype(RenderQuad::z_order)>::min();
+  constexpr float max = std::numeric_limits<decltype(RenderQuad::z_order)>::max();
+  auto pm = glm::ortho<float>(view.min_x, view.max_x, view.max_y, view.min_y, min, max);
+
+  auto& viewport = resolution->viewport;
+
+  glm::vec4 viewportdata = glm::vec4(viewport.x, viewport.y, viewport.w, viewport.h);
+  glm::vec3 pos          = glm::vec3(xpos, viewportdata.y * 2 + viewportdata.w - ypos, 0.0F);
   glm::mat4 model        = glm::mat4(1.0F);
 
-  auto unprojected = glm::unProject(pos, model, * projection_matrix, viewportdata);
+  auto unprojected = glm::unProject(pos, model, pm, viewportdata);
   xpos             = unprojected[0];
   ypos             = unprojected[1];
 }

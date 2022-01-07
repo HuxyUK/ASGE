@@ -11,6 +11,7 @@
 //  SOFTWARE.
 
 #pragma once
+#include "Camera.hpp"
 #include "Viewport.hpp"
 #include <cstdint>
 #include <utility>
@@ -35,6 +36,7 @@ namespace ASGE
     std::array<int32_t, 2> window{ 1280, 720 };
     std::array<int32_t, 3> desktop{ 0, 0, 0 };
     ASGE::Viewport viewport{ 0, 0, 1280, 720 };
+    Camera::CameraView view{0, 0, 1280, 720};
 
    public:
     Resolution()  = default;

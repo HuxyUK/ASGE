@@ -44,6 +44,7 @@ bool ASGE::GLLegacySpriteRenderer::init()
   basic_text_shader                   = initShader(vs_instancing_legacy, fs_text)->getShaderID();
   active_shader                       = sprite_shader;
   sprite_shader->use();
+  setupGlobalShaderData();
 
   using GLRenderConstants::QUAD_VERTICES;
   UBO_buffer_idx = 0;
@@ -104,6 +105,7 @@ int ASGE::GLLegacySpriteRenderer::render(
   int draw_count = 0;
   for(const auto& batch : batches)
   {
+    apply(batch.state);
     bindTexture(batch.texture_id);
     bindShader(batch.shader_id, batch.distance);
 

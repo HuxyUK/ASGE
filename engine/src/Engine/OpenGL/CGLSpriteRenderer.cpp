@@ -17,6 +17,17 @@
 #include "OpenGL/GLFontSet.hpp"
 #include "OpenGL/GLSprite.hpp"
 
+namespace ASGE
+{
+  namespace
+  {
+    struct SHADER_DATA
+    {
+      glm::mat4 projection;
+    };
+  }
+}
+
 void ASGE::CGLSpriteRenderer::checkForErrors() const
 {
   while (auto error = glGetError())
@@ -112,6 +123,7 @@ ASGE::CGLSpriteRenderer::~CGLSpriteRenderer()
   if (glfwGetCurrentContext() != nullptr)
   {
     glDeleteBuffers(1, &vertex_buffer);
+    glDeleteBuffers(1, &shader_data_location);
   }
 }
 
@@ -250,4 +262,41 @@ void ASGE::CGLSpriteRenderer::setActiveShader(ASGE::SHADER_LIB::GLShader* shader
 ASGE::SHADER_LIB::GLShader* ASGE::CGLSpriteRenderer::activeShader()
 {
   return active_shader;
+}
+
+void ASGE::CGLSpriteRenderer::apply(ASGE::RenderState* state)
+{
+  if(active_render_state != state)
+  {
+    if(!active_render_state || active_render_state->projection != state->projection)
+    {
+      glBindBuffer(GL_UNIFORM_BUFFER, shader_data_location);
+      glBufferSubData(
+        GL_UNIFORM_BUFFER,
+        0,
+        sizeof(glm::mat4),
+        glm::value_ptr(state->projection));
+    }
+
+    if(!active_render_state || active_render_state->viewport != state->viewport)
+    {
+      auto& vp = state->viewport;
+      glViewport(vp.x, vp.y, vp.w, vp.h);
+    }
+    active_render_state = state;
+  }
+}
+
+void ASGE::CGLSpriteRenderer::setupGlobalShaderData()
+{
+  // setup shader data location
+  glGenBuffers(1, &shader_data_location);
+  glBindBuffer(GL_UNIFORM_BUFFER, shader_data_location);
+  glBufferData(GL_UNIFORM_BUFFER, sizeof(SHADER_DATA), nullptr, GL_DYNAMIC_DRAW);
+  glBindBufferBase(GL_UNIFORM_BUFFER, GLRenderConstants::PROJECTION_UBO_BIND, shader_data_location);
+}
+
+void ASGE::CGLSpriteRenderer::clearActiveRenderState()
+{
+  active_render_state = nullptr;
 }

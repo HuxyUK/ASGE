@@ -80,23 +80,18 @@ void ASGE::GLPixelBuffer::download(unsigned int mip_level) noexcept
   glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo_read_id);
   glBindTexture(GL_TEXTURE_2D, texture_id);
 
-  GLfloat resident = GL_FALSE;
-  glGetTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_RESIDENT, &resident);
-  if (resident == GL_TRUE)
-  {
-    // transfer texture into PBO
-    GLVMSG(
-      __PRETTY_FUNCTION__,
-      glGetTexImage,
-      GL_TEXTURE_2D,
-      mip_level,
-      GLFORMAT[format],
-      GL_UNSIGNED_BYTE,
-      (GLvoid*)0
-      // offset in bytes into "buffer",
-      // not pointer to client memory!
-    );
-  }
+  // transfer texture into PBO
+  GLVMSG(
+    __PRETTY_FUNCTION__,
+    glGetTexImage,
+    GL_TEXTURE_2D,
+    mip_level,
+    GLFORMAT[format],
+    GL_UNSIGNED_BYTE,
+    (GLvoid*)0
+    // offset in bytes into "buffer",
+    // not pointer to client memory!
+  );
 
   stale = true;
 }

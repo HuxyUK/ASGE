@@ -37,7 +37,6 @@ namespace ASGE
 
    private:
     static constexpr GLsizei UBOSize() noexcept;
-
     static constexpr GLsizei BUFFER_COUNT = 3;
     std::array<GLuint, BUFFER_COUNT> UBOs  {0};
     std::array<GLsync, BUFFER_COUNT> syncs {nullptr};

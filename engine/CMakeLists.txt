@@ -75,6 +75,7 @@ set( PROJECT_SOURCES
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLPixelBuffer.cpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLRenderBatch.hpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLRenderBatch.cpp"
+		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLRenderState.hpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLRenderTarget.hpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLRenderTarget.cpp"
 		"${CMAKE_CURRENT_LIST_DIR}/src/Engine/OpenGL/GLRenderer.hpp"

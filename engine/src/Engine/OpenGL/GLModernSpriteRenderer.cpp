@@ -89,8 +89,9 @@ bool ASGE::GLModernSpriteRenderer::init()
   basic_text_shader                   = initShader(vs_instancing, fs_text)->getShaderID();
   sprite_shader->use();
   active_shader = sprite_shader;
-  using GLRenderConstants::QUAD_VERTICES;
+  setupGlobalShaderData();
 
+  using GLRenderConstants::QUAD_VERTICES;
   buffer_idx = 0;
   glGenVertexArrays(1, &this->VAO);
   glBindVertexArray(this->VAO);
@@ -156,6 +157,7 @@ int ASGE::GLModernSpriteRenderer::render(
   int draw_count = 0;
   for (const auto& batch : batches)
   {
+    apply(batch.state);
     bindTexture(batch.texture_id);
     bindShader(batch.shader_id, batch.distance);
 
