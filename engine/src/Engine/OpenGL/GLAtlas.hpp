@@ -12,14 +12,20 @@
 
 #pragma once
 #include "GLIncludes.hpp"
+#include <vector>
 
 typedef struct FT_FaceRec_*  FT_Face;
+namespace msdfgen
+{
+  class FontHandle;
+}
+
 namespace ASGE
 {
 	/// Holds all state information relevant to a character as loaded using FreeType
 	struct Character
 	{
-        glm::dvec4 UV;      // UV coordinates of glyph
+    glm::dvec4 UV;      // UV coordinates of glyph
 		glm::ivec2 Size;    // Size of glyph
 		glm::ivec2 Bearing; // Offset from baseline to left/top of glyph
 		glm::ivec2 Advance; // Offset to the next glyph
@@ -28,24 +34,22 @@ namespace ASGE
 	class FontTextureAtlas
 	{
 	public:
-		FontTextureAtlas();
+		FontTextureAtlas() = default;
 		~FontTextureAtlas();
 		FontTextureAtlas(const FontTextureAtlas&) = delete;
 		FontTextureAtlas operator=(const FontTextureAtlas&) = delete;
 
-    bool init(const FT_Face& face, int h);
+    bool init(const FT_Face& face, msdfgen::FontHandle* font_handle, int h);
 		[[nodiscard]] GLuint getTextureID() const noexcept;
 		[[nodiscard]] const Character& getCharacter(int idx) const;
 
    private:
-    void generateTexture();
+    void allocateTexture(const void* data);
     void setSampleParams();
-		bool calculateFontFace(const FT_Face& face);
-		void calculateTextureSize(const FT_Face& face);
 
-		Character characters[128]; 
-		GLuint texture;
-		unsigned int width;
-		unsigned int height;
+    std::vector<Character> characters {};
+    GLuint texture = 0;
+    int32_t width  = 0;
+    int32_t height = 0;
   };
 }  // namespace ASGE

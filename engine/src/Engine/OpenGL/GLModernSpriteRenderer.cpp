@@ -73,7 +73,7 @@ ASGE::GLModernSpriteRenderer::~GLModernSpriteRenderer()
 
 /**
  *  Initialises the Sprite Renderer.
- *  Peforms initialisation of the renderer including the orthogonal view,
+ *  Performs initialisation of the renderer including the orthogonal view,
  *  the shader and the shared buffers. Vertex data does not change and is
  *  stored as static drawing data. The other attributes are treated as
  *  dynamic as they can be altered at any time during the program run.
@@ -157,7 +157,7 @@ int ASGE::GLModernSpriteRenderer::render(
   for (const auto& batch : batches)
   {
     bindTexture(batch.texture_id);
-    bindShader(batch.shader_id, batch.start_idx);
+    bindShader(batch.shader_id, batch.distance);
 
     glUniform1i(GLRenderConstants::OFFSET_UBO_BIND, batch.start_idx);
     ClearGLErrors("Setting uniform");

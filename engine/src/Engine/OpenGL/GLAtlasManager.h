@@ -42,11 +42,11 @@ namespace ASGE
 		[[nodiscard]] const GLFontSet& getDefaultFont() const;
 
 	 private:
-		int  searchAtlas(const char * name, int pt);
-		int  font = 0;
-		std::deque<GLFontSet> font_sets;
+    int searchAtlas(const char* name, int pt);
     int createAtlas(FT_Face& face, const char* name, int pt);
     bool initFT();
+    int font = 0;
+    std::deque<GLFontSet> font_sets;
   };
 }  // namespace ASGE
 

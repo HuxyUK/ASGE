@@ -165,7 +165,8 @@ namespace ASGE
 
    public:
     const char* font_name = ""; //!< The name of the font loaded.
-    int font_size = 0;          //!< The size of the font imported.
-    float line_height = 0;      //!< The recommended height of each line.
+    float line_height     = 0;  //!< The recommended height of each line.
+    float px_range        = 2;  //!< The pixel range used in the SDF generation.
+    int  font_size        = 0;  //!< The size of the font imported.
   };
 }  // namespace ASGE

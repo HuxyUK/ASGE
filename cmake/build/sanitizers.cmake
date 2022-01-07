@@ -29,7 +29,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL
   if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     option(MEMORY_SANITIZER "description" OFF)
     message(STATUS "  + MEMORY_SANITIZER \t\t ${MEMORY_SANITIZER}")
-    if(MEMORY_SANITIZER)
+    if(MEMORY_SANITIZER AND NOT ADDRESS_SANITIZER)
       add_compile_options(-fsanitize=memory -fno-omit-frame-pointer)
       link_libraries(-fsanitize=memory -fno-omit-frame-pointer)
     endif()

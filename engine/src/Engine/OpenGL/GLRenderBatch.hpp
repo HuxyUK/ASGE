@@ -59,6 +59,7 @@ namespace ASGE
     GLuint instance_count = 0;
     GLuint shader_id      = 0;
     GLuint texture_id     = 0;
+    GLuint distance       = 0;
 
     std::bitset<REASON_COUNT> reason = I_DONT_KNOW;
   };

@@ -99,14 +99,13 @@ bool ASGE::GLLegacySpriteRenderer::init()
 int ASGE::GLLegacySpriteRenderer::render(
   std::vector<AnotherRenderBatch>&& batches)
 {
-  glBindBufferRange(
-    GL_UNIFORM_BUFFER, GLRenderConstants::QUAD_DATA_UBO_BIND, UBOs[UBO_buffer_idx], 0, UBOSize());
+  glBindBufferRange(GL_UNIFORM_BUFFER, GLRenderConstants::QUAD_DATA_UBO_BIND, UBOs[UBO_buffer_idx], 0, UBOSize());
 
   int draw_count = 0;
   for(const auto& batch : batches)
   {
     bindTexture(batch.texture_id);
-    bindShader(batch.shader_id, batch.start_idx);
+    bindShader(batch.shader_id, batch.distance);
 
     GLint loc = glGetUniformLocation(active_shader->getShaderID(), "quad_buffer_offset");
     glUniform1i(loc, batch.start_idx);

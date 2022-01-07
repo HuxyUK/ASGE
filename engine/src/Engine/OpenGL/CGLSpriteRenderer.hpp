@@ -63,7 +63,7 @@ namespace ASGE
     void generateColourData(const ASGE::GLSprite& sprite, glm::vec4* rgba) const;
     void generateUvData(const ASGE::GLSprite& sprite, GLfloat[GLRenderConstants::UVS_PER_QUAD]) const;
     void checkForErrors() const;
-    bool bindShader(GLuint shader_id, GLuint start_idx) noexcept;
+    bool bindShader(GLuint shader_id, GLfloat distance) noexcept;
     void lockBuffer(GLsync& sync_prim);
     void waitBuffer(GLsync& sync_prim);
     bool bindTexture(GLuint texture_id);

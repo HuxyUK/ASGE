@@ -39,7 +39,7 @@ ASGE::SHADER_LIB::GLShader* ASGE::CGLSpriteRenderer::initShader(
   return nullptr;
 }
 
-bool ASGE::CGLSpriteRenderer::bindShader(GLuint shader_id, GLuint /*start_idx*/) noexcept
+bool ASGE::CGLSpriteRenderer::bindShader(GLuint shader_id, GLfloat distance) noexcept
 {
   shader_id == 0 ? shader_id = getBasicSpriteShaderID() : shader_id;
 
@@ -53,6 +53,12 @@ bool ASGE::CGLSpriteRenderer::bindShader(GLuint shader_id, GLuint /*start_idx*/)
 
     active_shader = &(*iter);
     active_shader->use();
+  }
+
+  //TODO: move towards a more agnostic way of applying uniforms
+  if(distance)
+  {
+    active_shader->getUniform("distance_factor")->set(distance);
   }
 
   return true;
@@ -88,7 +94,8 @@ bool ASGE::CGLSpriteRenderer::bindTexture(GLuint texture_id)
 {
   if (current_loaded_texture != texture_id)
   {
-    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glActiveTexture(GL_TEXTURE0);
+    GLVMSG("Binding Texture", glBindTexture, GL_TEXTURE_2D, texture_id);
     current_loaded_texture = texture_id;
     return true;
   }

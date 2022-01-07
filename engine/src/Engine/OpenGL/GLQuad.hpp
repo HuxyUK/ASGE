@@ -82,6 +82,7 @@ namespace ASGE
     GLuint  shader_id  = 0;
     GLuint  texture_id = 0;
     GLshort z_order    = 0;
+    GLfloat distance   = 0;
   };
 
   enum BufferState : unsigned int

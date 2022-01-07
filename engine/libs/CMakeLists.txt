@@ -23,6 +23,7 @@ list(APPEND LINK_LIBS glad)
 
 # Freetype
 add_subdirectory(freetype2)
+add_library(Freetype::Freetype ALIAS freetype)
 list(APPEND LINK_LIBS freetype)
 
 # PhysFS and PhysFS++

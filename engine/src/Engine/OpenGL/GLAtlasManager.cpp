@@ -11,13 +11,15 @@
 //  SOFTWARE.
 
 #include "FileIO.hpp"
-#include "Fonts/Hermit.font"
+#include "Fonts/Kenvector.font"
 #include "GLAtlas.hpp"
 #include "GLAtlasManager.h"
 #include "GLFontSet.hpp"
 #include "Logger.hpp"
 #include "Shaders/GLShaders.fs"
 #include "Shaders/GLShaders.vs"
+#include <msdfgen.h>
+#include <msdfgen-ext.h>
 
 namespace
 {
@@ -31,7 +33,8 @@ bool ASGE::GLAtlasManager::init()
     return false;
   }
 
-  return loadFontFromMem("default", Hermit_medium_otf, sizeof(Hermit_medium_otf), 18) != -1;
+  //return loadFontFromMem("default", Hermit_medium_otf, sizeof(Hermit_medium_otf), 18) != -1;
+  return loadFontFromMem("default", kenvector_future_ttf, kenvector_future_ttf_len, 32) != -1;
 }
 
 bool ASGE::GLAtlasManager::initFT()
@@ -114,12 +117,21 @@ int ASGE::GLAtlasManager::loadFont(const char* font_path, int pt)
 
 int ASGE::GLAtlasManager::createAtlas(FT_Face& face, const char* name, int pt)
 {
+  Logging::TRACE("atlas time started: " + std::string(face->family_name));
+
   GLFontSet set;
   set.font_name = name;
   set.font_size = pt;
+  set.px_range  = 2;
+
+  FT_Set_Pixel_Sizes(face, 0, pt);
+  msdfgen::FontHandle* font_handle = msdfgen::adoptFreetypeFont(face);
+  msdfgen::FontMetrics font_metrics{};
+  msdfgen::getFontMetrics(font_metrics, font_handle);
+  set.line_height = font_metrics.lineHeight;
 
   auto *atlas = new FontTextureAtlas();
-  if (atlas->init(face, pt))
+  if (atlas->init(face, font_handle, pt))
   {
     set.setAtlas(atlas);
   }
@@ -132,13 +144,11 @@ int ASGE::GLAtlasManager::createAtlas(FT_Face& face, const char* name, int pt)
     return -1;
   }
 
-  // store the line spacing
-  set.line_height =
-      static_cast<float>(face->size->metrics.ascender - face->size->metrics.descender) / 64.0F;
-
+  msdfgen::destroyFont(font_handle);
   FT_Done_Face(face);
 
   font_sets.push_back(std::move(set));
+  Logging::TRACE("atlas time ended");
   return static_cast<int>(font_sets.size() - 1);
 }
 

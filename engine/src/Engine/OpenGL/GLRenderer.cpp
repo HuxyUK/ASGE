@@ -365,7 +365,7 @@ void ASGE::GLRenderer::renderDebug(int fps)
   setProjectionMatrix({ 0, 0, static_cast<float>(width), static_cast<float>(height) });
 
   std::string fps_str = std::to_string(fps);
-  constexpr auto POS_X    = 0.F;
+  constexpr auto POS_X    = 25.F;
   constexpr auto POS_Y    = 34.F; // renderer->getDefaultFont().line_height;
 
   auto text = ASGE::Text{ getFont(0) };
@@ -401,7 +401,7 @@ void ASGE::GLRenderer::renderDebug(int fps)
 
   debug_string += (std::string("DRAW COUNT: ") + std::to_string(batch.current_draw_count));
 
-  Text debug_text = { getFont(0), debug_string.c_str(), 0, 52, ASGE::COLOURS::PINK };
+  Text debug_text = { getFont(0), debug_string.c_str(), static_cast<int>(POS_X), 52, ASGE::COLOURS::PINK };
   batch.renderText(debug_text);
   batch.flush();
 

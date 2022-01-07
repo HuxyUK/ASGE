@@ -210,7 +210,8 @@ ASGE::GLSpriteBatch::generateRenderBatches(const QuadRange& range)
 
   auto should_end = [&batch_begin, &batch_end]() {
     return batch_begin->texture_id != batch_end->texture_id ||
-           batch_begin->shader_id  != batch_end->shader_id;
+           batch_begin->shader_id  != batch_end->shader_id  ||
+           batch_begin->distance   != batch_end->distance;
   };
 
   auto get_reason = [&batch_begin, &batch_end, &range]() {
@@ -224,10 +225,12 @@ ASGE::GLSpriteBatch::generateRenderBatches(const QuadRange& range)
     {
       reason.set(AnotherRenderBatch::TEXTURE_CHANGE);
     }
-    if (batch_begin->shader_id != batch_end->shader_id)
+    if (batch_begin->shader_id != batch_end->shader_id ||
+        batch_begin->distance  != batch_end->distance)
     {
       reason.set(AnotherRenderBatch::SHADER_CHANGE);
     }
+
     return reason;
   };
 
@@ -239,6 +242,7 @@ ASGE::GLSpriteBatch::generateRenderBatches(const QuadRange& range)
     batch.instance_count = static_cast<GLuint>(count);
     batch.texture_id     = batch_begin->texture_id;
     batch.shader_id      = batch_begin->shader_id;
+    batch.distance       = batch_begin->distance;
   };
 
   do
@@ -297,6 +301,7 @@ void ASGE::GLSpriteBatch::renderText(const ASGE::Text& text)
     quad.texture_id  = font.getAtlas()->getTextureID();
     quad.shader_id   = sprite_renderer->getDefaultTextShaderID();
     quad.z_order     = text.getZOrder();
+    quad.distance    = font.px_range * text.getScale();
 
     // the character we want to render
     render_char.scale = text.getScale();

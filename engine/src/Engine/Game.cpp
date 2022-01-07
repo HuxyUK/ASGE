@@ -40,9 +40,9 @@ int ASGE::Game::updateFPS()
       frames = 0;
       delta_accumulator = 0;
     }
-
-    return fps;
   }
+
+  return fps;
 }
 
 void ASGE::Game::initFileIO(const ASGE::GameSettings& settings)
