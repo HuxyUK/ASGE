@@ -992,6 +992,23 @@ void ASGE::GLRenderer::setResolutionPolicy(ASGE::Resolution::Policy policy)
 }
 
 /**
+ * Creates a cached version of a 2D Texture Array
+ * 2D Texture Arrays can be used to store images on different layers.
+ * @param id The unique id to use.
+ * @param width The width of the textures in the array.
+ * @param height The height of the textures in the array.
+ * @param format The format of the pixels being stored.
+ * @param data Initial data to upload.
+ * @param count The number of layers to allocate.
+ * @return Thr newly allocated 2D texture array.
+ */
+ASGE::Texture2D* ASGE::GLRenderer::createCachedTextureArray(
+  std::string id, int width, int height, ASGE::Texture2D::Format format, void* data, int count)
+{
+  return GLTextureCache::getInstance().allocateTextureArray(width, height, format, data, count);
+}
+
+/**
  * Saves the current View/Projection information.
  * These states are linked to render batches. When a render batch uses a
  * new state, it will apply the settings stored here. This allows batching

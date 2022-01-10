@@ -351,6 +351,7 @@ void ASGE::SHADER_LIB::GLShader::mapUniforms()
       }
       case GL_INT:
       case GL_SAMPLER_2D:
+      case GL_SAMPLER_2D_ARRAY:
       {
         getUniforms().emplace(uniform_record(
           name, new UniformGL<Uniform1i>(this->ID, location, &GLShader::setInteger)));

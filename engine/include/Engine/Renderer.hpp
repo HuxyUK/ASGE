@@ -406,6 +406,21 @@ namespace ASGE {
     virtual ASGE::Texture2D* createCachedTexture(std::string id, int width, int height, ASGE::Texture2D::Format format, void* data) = 0;
 
     /**
+     * @brief Creates a cached version of a 2D Texture Array
+     *
+     * 2D Texture Arrays can be used to store images on different layers.
+     * @param[in] id The unique id to use.
+     * @param[in] width The width of the textures in the array.
+     * @param[in] height The height of the textures in the array.
+     * @param[in] format The format of the pixels being stored.
+     * @param[in] data Initial data to upload.
+     * @param[in] count The number of layers to allocate.
+     *
+     * @return A pointer to the cached @refitem ASGE::Texture2D
+     */
+    virtual ASGE::Texture2D* createCachedTextureArray(std::string id, int width, int height, ASGE::Texture2D::Format format, void* data, int count) = 0;
+
+    /**
      * @brief Creates a cached texture from a file.
      *
      * A cached texture is one which is managed by the renderer.

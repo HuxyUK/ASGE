@@ -45,6 +45,7 @@ namespace ASGE
     ~GLTextureCache();
 
     ASGE::GLTexture* allocateMSAATexture(int img_width, int img_height, Texture2D::Format format);
+    ASGE::GLTexture* allocateTextureArray(int img_width, int img_height, Texture2D::Format format, const void* data, int count);
     ASGE::GLTexture* allocateTexture(int img_width, int img_height, Texture2D::Format format, const void* data);
     ASGE::GLTexture* allocateTexture(const std::string& file);
 

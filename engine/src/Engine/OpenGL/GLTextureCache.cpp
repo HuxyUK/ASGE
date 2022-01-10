@@ -186,3 +186,40 @@ ASGE::GLTexture* ASGE::GLTextureCache::allocateMSAATexture(int img_width, int im
   glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
   return texture;
 }
+
+ASGE::GLTexture* ASGE::GLTextureCache::allocateTextureArray(
+  int img_width, int img_height, ASGE::Texture2D::Format format, const void* data, int count)
+{
+  auto *texture = new GLTexture(img_width, img_height);
+  texture->setFormat(format);
+
+  glGenTextures(1, &texture->getID());
+  glBindTexture(GL_TEXTURE_2D_ARRAY, texture->getID());
+
+  // Load the 2D texture
+  glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA8, img_width, img_height, count);
+
+  // Upload pixel data
+  glTexSubImage3D(GL_TEXTURE_2D_ARRAY,
+                  0, 0, 0, 0, img_width, img_height, count, GLFORMAT[texture->getFormat()],
+                  GL_UNSIGNED_BYTE, data);
+
+  // Set texture options
+  glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+  // Use the default game settings for mag filtering
+  glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER,
+                  GLTexture::GL_MAG_LOOKUP.at(renderer->magFilter()));
+
+  if(data != nullptr)
+  {
+    glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+  }
+
+  glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+
+  ASGE::ClearGLErrors("Error: Allocating texture array!");
+  return texture;
+}
