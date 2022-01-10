@@ -37,6 +37,6 @@ namespace ASGE
 
   private:
 		GLTexture* texture = nullptr;
-    void attach(const AttachMode& mode);
+    void attach(AttachMode mode);
   };
 }

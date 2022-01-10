@@ -29,9 +29,10 @@ bool ASGE::GLSprite::loadTexture(const std::string& file, AttachMode mode)
 	return false;
 }
 
-void ASGE::GLSprite::attach(const ASGE::Sprite::AttachMode& mode)
+void ASGE::GLSprite::attach(ASGE::Sprite::AttachMode mode)
 {
-  if ((mode & KEEP_UVS) != KEEP_UVS)
+  using AttachMode = ASGE::Sprite::AttachMode;
+  if ((mode & AttachMode::KEEP_UVS) != AttachMode::KEEP_UVS)
   {
     srcRect()[0] = 0;
     srcRect()[1] = 0;
@@ -39,23 +40,23 @@ void ASGE::GLSprite::attach(const ASGE::Sprite::AttachMode& mode)
     srcRect()[3] = texture->getHeight();
   }
 
-  if ((mode & KEEP_DIMS) != KEEP_DIMS)
+  if ((mode & AttachMode::KEEP_DIMS) != AttachMode::KEEP_DIMS)
   {
     dimensions()[0] = texture->getWidth();
     dimensions()[1] = texture->getHeight();
   }
 
-  if ((mode & KEEP_ROTATION) != KEEP_ROTATION)
+  if ((mode & AttachMode::KEEP_ROTATION) != AttachMode::KEEP_ROTATION)
   {
     rotationInRadians(0.0F);
   }
 
-  if ((mode & KEEP_TINT) != KEEP_TINT)
+  if ((mode & AttachMode::KEEP_TINT) != AttachMode::KEEP_TINT)
   {
     colour(COLOURS::WHITE);
   }
 
-  if ((mode & GENERATE_MIPS) == GENERATE_MIPS)
+  if ((mode & AttachMode::GENERATE_MIPS) == AttachMode::GENERATE_MIPS)
   {
     texture->updateMips();
   }

@@ -288,11 +288,6 @@ GLFWwindow* ASGE::GLRenderer::getWindow()
   return window;
 }
 
-const glm::mat4& ASGE::GLRenderer::getProjectionMatrix() const
-{
-  return global_shader_data.projection;
-}
-
 /**
  *  Sets the pre-render state.
  *  Before rendering can begin, the current window needs
@@ -357,7 +352,8 @@ void ASGE::GLRenderer::renderDebug(int fps)
 
   auto text = ASGE::Text{ getFont(0) };
   text.setString(fps_str);
-  text.setColour({ 1.0F, 0.2F, 0.75F });
+  //text.setColour({ 1.0F, 0.2F, 0.75F });
+  text.setColour(COLOURS::DEEPPINK);
   text.setPosition({ POS_X, POS_Y });
   text.setScale(2);
   render(std::move(text));
@@ -654,7 +650,7 @@ void ASGE::GLRenderer::setViewport(const ASGE::Viewport& vp)
       return;
     }
 
-    if (resolution_policy == Resolution::Policy::FIT)
+    if (resolution_policy == Resolution::Policy::SCALE)
     {
       fillViewPort(vp);
       return;
@@ -920,7 +916,7 @@ void ASGE::GLRenderer::render(
   ASGE::GLSprite sprite;
   sprite.xPos(static_cast<float>(pos_xy.x));
   sprite.yPos(static_cast<float>(pos_xy.y));
-  sprite.attach(&texture, Sprite::DEFAULT);
+  sprite.attach(&texture, Sprite::AttachMode::DEFAULT);
   sprite.width(static_cast<float>(width));
   sprite.height(static_cast<float>(height));
   sprite.setGlobalZOrder(z_order);

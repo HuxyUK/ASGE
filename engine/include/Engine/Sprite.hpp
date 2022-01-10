@@ -77,20 +77,34 @@ namespace ASGE
     };
 
     /**
-     * @brief Flags to control the flipping of the sprite
-     *
-     * Used to flip the texture's UV coordinates.
-     * The flip is performed on the CPU when calculating the UVs.
+     * @brief Flags to control attachments of textures.
+     * When attaching a texture to the sprite, by default the sprite's
+     * settings will be reset to match the newly attached texture. These
+     * flags allow the user to prevent certain resets from occurs.
      */
-    enum AttachMode
+    enum class AttachMode : int8_t
     {
-      DEFAULT   = 0x00,
-      KEEP_DIMS = 0x01,           /**< Retain the sprite's dimensions. */
-      KEEP_UVS  = 0x02,           /**< Retain the sprite's UV settings. */
-      KEEP_TINT = 0x04,           /**< Retain the sprite's tint. */
-      KEEP_ROTATION = 0x08,
-      GENERATE_MIPS = 0x10,
+      DEFAULT   = 0x00,      /**< By default, clobber the existing sprite's settings. */
+      KEEP_DIMS = 0x01,      /**< Retain the sprite's dimensions. */
+      KEEP_UVS  = 0x02,      /**< Retain the sprite's UV settings. */
+      KEEP_TINT = 0x04,      /**< Retain the sprite's tint. */
+      KEEP_ROTATION = 0x08,  /**< Retain the sprite's rotation. */
+      GENERATE_MIPS = 0x10,  /**< Generate a new set of MipMaps for the texture. */
     };
+
+    friend AttachMode operator|(AttachMode lhs, AttachMode rhs) {
+      return static_cast<AttachMode>(
+          static_cast<std::underlying_type<AttachMode>::type>(lhs) |
+          static_cast<std::underlying_type<AttachMode>::type>(rhs)
+      );
+    }
+
+    friend AttachMode operator&(AttachMode lhs, AttachMode rhs) {
+      return static_cast<AttachMode>(
+          static_cast<std::underlying_type<AttachMode>::type>(lhs) &
+          static_cast<std::underlying_type<AttachMode>::type>(rhs)
+      );
+    }
 
     /**
      * @brief Default destructor.

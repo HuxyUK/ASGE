@@ -71,7 +71,6 @@ namespace ASGE
     std::unique_ptr<Sprite> createUniqueSprite() override;
     Sprite* createRawSprite() override;
     GLFWwindow* getWindow();
-    const glm::mat4& getProjectionMatrix() const;
 
     // Inherited via Renderer
     int     loadFont(const char * font, int pt) override;
@@ -116,17 +115,17 @@ namespace ASGE
     [[nodiscard]] int windowWidth() const noexcept override;
     [[nodiscard]] std::tuple<int32_t,int32_t,int16_t> screenRes() override;
     [[nodiscard]] const Resolution& getResolutionInfo() const;
-    void fillViewPort(const Viewport& viewport);
-    void fitViewPort(const Viewport& viewport);
-    void centerViewPort(const ASGE::Viewport& viewport);
 
    private:
     std::unique_ptr<Input> inputPtr() override;
     void allocateDebugTexture();
+    void centerViewPort(const ASGE::Viewport& viewport);
     void centerWindow();
+    void fillViewPort(const Viewport& viewport);
+    void fitViewPort(const Viewport& viewport);
     void postRender() override;
-    void updateMonitorInfo(GLFWmonitor* monitor);
     void saveState();
+    void updateMonitorInfo(GLFWmonitor* monitor);
 
    private:
     GLSpriteBatch batch{};
@@ -135,8 +134,6 @@ namespace ASGE
     Resolution::Policy resolution_policy{ Resolution::Policy::MAINTAIN };
     std::unique_ptr<CGLSpriteRenderer> sprite_renderer{};
     std::unique_ptr<GLAtlasManager> text_renderer{};
-    Colour debug_text_colour{ COLOURS::DEEPPINK };
     GLFWwindow* window{ nullptr };
-    GLuint projection_ubo = -1;
   };
 }  // namespace ASGE
