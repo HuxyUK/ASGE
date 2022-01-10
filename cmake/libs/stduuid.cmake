@@ -7,7 +7,7 @@ message(STATUS "+ FETCHING STDUUID....")
 FetchContent_Declare(
         stduuid
         GIT_REPOSITORY https://github.com/mariusbancila/stduuid.git
-        GIT_TAG        origin/master)
+        GIT_TAG        d393e000378713bd0bfe07375adfa9d026e8645f)
 
 FetchContent_GetProperties(stduuid)
 if(NOT stduuid_POPULATED)
