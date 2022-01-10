@@ -51,7 +51,7 @@ namespace ASGE
     GLuint pbo_read_id;
     GLuint format;
     GLuint texture_id;
-    std::unique_ptr<GLubyte> pixels;
+    std::unique_ptr<GLubyte[]> pixels;
   };
 }
 
