@@ -22,13 +22,20 @@ if(ENABLE_MSDFGEN)
   if(NOT msdfgen_POPULATED)
     set(MSDFGEN_BUILD_STANDALONE  OFF CACHE BOOL "" FORCE)
     set(MSDFGEN_INSTALL           OFF CACHE BOOL "" FORCE)
-    set(MSDFGEN_USE_OPENMP        ON  CACHE BOOL "" FORCE)
+
+    if(NOT APPLE)
+      set(MSDFGEN_USE_OPENMP        ON  CACHE BOOL "" FORCE)
+    endif()
 
     message(STATUS "+ CONFIGURING MSDFGEN....")
     list(APPEND CMAKE_MESSAGE_INDENT "  ")
 
     FetchContent_MakeAvailable(msdfgen)
     message(DEBUG "MSDFGEN INCLUDE DIR: ${msdfgen_SOURCE_DIR}")
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+      set_property(TARGET msdfgen-core PROPERTY INTERPROCEDURAL_OPTIMIZATION FALSE)
+      set_property(TARGET msdfgen-ext  PROPERTY INTERPROCEDURAL_OPTIMIZATION FALSE)
+    endif()
     list(POP_BACK CMAKE_MESSAGE_INDENT)
   endif()
 

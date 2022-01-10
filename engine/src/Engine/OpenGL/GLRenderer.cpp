@@ -22,6 +22,7 @@
 #include "GLTextureCache.hpp"
 #include "Logger.hpp"
 #include "OpenGL/Shaders/GLShaders.vs"
+#include "Tile.hpp"
 #include <cmath>
 #include <memory>
 

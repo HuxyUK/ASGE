@@ -176,8 +176,8 @@ else()
 endif()
 
 # Dependencies on other libraries
-target_link_libraries( ${PROJECT_NAME} PUBLIC ${LINK_LIBS} msdfgen::msdfgen-core msdfgen::msdfgen-ext)
-add_dependencies( ${PROJECT_NAME}  PhysFS++)
+target_link_libraries( ${PROJECT_NAME} PUBLIC ${LINK_LIBS})
+add_dependencies( ${PROJECT_NAME} PhysFS++)
 
 target_compile_definitions(
 		${PROJECT_NAME}

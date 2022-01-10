@@ -134,7 +134,7 @@ bool ASGE::FontTextureAtlas::init(const FT_Face& face, msdfgen::FontHandle* font
 
   std::vector<pixel> pixels;
   pixels.reserve(width * height);
-  pixels.assign(width * height, {});
+  pixels.assign(width * height, pixel());
   for (auto& msdf : msdfs)
   {
     auto& ch = characters[msdf.scan_code];

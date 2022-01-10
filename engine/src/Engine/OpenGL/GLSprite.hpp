@@ -18,7 +18,7 @@
 
 namespace ASGE
 {
-  class Tile;
+  struct Tile;
 
   /**
    * GLSprite is the OpenGL implementation of an ASGE::Sprite

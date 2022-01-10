@@ -31,6 +31,7 @@ namespace ASGE
 	}
 
   struct Font;
+  struct Tile;
   class  Sprite;
   class  CGLSpriteRenderer;
   class  GLAtlasManager;

@@ -5,7 +5,7 @@
 #------------------------------------------------------------------------------
 if (NOT APPLE)
   execute_process(
-      COMMAND ${CMAKE_C_COMPILER} -fuse-ld=gold -Wl, --version
+      COMMAND ${CMAKE_C_COMPILER} -fuse-ld=gold -W --version
       ERROR_QUIET
       OUTPUT_VARIABLE ld_version)
   
