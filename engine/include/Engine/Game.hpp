@@ -262,7 +262,7 @@ namespace ASGE
     std::chrono::time_point<std::chrono::steady_clock> start_time = std::chrono::steady_clock::now();
 
     std::string game_title = "My ASGE Game"; /**< The game's title. */
-    uint32_t fixed_ts      = 30;             /**< The fixed time step used. */
+    uint32_t fixed_ts      = 120;            /**< The fixed time step used. */
     uint32_t fps_limit     = 60;             /**< The fps limit to apply to the game. */
   };
 } // namespace ASGE
