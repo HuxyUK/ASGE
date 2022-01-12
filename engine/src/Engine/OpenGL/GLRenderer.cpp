@@ -181,6 +181,7 @@ bool ASGE::GLRenderer::init(const ASGE::GameSettings& settings)
 
   GLTextureCache::getInstance().renderer = this;
   setWindowedMode(settings.mode);
+  setWindowTitle(settings.game_title.c_str());
   glfwShowWindow(this->window);
   magFilter(settings.mag_filter);
   glGetIntegerv(GL_VIEWPORT, &resolution_info.viewport.x);

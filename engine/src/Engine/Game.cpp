@@ -163,8 +163,10 @@ void ASGE::Game::signalExit() noexcept
   this->exit = true;
 }
 
-ASGE::Game::Game(const GameSettings& game_settings)
-: fixed_ts(game_settings.fixed_ts), fps_limit(game_settings.fps_limit)
+ASGE::Game::Game(const GameSettings& game_settings) :
+  fixed_ts(game_settings.fixed_ts),
+  fps_limit(game_settings.fps_limit),
+  game_title(game_settings.game_title)
 {
   // TODO throw exception if FILEIO fails
   initFileIO(game_settings);
