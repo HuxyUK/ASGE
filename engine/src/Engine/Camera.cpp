@@ -40,10 +40,10 @@ void ASGE::Camera::lookAt(ASGE::Point2D pos)
 ASGE::Camera::CameraView ASGE::Camera::getView() const
 {
   ASGE::Camera::CameraView view;
-  view.min_x = xy_pos.x - dimensions[0] * 0.5F * zoom;
-  view.min_y = xy_pos.y - dimensions[1] * 0.5F * zoom;
-  view.max_x = view.min_x + dimensions[0] * zoom;
-  view.max_y = view.min_y + dimensions[1] * zoom;
+  view.min_x = xy_pos.x - (dimensions[0] * 0.5F) / zoom;
+  view.min_y = xy_pos.y - (dimensions[1] * 0.5F) / zoom;
+  view.max_x = view.min_x + (dimensions[0]) / zoom;
+  view.max_y = view.min_y + (dimensions[1]) / zoom;
   return view;
 }
 
@@ -82,7 +82,7 @@ float ASGE::Camera::getZoom() const
 
 void ASGE::Camera::setZoom(float z)
 {
-  this->zoom = z;
+  this->zoom = std::max(0.00001F, z);
 }
 
 const ASGE::Point2D& ASGE::Camera::position() const
