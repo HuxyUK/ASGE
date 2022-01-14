@@ -35,15 +35,17 @@ namespace ASGE
 
 		bool init();
 		void setDefaultFont(int idx);
-		int  loadFont(const char* font, int pt);
-		int  loadFontFromMem(const char* name, const unsigned char* data, unsigned int size, int pt);
-
+    const Font* loadFont(const char* font_path, int size, double range);
+    const Font* loadFontFromMem(const char* name, const unsigned char* data, unsigned int len, int glyph_size, double range);
+    const GLFontSet* loadFontFromAtlas(Font::AtlasMetrics&& metrics, std::string img_path, std::string csv_path);
+    const GLFontSet* loadFontFromAtlas(Font::AtlasMetrics&& metrics, std::byte* data, std::string csv_data);
 		[[nodiscard]] const GLFontSet& getFont(int idx) const;
 		[[nodiscard]] const GLFontSet& getDefaultFont() const;
 
 	 private:
-    int searchAtlas(const char* name, int pt);
-    int createAtlas(FT_Face& face, const char* name, int pt);
+    int searchAtlas(const char* name, int glyph_size);
+    const Font* createAtlas(FT_Face& face, const char* name, int size, double range);
+    const Font* build(int atlas_id, Font::AtlasMetrics& metrics, std::string& csv);
     bool initFT();
     int font = 0;
     std::deque<GLFontSet> font_sets;

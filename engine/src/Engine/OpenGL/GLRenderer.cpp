@@ -357,7 +357,7 @@ void ASGE::GLRenderer::renderDebug(int fps)
   //text.setColour({ 1.0F, 0.2F, 0.75F });
   text.setColour(COLOURS::DEEPPINK);
   text.setPosition({ POS_X, POS_Y });
-  text.setScale(2);
+  text.setScale(0.5);
   render(std::move(text));
 
   std::string debug_string;
@@ -388,6 +388,7 @@ void ASGE::GLRenderer::renderDebug(int fps)
   debug_string += (std::string("DRAW COUNT: ") + std::to_string(batch.current_draw_count));
 
   Text debug_text = { getFont(0), debug_string.c_str(), static_cast<int>(POS_X), 52, ASGE::COLOURS::PINK };
+  debug_text.setScale(0.25);
   batch.renderText(debug_text);
   batch.flush();
 
@@ -739,19 +740,25 @@ void ASGE::GLRenderer::setFont(int id)
  *  any time.
  *
  *  @param [in] The font to load including its file path.
- *  @param [in] The font size to generate the atlas with.
+ *  @param [in] The glyph size to generate the atlas with.
  *  @return The index of the newly loaded font.
  *  @see ASGE::Font
  */
-int ASGE::GLRenderer::loadFont(const char* font, int pt)
+const ASGE::Font* ASGE::GLRenderer::loadFont(const char* font, int size, double range)
 {
-  return this->text_renderer->loadFont(font, pt);
+  return this->text_renderer->loadFont(font, size, range);
 }
 
-int ASGE::GLRenderer::loadFontFromMem(
-  const char* name, const unsigned char* data, unsigned int size, int pt)
+const ASGE::Font* ASGE::GLRenderer::loadFontFromMem(
+  const char* name, const unsigned char* data, unsigned int len, int size, double range)
 {
-  return this->text_renderer->loadFontFromMem(name, data, size, pt);
+  return this->text_renderer->loadFontFromMem(name, data, len, size, range);
+}
+
+void ASGE::GLRenderer::loadFontFromImage(
+  Font::AtlasMetrics&& metrics, std::string img_path, std::string csv_path)
+{
+  this->text_renderer->loadFontFromAtlas(std::move(metrics), img_path, csv_path);
 }
 
 ASGE::SHADER_LIB::Shader* ASGE::GLRenderer::initPixelShader(std::string shader_source)

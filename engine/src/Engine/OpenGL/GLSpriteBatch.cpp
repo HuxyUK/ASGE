@@ -322,8 +322,7 @@ void ASGE::GLSpriteBatch::renderText(const ASGE::Text& text)
     render_char.font  = &font;
     render_char.alpha = text.getOpacity();
 
-    sprite_renderer->createCharQuad(
-      render_char, text.getColour(), quad.gpu_data);
+    sprite_renderer->createCharQuad(render_char, text.getColour(), quad.gpu_data);
     x += font.pxWide(render_char.ch, render_char.scale);
   }
 

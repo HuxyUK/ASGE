@@ -32,7 +32,7 @@ namespace ASGE
     GLFontSet(GLFontSet&&) noexcept;
     GLFontSet(const GLFontSet&) = delete;
     GLFontSet& operator=(const GLFontSet&) = delete;
-    GLFontSet& operator                    =(GLFontSet&&) noexcept;
+    GLFontSet& operator=(GLFontSet&&) noexcept;
     ~GLFontSet() override;
 
     /**

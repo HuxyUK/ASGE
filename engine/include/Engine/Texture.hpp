@@ -72,6 +72,20 @@ namespace ASGE
     };
 
     /**
+     * Min filters used when scaling textures downwards
+     */
+    enum class MinFilter : uint32_t
+    {
+      LINEAR ,
+      LINEAR_MIPMAP_NEAREST,
+      LINEAR_MIPMAP_LINEAR,
+      NEAREST,
+      NEAREST_MIPMAP_LINEAR,
+      NEAREST_MIPMAP_NEAREST
+    };
+
+
+    /**
      * @brief modes that controlling the UV texture wrapping
      *
      * When sampling textures and using UV coordinates outside of
@@ -127,6 +141,14 @@ namespace ASGE
 		* @param filter The magnification filter to apply.
 		*/
     virtual void updateMagFilter(MagFilter filter) = 0;
+
+    /**
+		* Sets the filtering used for texture minification.
+		* Allows the type of filtering applied when
+    * sampling the texture under minification to be changed.
+		* @param filter The minification filter to apply.
+     */
+    virtual void updateMinFilter(MinFilter filter) = 0;
 
     /**
      * @brief Controls how the UV coordinates are wrapped.

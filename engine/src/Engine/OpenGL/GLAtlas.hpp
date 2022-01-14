@@ -34,12 +34,13 @@ namespace ASGE
 	class FontTextureAtlas
 	{
 	public:
+    friend class GLAtlasManager;
 		FontTextureAtlas() = default;
 		~FontTextureAtlas();
 		FontTextureAtlas(const FontTextureAtlas&) = delete;
 		FontTextureAtlas operator=(const FontTextureAtlas&) = delete;
 
-    bool init(const FT_Face& face, msdfgen::FontHandle* font_handle, int h);
+    bool init(const FT_Face& face, msdfgen::FontHandle* font_handle, double glyph_size, double range, double font_scale);
 		[[nodiscard]] GLuint getTextureID() const noexcept;
 		[[nodiscard]] const Character& getCharacter(int idx) const;
 

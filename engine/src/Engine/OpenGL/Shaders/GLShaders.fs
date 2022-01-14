@@ -43,9 +43,9 @@ float median(float r, float g, float b) {
 void main()
 {
     vec3 sample = texture(image, fs_in.uvs).rgb;
-    float sig_distance = distance_factor*(median(sample.r, sample.g, sample.b) - 0.5);
+    float sig_distance = (distance_factor)*(median(sample.r, sample.g, sample.b) - 0.5);
     float opacity = clamp(sig_distance + 0.5, 0.0, 1.0);
-    colour = mix(vec4(fs_in.rgba.rgb * 0.5, 0.0), fs_in.rgba, opacity);
+    colour = mix(vec4(fs_in.rgba.rgb * 0.8, 0.0), fs_in.rgba, opacity);
 }
 )";
 

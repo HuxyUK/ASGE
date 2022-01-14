@@ -49,6 +49,19 @@ namespace ASGE
   struct Font : public NonCopyable
   {
    public:
+    struct AtlasMetrics
+    {
+      std::string id     = "";
+      int width          = 128;
+      int height         = 128;
+      double range       = 2;
+      double size        = 32;
+      double em_size     = 1;
+      double line_height = 1;
+      double ascender    = 1;
+      double descender   = 1;
+    };
+
     //! Default constructor
     Font() = default;
 

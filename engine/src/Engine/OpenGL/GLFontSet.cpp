@@ -19,6 +19,7 @@ ASGE::GLFontSet::GLFontSet(GLFontSet&& rhs) noexcept : atlas(std::move(rhs.atlas
   font_size   = rhs.font_size;
   font_name   = rhs.font_name;
   line_height = rhs.line_height;
+  px_range    = rhs.px_range;
 }
 
 ASGE::GLFontSet::~GLFontSet()

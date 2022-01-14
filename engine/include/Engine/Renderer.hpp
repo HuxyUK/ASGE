@@ -79,28 +79,53 @@ namespace ASGE {
     virtual void setClearColour(Colour rgb) = 0;
 
    /**
-    *  Loads a font that can be used to render text
+    *  Loads a font that can be used to render text.
+    *  Creates an SDF set of characters that can be used to render text.
+    *  This version of the function will attempt to load a local file
+    *  and convert the font using a distance range of 2.0.
     *
     *  @param[in] font The filepath to the font file.
-    *  @param[in] pt The size of the font to use in atlas generation.
-    *
-    *  @return The loaded font index.
+    *  @param[in] size The size of the glyphs to use in atlas generation.
+    *  @return A pointer to the loaded font.
     */
-   virtual int loadFont(const char* font, int pt) = 0;
+    const Font* loadFont(const char* font, int size);
 
     /**
-     *  Loads a font that can be used to render text
+     * Loads a font that can be used to render text.
+     * Creates an SDF set of characters that can be used to render text.
+     * @param[in] font The filepath to the font file.
+     * @param[in] size The size of the glyphs to use in atlas generation.
+     * @param[in] range The distance range to use.
+     * @return A pointer to the loaded font.
+     */
+     virtual const Font* loadFont(const char* font, int size, double range) = 0;
+
+    /**
+     *  Loads a font that can be used to render text.
      *
      *  @param[in] name The name of the font.
      *  @param[in] data A binary font loaded in memory.
      *  @param[in] size The buffer size.
-     *  @param[in] pt The size of the font to use in atlas generation.
-     *
-     *  @return The loaded font index.
+     *  @param[in] size The size of the font to use in atlas generation.
+     *  @return A pointer to the loaded font.
      */
-    virtual int loadFontFromMem(const char* name, const unsigned char* data, unsigned int size, int pt) = 0;
+     virtual const Font* loadFontFromMem(const char* name, const unsigned char* data, unsigned int len, int size, double range) = 0;
 
-   /**
+    /**
+     * Loads a font atlas that can be used to render text.
+     * Attempts to create a new atlas for rendering text using a pre-existing
+     * image file and accompanying CSV file. The advantage to this is the ability
+     * to use more computationally expensive algorithms and a significant reduction
+     * in load times. This function was designed with
+     * <a href="https://github.com/Chlumsky/msdf-atlas-gen/tree/master/msdf-atlas-gen">msdf-atlas-gen</a>
+     * in mind.
+     * @param [in] metrics The font metrics used to render text.
+     * @param [in] img_path The location of the image file to load.
+     * @param [in] csv_path The CSV data that defines each glyph.
+     */
+     virtual void loadFontFromImage(Font::AtlasMetrics&& metrics, std::string img_path, std::string csv_path) = 0;
+
+    /**
     *  @brief Initialises the renderer.
     *
     *  Performs all the initialisation of the renderer, its framework and the
@@ -113,7 +138,7 @@ namespace ASGE {
     *  @return True if success.
     *  @see WindowMode
     */
-   virtual bool init(const ASGE::GameSettings& settings) = 0;
+    virtual bool init(const ASGE::GameSettings& settings) = 0;
 
 		/**
 		*  Exits the renderer and performs clean-up. 

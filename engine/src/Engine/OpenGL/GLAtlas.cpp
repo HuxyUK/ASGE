@@ -21,7 +21,6 @@ constexpr int TEXTURE_WIDTH = 1024;
 #include <msdfgen-ext.h>
 
 // Std Library
-#include <algorithm>
 #include <iostream>
 #include <utility>
 
@@ -60,14 +59,20 @@ ASGE::FontTextureAtlas::~FontTextureAtlas()
   }
 }
 
-//TODO: proper scaling support and atlas generation
-bool ASGE::FontTextureAtlas::init(const FT_Face& face, msdfgen::FontHandle* font_handle, int h)
+//TODO: improve atlas generation and performance
+bool ASGE::FontTextureAtlas::init(
+  const FT_Face& face, msdfgen::FontHandle* font_handle,
+  double glyph_size,
+  double range, double font_scale)
 {
   characters.resize(face->num_glyphs);
   std::vector<msdf_char> msdfs;
   msdfs.reserve(face->num_glyphs);
 
-  float border_width   = 2;
+  double geometry_scale = font_scale / (face->units_per_EM >> 6);
+  range = (range / glyph_size) / geometry_scale;
+  glyph_size *= geometry_scale;
+
   int32_t glyph_height = 0;
   int32_t glyph_width  = 0;
   int32_t pos_x        = 0;
@@ -77,7 +82,6 @@ bool ASGE::FontTextureAtlas::init(const FT_Face& face, msdfgen::FontHandle* font
   FT_ULong charcode = FT_Get_First_Char(face, &gindex);
   while (gindex > 0 && charcode < 128)
   {
-    double scale = 1;
     msdfgen::Shape shape;
     msdfgen::Shape::Bounds bounds{};
     double advance = 0;
@@ -85,16 +89,22 @@ bool ASGE::FontTextureAtlas::init(const FT_Face& face, msdfgen::FontHandle* font
     if (msdfgen::loadGlyph(shape, font_handle, charcode, &advance))
     {
       auto& ch     = characters[charcode];
-      ch.Advance.x = int(advance);
+      ch.Advance.x = int(advance * glyph_size);
 
       if (shape.validate() && !shape.contours.empty())
       {
         shape.normalize();
         shape.inverseYAxis = true;
 
-        bounds       = shape.getBounds(border_width);
-        glyph_width  = ceil(bounds.r - bounds.l) * scale;
-        glyph_height = ceil(bounds.t - bounds.b) * scale;
+        bounds = shape.getBounds(range, 1);
+
+        double w     = glyph_size * (bounds.r - bounds.l);
+        double h     = glyph_size * (bounds.t - bounds.b);
+        glyph_width  = ceil(bounds.r - bounds.l) * glyph_size;
+        glyph_height = ceil(bounds.t - bounds.b) * glyph_size;
+
+        double translate_x = -bounds.l + (glyph_width - w) / glyph_size;
+        double translate_y = -bounds.b + (glyph_height - h) / glyph_size;
 
         if (pos_x + glyph_width > TEXTURE_WIDTH)
         {
@@ -104,9 +114,9 @@ bool ASGE::FontTextureAtlas::init(const FT_Face& face, msdfgen::FontHandle* font
         }
 
         ch.Size    = { static_cast<float>(glyph_width), static_cast<float>(glyph_height) };
-        ch.Bearing = { static_cast<float>(bounds.l * scale), static_cast<float>(bounds.t * scale) };
-
-        msdfgen::edgeColoringSimple(shape, 3.0);
+        ch.Bearing.x = { static_cast<int>(bounds.l * glyph_size) };
+        ch.Bearing.y = { static_cast<int>(bounds.t * glyph_size) };
+        msdfgen::edgeColoringInkTrap(shape, 3.0);
 
         auto& msdf = msdfs.emplace_back(msdf_char(
           charcode,
@@ -117,9 +127,9 @@ bool ASGE::FontTextureAtlas::init(const FT_Face& face, msdfgen::FontHandle* font
         msdfgen::generateMSDF(
           msdf.bitmap,
           shape,
-          border_width,
-          msdfgen::Vector2(1.0F, 1.0F),
-          msdfgen::Vector2(-bounds.l, -bounds.b));
+          range,
+          msdfgen::Vector2(glyph_size, glyph_size),
+          msdfgen::Vector2(translate_x, translate_y));
 
         pos_x += glyph_width;
         row_height = std::max(row_height, glyph_height);
@@ -195,6 +205,6 @@ void ASGE::FontTextureAtlas::setSampleParams()
 {
   GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   GLVMSG(__PRETTY_FUNCTION__, glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

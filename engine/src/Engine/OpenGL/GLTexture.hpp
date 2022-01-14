@@ -26,6 +26,15 @@ namespace ASGE
       std::make_pair(ASGE::Texture2D::MagFilter::NEAREST, GL_NEAREST)
     };
 
+    inline static const std::map<ASGE::Texture2D::MinFilter, GLuint> GL_MIN_LOOKUP {
+      std::make_pair(ASGE::Texture2D::MinFilter::LINEAR, GL_LINEAR),
+      std::make_pair(ASGE::Texture2D::MinFilter::LINEAR_MIPMAP_NEAREST, GL_LINEAR_MIPMAP_NEAREST),
+      std::make_pair(ASGE::Texture2D::MinFilter::LINEAR_MIPMAP_LINEAR, GL_LINEAR_MIPMAP_LINEAR),
+      std::make_pair(ASGE::Texture2D::MinFilter::NEAREST, GL_NEAREST),
+      std::make_pair(ASGE::Texture2D::MinFilter::NEAREST_MIPMAP_LINEAR, GL_NEAREST_MIPMAP_LINEAR),
+      std::make_pair(ASGE::Texture2D::MinFilter::NEAREST_MIPMAP_NEAREST, GL_NEAREST_MIPMAP_NEAREST)
+    };
+
    private:
     inline static const std::map<ASGE::Texture2D::UVWrapMode, GLint> GL_UVWRAP_LOOKUP {
       std::make_pair(ASGE::Texture2D::UVWrapMode::CLAMP, GL_CLAMP_TO_EDGE),
@@ -44,6 +53,7 @@ namespace ASGE
 
     PixelBuffer* getPixelBuffer() noexcept override;
     const PixelBuffer* getPixelBuffer() const noexcept override;
+    void updateMinFilter(MinFilter filter) override;
     void updateMagFilter(MagFilter filter) override;
     void updateMips() override;
     void updateUVWrapping(Texture2D::UVWrapMode s, Texture2D::UVWrapMode t) override;

@@ -72,3 +72,8 @@ ASGE::Texture2D::MagFilter ASGE::Renderer::magFilter() const
 {
   return mag_filter;
 }
+
+const ASGE::Font* ASGE::Renderer::loadFont(const char* font, int size)
+{
+  return this->loadFont(font, size, 2.0);
+}

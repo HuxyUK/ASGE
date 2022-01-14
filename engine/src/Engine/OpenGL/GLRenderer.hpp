@@ -74,15 +74,16 @@ namespace ASGE
     GLFWwindow* getWindow();
 
     // Inherited via Renderer
-    int     loadFont(const char * font, int pt) override;
-    int     loadFontFromMem(const char* name, const unsigned char* data, unsigned int size, int pt) override;
-    void    setFont(int id) override;
-    void    setWindowTitle(const char * str) override;
-    void    setSpriteMode(SpriteSortMode sort_mode) override;
-    void    setWindowedMode(GameSettings::WindowMode window_mode) override;
-    void    setClearColour(ASGE::Colour rgb) override;
-    void    setBaseResolution(int width, int height, Resolution::Policy policy) override;
-    const   Font& getDefaultFont() const override;
+    const Font& getDefaultFont() const override;
+    const Font* loadFont(const char * font, int size, double range) override;
+    const Font* loadFontFromMem(const char* name, const unsigned char* data, unsigned int len, int size, double range) override;
+    void loadFontFromImage(Font::AtlasMetrics&& metrics, std::string img_path, std::string csv_path) override;
+    void  setFont(int id) override;
+    void  setWindowTitle(const char * str) override;
+    void  setSpriteMode(SpriteSortMode sort_mode) override;
+    void  setWindowedMode(GameSettings::WindowMode window_mode) override;
+    void  setClearColour(ASGE::Colour rgb) override;
+    void  setBaseResolution(int width, int height, Resolution::Policy policy) override;
 
     // TODO create central shader storage, this is bad design
     SHADER_LIB::Shader* initPixelShader(std::string shader_source) override;
