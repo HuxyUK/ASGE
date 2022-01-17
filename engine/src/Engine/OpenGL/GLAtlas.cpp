@@ -65,6 +65,7 @@ bool ASGE::FontTextureAtlas::init(
   double glyph_size,
   double range, double font_scale)
 {
+  const float PADDING = 1;
   characters.resize(face->num_glyphs);
   std::vector<msdf_char> msdfs;
   msdfs.reserve(face->num_glyphs);
@@ -109,7 +110,7 @@ bool ASGE::FontTextureAtlas::init(
         if (pos_x + glyph_width > TEXTURE_WIDTH)
         {
           width = std::max(width, pos_x);
-          height += row_height;
+          height += row_height + PADDING;
           pos_x = row_height = 0;
         }
 
@@ -131,7 +132,7 @@ bool ASGE::FontTextureAtlas::init(
           msdfgen::Vector2(glyph_size, glyph_size),
           msdfgen::Vector2(translate_x, translate_y));
 
-        pos_x += glyph_width;
+        pos_x += glyph_width + PADDING;
         row_height = std::max(row_height, glyph_height);
       }
     }
@@ -198,7 +199,6 @@ void ASGE::FontTextureAtlas::allocateTexture(const void* data)
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
   setSampleParams();
   ASGE::ClearGLErrors("Error allocating texture for font atlas");
-  GLVMSG("Rebuilding Mips", glGenerateMipmap, GL_TEXTURE_2D);
 }
 
 void ASGE::FontTextureAtlas::setSampleParams()
