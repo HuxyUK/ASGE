@@ -16,6 +16,7 @@
 
 #pragma once
 #include "NonCopyable.hpp"
+#include "Texture.hpp"
 #include <string>
 #include <tuple>
 //#include "Align.hpp"
@@ -175,6 +176,17 @@ namespace ASGE
      */
     [[nodiscard]] virtual float
     pxHeight(const std::string& string, float scale) const = 0;
+
+    /**
+     * Sets the filtering used for scaling the font upwards.
+     * The mag filter controls how a texture's sampling will operate
+     * when magnified. In general use, font's work well with linear
+     * sampling, but this allows the user to specify nearest neighbour
+     * instead which may lead to crisper results depending on the font
+     * face.
+     * @param[in] mag_filter The magnification filter to use.
+     */
+    virtual void setMagFilter(ASGE::Texture2D::MagFilter mag_filter) = 0;
 
    public:
     const char* font_name = ""; //!< The name of the font loaded.

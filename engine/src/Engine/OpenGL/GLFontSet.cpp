@@ -12,6 +12,7 @@
 
 #include "GLFontSet.hpp"
 #include "GLAtlas.hpp"
+#include "GLTexture.hpp"
 #include <vector>
 
 ASGE::GLFontSet::GLFontSet(GLFontSet&& rhs) noexcept : atlas(std::move(rhs.atlas))
@@ -155,4 +156,16 @@ std::tuple<float, float> ASGE::GLFontSet::boundsY(const std::string& string, flo
   max_y = (max_y + (line_count * line_height)) * scale;
   min_y *= scale;
   return bounds;
+}
+
+void ASGE::GLFontSet::setMagFilter(ASGE::Texture2D::MagFilter mag_filter)
+{
+  if (atlas)
+  {
+    glBindTexture(GL_TEXTURE_2D, atlas->getTextureID());
+    GLVMSG(
+      __PRETTY_FUNCTION__,
+      glTexParameteri, GL_TEXTURE_2D,
+      GL_TEXTURE_MAG_FILTER, GLTexture::GL_MAG_LOOKUP.at(mag_filter));
+  }
 }
