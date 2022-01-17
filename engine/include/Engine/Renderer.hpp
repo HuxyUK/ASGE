@@ -123,7 +123,7 @@ namespace ASGE {
      * @param [in] img_path The location of the image file to load.
      * @param [in] csv_path The CSV data that defines each glyph.
      */
-     virtual void loadFontFromImage(Font::AtlasMetrics&& metrics, std::string img_path, std::string csv_path) = 0;
+     virtual const Font* loadFontAtlas(Font::AtlasMetrics&& metrics, const std::string& img_path, const std::string& csv_path) = 0;
 
     /**
     *  @brief Initialises the renderer.

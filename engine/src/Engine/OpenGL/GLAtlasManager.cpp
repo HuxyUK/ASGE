@@ -27,6 +27,7 @@
 
 #include <msdfgen.h>
 #include <msdfgen-ext.h>
+#include <filesystem>
 
 namespace
 {
@@ -243,6 +244,23 @@ const ASGE::GLFontSet* ASGE::GLAtlasManager::loadFontFromAtlas(
     ASGE::FILEIO::IOBuffer buffer = file.read();
     std::string csv {buffer.as_char(), buffer.length};
     return dynamic_cast<const ASGE::GLFontSet*>(build(atlas_image->getID(), metrics, csv));
+  }
+  else
+  {
+    const std::filesystem::path FS_PATH(csv_path);
+    if (std::filesystem::is_regular_file(FS_PATH) && std::filesystem::exists(FS_PATH))
+    {
+      std::ifstream file_stream(FS_PATH, std::ios::in | std::ios::binary);
+      if (!file_stream.is_open())
+        return nullptr;
+
+      const std::size_t& size = std::filesystem::file_size(FS_PATH);
+      std::string csv_data(size, '\0');
+      file_stream.read(csv_data.data(), size);
+      file.close();
+
+      return dynamic_cast<const ASGE::GLFontSet*>(build(atlas_image->getID(), metrics, csv_data));
+    }
   }
   return nullptr;
 }

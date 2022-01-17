@@ -755,10 +755,10 @@ const ASGE::Font* ASGE::GLRenderer::loadFontFromMem(
   return this->text_renderer->loadFontFromMem(name, data, len, size, range);
 }
 
-void ASGE::GLRenderer::loadFontFromImage(
-  Font::AtlasMetrics&& metrics, std::string img_path, std::string csv_path)
+const ASGE::Font* ASGE::GLRenderer::loadFontAtlas(
+  Font::AtlasMetrics&& metrics, const std::string& img_path, const std::string& csv_path)
 {
-  this->text_renderer->loadFontFromAtlas(std::move(metrics), img_path, csv_path);
+  return this->text_renderer->loadFontFromAtlas(std::move(metrics), img_path, csv_path);
 }
 
 ASGE::SHADER_LIB::Shader* ASGE::GLRenderer::initPixelShader(std::string shader_source)

@@ -77,7 +77,7 @@ namespace ASGE
     const Font& getDefaultFont() const override;
     const Font* loadFont(const char * font, int size, double range) override;
     const Font* loadFontFromMem(const char* name, const unsigned char* data, unsigned int len, int size, double range) override;
-    void loadFontFromImage(Font::AtlasMetrics&& metrics, std::string img_path, std::string csv_path) override;
+    const Font* loadFontAtlas(Font::AtlasMetrics&& metrics, const std::string& img_path, const std::string& csv_path) override;
     void  setFont(int id) override;
     void  setWindowTitle(const char * str) override;
     void  setSpriteMode(SpriteSortMode sort_mode) override;
