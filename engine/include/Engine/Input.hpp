@@ -19,6 +19,7 @@
 #include <functional>
 #include <memory>
 #include <unordered_map>
+#include <filesystem>
 #include "Gamepad.hpp"
 #include "InputEvents.hpp"
 #include "Mouse.hpp"
@@ -91,6 +92,19 @@ namespace ASGE {
 		*/
 		virtual void update() = 0;
 
+    /**
+     * Updates the GamePad mappings used.
+     * The engine makes use of a third party solution to correctly
+     * map button presses to connected gamepads in a consistent
+     * way, regardless of manufacturer or type. The aims is to solve
+     * the problem with the "X" button differs depending on the model
+     * of gamepad used. The file format should follow the project
+     * SDL_GameControllerDB which is the mapping system uses.
+     * @param[in] mappings_file The updated GamePad mappings.
+     * @see https://github.com/gabomdq/SDL_GameControllerDB
+     */
+    virtual void updateGamePadMappings(const std::filesystem::path &mappings_file) = 0;
+
 		/**
 		* Gets the cursor's (mouse) position.
 		* Grabs the current position in screen space of the mouse
@@ -128,6 +142,17 @@ namespace ASGE {
 		* @see GamePadData
 		*/
 		[[nodiscard]] virtual GamePadData getGamePad(int idx) const = 0;
+
+    /**
+		* Obtains the first connected controllers data.
+		* Searches for the first connected controller and then returns
+		* any data relating to it, including naming, axis and button states.
+    * This is currently polled (demanded) rather than event driven and
+    * is normally handled by the renderer's window.
+		* @return The game controllers connected state and data.
+		* @see GamePadData
+     */
+		[[nodiscard]] virtual GamePadData getGamePad() const = 0;
 
 		/**
 		* Sends an event.

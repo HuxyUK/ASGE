@@ -14,6 +14,7 @@ else()
     target_compile_definitions(glfw PRIVATE BUILD_SHARED_LIBS=FALSE)
 endif()
 
+add_dependencies(glfw update_mappings)
 target_compile_options(glfw PRIVATE $<$<BOOL:${MSVC}>:/w>)
 list(APPEND LINK_LIBS glfw ${GLFW_LIBRARIES})
 

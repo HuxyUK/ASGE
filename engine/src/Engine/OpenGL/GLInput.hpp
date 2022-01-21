@@ -11,6 +11,8 @@
 //  SOFTWARE.
 
 #pragma once
+
+#include <filesystem>
 #include "Input.hpp"
 #include "GLIncludes.hpp"
 
@@ -32,8 +34,10 @@ namespace ASGE
     void setCursorMode(ASGE::MOUSE::CursorMode mode) override;
     void setCursorPos(double x, double y) const override;
     [[nodiscard]] GamePadData getGamePad(int idx) const override;
+    [[nodiscard]] GamePadData getGamePad() const override;
+    void updateGamePadMappings(const std::filesystem::path &mappings_file) override;
 
-   private:
+  private:
     GLFWwindow* window                 = nullptr;
     const glm::mat4* projection_matrix = nullptr;
     void unProjectCursor(double& xpos, double& ypos) const;

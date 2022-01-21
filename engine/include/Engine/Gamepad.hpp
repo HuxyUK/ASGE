@@ -50,20 +50,16 @@ namespace ASGE
         * Default constructor.
         * @param id The index of the controller.
         * @param gamepad_name The name of the controller.
-        * @param axis_count The number of axis.
         * @param axis_data The value of each axis.
-        * @param button_count The number of buttons.
         * @param button_state The state of each button.
      */
     GamePadData(
-      const float* axis_data, const unsigned char* button_state,
-      const char* gamepad_name, int id, int axis_count, int button_count) noexcept :
-      axis(axis_data),
-      buttons(button_state),
-      name(gamepad_name),
+      int id, const char* gamepad_name,
+      const float* axis_data, const unsigned char* button_state ) noexcept :
       idx(id),
-      no_of_axis(axis_count),
-      no_of_buttons(button_count)
+      name(gamepad_name),
+      axis(axis_data),
+      buttons(button_state)
     {
 
     }
@@ -78,8 +74,6 @@ namespace ASGE
     const unsigned char* buttons = nullptr; /**< State of buttons. The value of each button  */            // NOLINT
     const char* name             = nullptr; /**< Name. The name of the connected controller */             // NOLINT
     int idx                      = -1;      /**< Index. The index for this controller */                   // NOLINT
-    int no_of_axis               = 0;       /**< Number of axis. Number of axis on the controller */       // NOLINT
-    int no_of_buttons            = 0;       /**< Number of buttons. Number of buttons on the controller */ // NOLINT
     bool is_connected            = false;   /**< Is controller connected? */                               // NOLINT
   };
 

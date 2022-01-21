@@ -10,10 +10,13 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-#include "GLInput.hpp"
-#include "GLIncludes.hpp"
-#include "GLRenderer.hpp"
 #include <glm/gtc/matrix_transform.hpp>
+#include <filesystem>
+
+#include "FileIO.hpp"
+#include "GLIncludes.hpp"
+#include "GLInput.hpp"
+#include "GLRenderer.hpp"
 
 bool ASGE::GLInput::init(Renderer* renderer)
 {
@@ -120,33 +123,66 @@ void ASGE::GLInput::setCursorMode(ASGE::MOUSE::CursorMode mode)
 
 ASGE::GamePadData ASGE::GLInput::getGamePad(int idx) const
 {
-  /* NOTE: This is based on the current GLFW 3.2.1 version
-   *  however, there are a great deal of improvements happening
-   *  in 3.3,  some of which which alter the gamepad API and
-   *  introduce haptic feedback. We should look to upgrade when
-   *  it's finally released.
-   */
-
-  if (glfwJoystickPresent(idx) == 0)
+  if (glfwJoystickIsGamepad(idx) == 0)
   {
-    GamePadData data(nullptr, nullptr, std::string("not connected").c_str(), idx, 0, 0);
+    GamePadData data(idx, std::string("not connected").c_str(), nullptr, nullptr);
     data.is_connected = false;
     return data;
   }
 
-  const auto* name = glfwGetJoystickName(idx);
+  const auto* name = glfwGetGamepadName(idx);
+  GLFWgamepadstate state;
+  glfwGetGamepadState(idx, &state);
+  const auto* axis_state   = state.axes;
+  const auto* button_state = state.buttons;
 
-  int axis_count           = 0;
-  int button_count         = 0;
-  const auto* axis_state   = glfwGetJoystickAxes(idx, &axis_count);
-  const auto* button_state = glfwGetJoystickButtons(idx, &button_count);
-
-  GamePadData data(axis_state, button_state, name, idx, axis_count, button_count);
+  GamePadData data(idx, name, axis_state, button_state);
   data.is_connected = true;
   return data;
+}
+
+ASGE::GamePadData ASGE::GLInput::getGamePad() const
+{
+  for(int idx=0; idx<GLFW_JOYSTICK_LAST; ++idx)
+  {
+    if(glfwJoystickIsGamepad(idx))
+    {
+      const auto* name = glfwGetGamepadName(idx);
+      GLFWgamepadstate state;
+      glfwGetGamepadState(idx, &state);
+      const auto* axis_state   = state.axes;
+      const auto* button_state = state.buttons;
+      GamePadData data(idx, name, axis_state, button_state);
+      data.is_connected = true;
+      return data;
+    }
+  }
+  return ASGE::GamePadData(0, std::string("not connected").c_str(), nullptr, nullptr);
 }
 
 void ASGE::GLInput::setCursorPos(double xpos, double ypos) const
 {
   glfwSetCursorPos(this->window, xpos, ypos);
+}
+
+void ASGE::GLInput::updateGamePadMappings(const std::filesystem::path &mappings_file)
+{
+  std::string file_contents;
+  ASGE::FILEIO::File file;
+  if(file.open(mappings_file.c_str(), ASGE::FILEIO::File::IOMode::READ))
+  {
+    const auto buffer = file.read();
+    file_contents = std::string(buffer.data.get(), buffer.length);
+  }
+
+  else if(!exists(mappings_file))
+  {
+    std::ifstream file(mappings_file.c_str());
+    file_contents = std::string((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+  }
+
+  if (file_contents.empty())
+    return;
+
+  glfwUpdateGamepadMappings(file_contents.c_str());
 }
