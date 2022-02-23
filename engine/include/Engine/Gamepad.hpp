@@ -37,7 +37,7 @@ namespace ASGE
    * <example>
    * Usage:
    * @code
-   * 	auto gamepad = inputs->getGamePad(0);
+   * 	auto gamepad = inputs->getGamePad();
    * 	if (gamepad.is_connected)
    * 	{
    *
