@@ -324,12 +324,6 @@ const ASGE::Font* ASGE::GLAtlasManager::build(int atlas_id, Font::AtlasMetrics& 
   set.px_range    = metrics.range;
   set.line_height = (metrics.line_height * FONT_SCALE / metrics.em_size) * metrics.size;
 
-  auto *atlas = new FontTextureAtlas();
-  atlas->characters.reserve(256);
-  atlas->texture = atlas_id;
-  atlas->width = metrics.width;
-  atlas->height = metrics.height;
-
   // Create a stringstream from line
   std::stringstream file_stream(csv);
   std::map<int, std::vector<double>> characters;
@@ -349,6 +343,11 @@ const ASGE::Font* ASGE::GLAtlasManager::build(int atlas_id, Font::AtlasMetrics& 
       characters[unicode].emplace_back(val);
     }
   }
+
+  auto *atlas = new FontTextureAtlas();
+  atlas->texture = atlas_id;
+  atlas->width = metrics.width;
+  atlas->height = metrics.height;
 
   // map the characters
   for(const auto & [k,v] : characters)

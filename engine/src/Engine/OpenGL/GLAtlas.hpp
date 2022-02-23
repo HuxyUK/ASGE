@@ -12,7 +12,7 @@
 
 #pragma once
 #include "GLIncludes.hpp"
-#include <vector>
+#include <map>
 
 typedef struct FT_FaceRec_*  FT_Face;
 namespace msdfgen
@@ -48,7 +48,7 @@ namespace ASGE
     void allocateTexture(const void* data);
     void setSampleParams();
 
-    std::vector<Character> characters {};
+    std::map<int, Character> characters;
     GLuint texture = 0;
     int32_t width  = 0;
     int32_t height = 0;

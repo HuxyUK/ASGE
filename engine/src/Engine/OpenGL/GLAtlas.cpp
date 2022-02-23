@@ -66,7 +66,6 @@ bool ASGE::FontTextureAtlas::init(
   double range, double font_scale)
 {
   const float PADDING = 1;
-  characters.resize(face->num_glyphs);
   std::vector<msdf_char> msdfs;
   msdfs.reserve(face->num_glyphs);
 
@@ -188,7 +187,7 @@ GLuint ASGE::FontTextureAtlas::getTextureID() const noexcept
 
 const ASGE::Character& ASGE::FontTextureAtlas::getCharacter(int idx) const
 {
-  return characters[idx];
+  return characters.at(idx);
 }
 
 void ASGE::FontTextureAtlas::allocateTexture(const void* data)
