@@ -35,6 +35,7 @@ namespace ASGE
     void setCursorPos(double x, double y) const override;
     [[nodiscard]] GamePadData getGamePad(int idx) const override;
     [[nodiscard]] GamePadData getGamePad() const override;
+    [[nodiscard]] std::vector<GamePadData> getGamePads() const override;
     void updateGamePadMappings(const std::filesystem::path &mappings_file) override;
 
   private:

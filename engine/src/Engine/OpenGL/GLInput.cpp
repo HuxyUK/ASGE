@@ -160,6 +160,20 @@ ASGE::GamePadData ASGE::GLInput::getGamePad() const
   return ASGE::GamePadData(0, std::string("not connected").c_str(), nullptr, nullptr);
 }
 
+std::vector<ASGE::GamePadData> ASGE::GLInput::getGamePads() const
+{
+  std::vector<ASGE::GamePadData> gamepads;
+  for(int idx=0; idx<GLFW_JOYSTICK_LAST; ++idx)
+  {
+    auto data = getGamePad(idx);
+    if(data.is_connected)
+    {
+      gamepads.emplace_back(std::move(data));
+    }
+  }
+  return gamepads;
+}
+
 void ASGE::GLInput::setCursorPos(double xpos, double ypos) const
 {
   glfwSetCursorPos(this->window, xpos, ypos);
