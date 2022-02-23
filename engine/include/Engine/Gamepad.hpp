@@ -15,6 +15,7 @@
 
 #pragma once
 #include "NonCopyable.hpp"
+#include <algorithm>
 #include <utility>
 namespace ASGE
 {
@@ -55,13 +56,14 @@ namespace ASGE
      */
     GamePadData(
       int id, const char* gamepad_name,
-      const float* axis_data, const unsigned char* button_state ) noexcept :
+      const float axis_data[6], const unsigned char button_state[15] ) noexcept :
       idx(id),
-      name(gamepad_name),
-      axis(axis_data),
-      buttons(button_state)
+      name(gamepad_name)
     {
-
+      if (axis_data)
+        std::copy_n(axis_data, 6, this->axis);
+      if (button_state)
+        std::copy_n(button_state, 15, this->buttons);
     }
 
     GamePadData(GamePadData&& rhs) = default;
@@ -70,11 +72,11 @@ namespace ASGE
     GamePadData& operator=(const GamePadData& rhs)  = default;
     ~GamePadData() = default;
 
-    const float* axis            = nullptr; /**< State of axis. The value of each axis  */                 // NOLINT
-    const unsigned char* buttons = nullptr; /**< State of buttons. The value of each button  */            // NOLINT
-    const char* name             = nullptr; /**< Name. The name of the connected controller */             // NOLINT
-    int idx                      = -1;      /**< Index. The index for this controller */                   // NOLINT
-    bool is_connected            = false;   /**< Is controller connected? */                               // NOLINT
+    float axis[6]{ 0.0F }; /**< State of axis. The value of each axis  */               // NOLINT
+    unsigned char buttons[15]{ 0 }; /**< State of buttons. The value of each button  */ // NOLINT
+    const char* name{ nullptr }; /**< Name. The name of the connected controller */     // NOLINT
+    int idx{ 0 }; /**< Index. The index for this controller */                          // NOLINT
+    bool is_connected{ false }; /**< Is controller connected? */                        // NOLINT
   };
 
   namespace GAMEPAD
