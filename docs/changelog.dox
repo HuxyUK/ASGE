@@ -4,6 +4,173 @@ namespace ASGE {
 
 @tableofcontents
 
+@section changelog-320 v3.2.0
+Released 23/02/2022
+
+@subsection changelog-320-changes Enhancements
+
+### Minor
+- Add function to retrieve all connected gamepads
+  [[4877b2f]](https://github.com/HuxyUK/ASGE/commit/4877b2f10eaa81aa59757913ee44b7ae8e5584b6)
+- Clamp support for ASGE::Camera
+  [[1f3b380]](https://github.com/HuxyUK/ASGE/commit/1f3b380aa2a39942686fd19f408504c17c09ca04)
+- Flip flag added for flipping sprites on both X and Y
+  [[e51da28]](https://github.com/HuxyUK/ASGE/commit/e51da280e20ece965ba0e9497483eef930c012e4)
+- Midpoint calculation added for ASGE::Sprite
+  [[b1e6e0b]](https://github.com/HuxyUK/ASGE/commit/b1e6e0b90e071a783ad4be0bf575857a32221aec)
+- Support for Point2D == and not != operators
+  [[0490adc]](https://github.com/HuxyUK/ASGE/commit/0490adc35ff9aa0a1c92243a4a4966d87184073e)
+- Support for rendering non-attached textures
+  [[ca5b603]](https://github.com/HuxyUK/ASGE/commit/ca5b603f3e54530d2cdb701607e230341e4ce47c),
+  [[20259c3]](https://github.com/HuxyUK/ASGE/commit/20259c3e59861407b4b7999f44ecefe374f96c16)
+
+### Major
+- Add debug texture support
+  [[8fdd8c2]](https://github.com/HuxyUK/ASGE/commit/8fdd8c220642ee6a16bf28db5687af9153bb6f35)
+
+  To help with debugging of sprites without an attached texture, this
+  change automatically allocates a transparent debug texture to all newly
+  constructed sprites. This prevents the renderer from crashing
+  when a texture has not been attached to a sprite. It can also be
+  used for rendering simple blocks of colours i.e. backdrops.
+
+  The texture is transparent and pink by default and scaled with the
+  currently attached viewport.
+
+- Better GamePad support
+  [[6198eb6]](https://github.com/HuxyUK/ASGE/commit/6198eb60d16f7fe369dc6d8fef57b9e1e73743e1)
+
+  Updated the GamePad retrieval function to use GLFW's specific
+  functions that allow buttons to be mapped correctly. As part of
+  these changes the user is now able to load updated bindings using
+  the input system and as a quality of life addition, a new version
+  of getGamePad has been added that will return the first attached
+  controller on the system.
+
+- MSDF Rendering
+  [[041436d]](https://github.com/HuxyUK/ASGE/commit/041436dd5e73ebe299cb539e521940f13833e3b9),
+  [[45c952a]](https://github.com/HuxyUK/ASGE/commit/45c952a890056f207344238f5ff57f4f00118e3a),
+  [[e5076bd]](https://github.com/HuxyUK/ASGE/commit/e5076bdebee7f4d8ecce6c729895430f4becd28f),
+  [[853ceed]](https://github.com/HuxyUK/ASGE/commit/853ceed943f48aa0b828ccd78c7a2518ec601914),
+  [[9c8259c]](https://github.com/HuxyUK/ASGE/commit/9c8259c877585809c12cbe5a8991975c785d60c5)
+
+  Experimental support for SDF rendering based on the msdfgen library.
+  Currently, when fonts are loaded an atlas texture is still generated,
+  but instead of using the freetype library msdfgen is used to load the
+  glyphs and generate MSDF's for them. At the moment the textures are
+  able to load and are working, but there are still a number of areas for
+  improvement. These include:
+
+  1. Establishing a good distance factor
+  2. Optimising the painfully slow generation
+  3. Support for different char sets
+
+  \n Upcoming versions of ASGE will aim to include caching and improved
+  multi-threaded support for generating them. This will help remove
+  the dependency on OpenMP.
+
+- Remove static GameSettings
+  [[9fd9b2b]](https://github.com/HuxyUK/ASGE/commit/9fd9b2b1e059059f964ebfbdbb168ac06e80fd3b),
+  [[a85ff8f]](https://github.com/HuxyUK/ASGE/commit/a85ff8ff92b09af4e02a7f48ca50ba5f60ba035b)
+
+  This is a fairly big change to the code-base due to the way game
+  settings were being accessed throughout the engine. Instead, the
+  data will be stored within objects where they are most relevant.
+  This has led to most of them to be moved in to the Renderer,
+  however, some have been placed in to the Game itself.
+
+  GameSettings were never really intended to be used like they were.
+  Instead they're were designed to be a simple struct that a
+  launcher could generate via a UI and then pass on to the constructor
+  of the game. This brings it more in line with this original idea.
+
+- Render States
+  [[2651804]](https://github.com/HuxyUK/ASGE/commit/26518044bc8f08055642c16706013d2030472408)
+
+  These new render states keep track of changes to the viewport or the
+  camera view. Now instead of flushing every time one of these changes
+  a snapshot is taken. This snapshot is then associated with each quad
+  that needs to be drawn via its batch number. Then when rendering the
+  quad batch, the correct snapshot can be used or applied as needed.
+
+  This allows for users to change these settings when rendering and
+  know that the state the renderer was in when the render request was
+  made will still be correct when the batches are rendered.
+
+  More work needs to be done to better optimise these changes,
+  especially in the sort method for the batch renderer as the aim
+  would be to reduce the number of switches and batches required to
+  draw the user requested scenes.
+
+- Rewrite of viewport and resolution scaling
+  [[963cfd3]](https://github.com/HuxyUK/ASGE/commit/963cfd3b8079d386a9fab5140f9ec7b35454db16)
+
+  A particularly large re-write of the scaling and viewport code has
+  taken place. A new Resolution data structure has been added. Its
+  job is to store all the relevant resolution data such as window,
+  desktop and game dimensions.
+
+  As part of this refactor/re-write and to help support correct
+  window scaling the idea or concept of a design resolution has been
+  included. This design resolution is known as the base resolution and
+  can be thought of as the size of the game world. It is independent from
+  pixel space.
+
+  Now when running the game in different resolutions the base resolution
+  can be used to ensure scaling maintains the correct ratios, leaving
+  objects to remain in their correct proportions and to be aligned correctly
+  on this screen. Well, technically this depends on the new resolution
+  policy that's also been added. If you prefer it is possible to "fit"
+  the viewports to the window, but this will lead to scaling issues.
+
+  It's recommended to review the new Resolution class for more info
+  and guidance on the available policies.The hope is that these changes
+  now allow for flexible resizing of the game window, without the developer
+  having to invest too much time and thought in to. Want it to scale and
+  maintain its aspect ratio? Just set the policy to "maintain" and be done
+  with it.
+
+- Texture attachment flags
+  [[59293f1]](https://github.com/HuxyUK/ASGE/commit/59293f14014e27c3b213f455b3a5d21909d203f0)
+
+  These new flags are designed to control how a texture is attached
+  to a sprite. Currently, when attaching a new texture to a sprite, it
+  will automatically reset the width/height and UV coordinates set on
+  the existing sprite. However, it may be desirable to have more granular
+  control over this process. These new attach flags are an attempt to
+  allow this to happen. They can be set to retain the sprites properties
+  or to allow them to be reset depending on the developers preferences.
+
+- Tile support
+  [[5996de3]](https://github.com/HuxyUK/ASGE/commit/5996de35870d510eab21322249a28238baa74b20)
+
+  Add support for Tiles to the engine. Tiles are semantically
+  different to sprites and thus are easier to convey using their own
+  data structure. Unlike a sprite, they do not store any information
+  regarding their positioning. When rendering tiles, the {X,Y} coordinates
+  will need to be provided as tiles can be "rendered" within a larger
+  context such as a map. The map will known each tile's {X,Y} and
+  render them accordingly.
+
+@subsection changelog-320-bugs Bug Fixes
+- Fix memory leak in PixelBuffer
+  [[6bdc408]](https://github.com/HuxyUK/ASGE/commit/6bdc4081b89f6bc1263bee27a11072335ca2bd77)
+
+- Higher zoom values for camera should zoom in and not out
+  [[1d3046d]](https://github.com/HuxyUK/ASGE/commit/1d3046d958cacad0373a373fdd9be92fac51deca)
+
+- Fix issue when copying data
+  [[25043a4]](https://github.com/HuxyUK/ASGE/commit/25043a4c0ae311bde4b679ac507b337e3c002856)
+
+@subsection changelog-320-changes-misc Misc
+- Remove deprecated render functions [[1c17247]](https://github.com/HuxyUK/ASGE/commit/1c1724747b666e3ff0e8f5b9049fa44af05e4cac)
+- Fix issue with CMake include directives [[f065a39]](https://github.com/HuxyUK/ASGE/commit/f065a39d9cb24eec45ee861947c1f81de293ef69)
+- Freetype2 VER-2-11-1
+- GLAD v0.1.36
+- STB to latest
+
+<br>
+
 @section changelog-311 v3.1.1
 Released 18/11/2021
 

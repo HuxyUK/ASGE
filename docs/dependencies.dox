@@ -2,17 +2,19 @@ namespace ASGE {
 /** @page deps Dependencies
 @brief ASGE is built upon the following amazing open source initiatives.
 
-|Library | URL                                                  |License                                                                                 |
-:-------:|:----------------------------------------------------:|:---------------------------------------------------------------------------------------:
-Freetype2| http://freetype.sourceforge.net/freetype2/index.html | BSD-like FreeType License and the GPL
-GLAD     | https://github.com/Dav1dde/glad                      | MIT License
-GLFW     | https://www.glfw.org/                                | [zlib/libpng](https://www.glfw.org/license.html) license
-GLM      | https://github.com/g-truc/glm/                       | [The Happy Bunny](https://github.com/g-truc/glm/blob/master/copying.txt) license
-PhysFS   | https://icculus.org/physfs/                          | [zlib](https://hg.icculus.org/icculus/physfs/raw-file/tip/LICENSE.txt) license
-PhysFS++ | https://github.com/huxyUK/physfs-cpp/                | zlib license
-STB      | https://github.com/nothings/stb                      | [public domain](https://github.com/nothings/stb/blob/master/LICENSE) license
-stduuid  | https://github.com/mariusbancila/stduuid             | [MIT License](https://github.com/mariusbancila/stduuid/blob/master/LICENSE)
-PyBind11 | https://github.com/pybind/pybind11                   | [BSD-style](https://github.com/pybind/pybind11/blob/master/LICENSE) license
+|Library  | URL                                                  |License                                                                                 |
+:--------:|:----------------------------------------------------:|:---------------------------------------------------------------------------------------:
+Freetype2 | http://freetype.sourceforge.net/freetype2/index.html | BSD-like FreeType License and the GPL
+GLAD      | https://github.com/Dav1dde/glad                      | MIT License
+GLFW      | https://www.glfw.org/                                | [zlib/libpng](https://www.glfw.org/license.html) license
+GLM       | https://github.com/g-truc/glm/                       | [The Happy Bunny](https://github.com/g-truc/glm/blob/master/copying.txt) license
+Magic Enum| https://github.com/Neargye/magic_enum                | MIT License
+MSDFGen   | https://github.com/Chlumsky/msdfgen                  | MIT License
+PhysFS    | https://icculus.org/physfs/                          | [zlib](https://hg.icculus.org/icculus/physfs/raw-file/tip/LICENSE.txt) license
+PhysFS++  | https://github.com/huxyUK/physfs-cpp/                | zlib license
+STB       | https://github.com/nothings/stb                      | [public domain](https://github.com/nothings/stb/blob/master/LICENSE) license
+stduuid   | https://github.com/mariusbancila/stduuid             | [MIT License](https://github.com/mariusbancila/stduuid/blob/master/LICENSE)
+PyBind11  | https://github.com/pybind/pybind11                   | [BSD-style](https://github.com/pybind/pybind11/blob/master/LICENSE) license
 
 
    """

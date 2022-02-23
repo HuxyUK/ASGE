@@ -144,8 +144,8 @@ namespace ASGE {
 		[[nodiscard]] virtual GamePadData getGamePad(int idx) const = 0;
 
     /**
-		* Obtains the first connected controllers data.
-		* Searches for the first connected controller and then returns
+    * Obtains the first connected controllers data.
+    * Searches for the first connected controller and then returns
 		* any data relating to it, including naming, axis and button states.
     * This is currently polled (demanded) rather than event driven and
     * is normally handled by the renderer's window.
@@ -155,16 +155,17 @@ namespace ASGE {
 		[[nodiscard]] virtual GamePadData getGamePad() const = 0;
 
     /**
-		* Retrieves a list of all connected game pads.
-		* Searches for all possible connected gamepads and retrieves the data
+    * @brief Retrieves a list of all connected game pads.
+    * Searches for all possible connected gamepads and retrieves the data
     * for each one. If no attached gamepads are present then the vector
     * will be empty. This can be used to easily process all connected
     * inputs in a single call, rather than individually checking for each
     * index to see if a gamepad is connected.
-		* @return The game controllers connected state and data.
-		* @see GamePadData
     *
+    * @return The game controllers connected state and data.
+
     * <example>
+    * Example:
     * @code
     * auto gamepads = inputs->getGamePads();
     * for (const auto& gamepad : gamepads)
@@ -172,6 +173,8 @@ namespace ASGE {
     *   Logging::INFO(gamepad.name);
     * }
     * @endcode
+    *
+    * @see GamePadData
     */
     [[nodiscard]] virtual std::vector<GamePadData> getGamePads() const = 0;
 
