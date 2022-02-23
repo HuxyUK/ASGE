@@ -183,7 +183,7 @@ void ASGE::GLInput::updateGamePadMappings(const std::filesystem::path &mappings_
 {
   std::string file_contents;
   ASGE::FILEIO::File file;
-  if(file.open(mappings_file.c_str(), ASGE::FILEIO::File::IOMode::READ))
+  if(file.open(mappings_file.string(), ASGE::FILEIO::File::IOMode::READ))
   {
     const auto buffer = file.read();
     file_contents = std::string(buffer.data.get(), buffer.length);
