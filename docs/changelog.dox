@@ -159,7 +159,7 @@ Released 23/02/2022
 - Higher zoom values for camera should zoom in and not out
   [[1d3046d]](https://github.com/HuxyUK/ASGE/commit/1d3046d958cacad0373a373fdd9be92fac51deca)
 
-- Fix issue when copying data
+- Fix issue when copying gamepad data
   [[25043a4]](https://github.com/HuxyUK/ASGE/commit/25043a4c0ae311bde4b679ac507b337e3c002856)
 
 @subsection changelog-320-changes-misc Misc

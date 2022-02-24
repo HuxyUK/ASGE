@@ -38,7 +38,7 @@ PROJECT_NAME           = ASGE
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = 3.1.1
+PROJECT_NUMBER         = 3.2.0
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -1243,7 +1243,7 @@ HTML_STYLESHEET        =
 HTML_EXTRA_STYLESHEET  = docs/doxygen-awesome-css/doxygen-awesome.css \ 
                          docs/doxygen-awesome-css/doxygen-awesome-sidebar-only.css \
                          docs/doxygen-awesome-css/doxygen-awesome-sidebar-only-darkmode-toggle.css \
-			 docs/custom.css
+			             docs/custom.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1254,6 +1254,7 @@ HTML_EXTRA_STYLESHEET  = docs/doxygen-awesome-css/doxygen-awesome.css \
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
 HTML_EXTRA_FILES       = docs/doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js
+IMAGE_PATH             = docs/images
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the style sheet and background images according to
@@ -1740,6 +1741,7 @@ EXTERNAL_SEARCH_ID     =
 # This tag requires that the tag SEARCHENGINE is set to YES.
 
 EXTRA_SEARCH_MAPPINGS  =
+
 
 #---------------------------------------------------------------------------
 # Configuration options related to the LaTeX output
