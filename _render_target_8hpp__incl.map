@@ -1,0 +1,14 @@
+<map id="RenderTarget.hpp" name="RenderTarget.hpp">
+<area shape="rect" id="node1" title="Class ASGE::RenderTarget." alt="" coords="499,5,651,35"/>
+<area shape="rect" id="node2" href="$_texture_8hpp.html" title="Class ASGE::Texture2D, Enum Class ASGE::SpriteSortMode." alt="" coords="282,83,390,112"/>
+<area shape="rect" id="node9" href="$_viewport_8hpp.html" title="Struct ASGE::Viewport." alt="" coords="453,83,571,112"/>
+<area shape="rect" id="node11" title=" " alt="" coords="596,83,679,112"/>
+<area shape="rect" id="node12" title=" " alt="" coords="703,83,769,112"/>
+<area shape="rect" id="node3" href="$_game_settings_8hpp.html" title="Struct ASGE::GameSettings, Enum ASGE::GameSettings::WindowMode, Enum ASGE::GameSettings::MagFilter,..." alt="" coords="5,160,160,189"/>
+<area shape="rect" id="node5" href="$_non_copyable_8hpp.html" title="Class ASGE::NonCopyable." alt="" coords="184,160,333,189"/>
+<area shape="rect" id="node6" href="$_pixel_buffer_8hpp.html" title="Class ASGE::PixelBuffer." alt="" coords="357,160,491,189"/>
+<area shape="rect" id="node4" title=" " alt="" coords="51,237,114,267"/>
+<area shape="rect" id="node7" title=" " alt="" coords="349,237,408,267"/>
+<area shape="rect" id="node8" title=" " alt="" coords="433,237,503,267"/>
+<area shape="rect" id="node10" title=" " alt="" coords="515,160,586,189"/>
+</map>

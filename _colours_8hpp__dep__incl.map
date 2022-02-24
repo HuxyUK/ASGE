@@ -1,0 +1,9 @@
+<map id="Colours.hpp" name="Colours.hpp">
+<area shape="rect" id="node1" title="Struct ASGE::Colour, Namespace ASGE::COLOURS." alt="" coords="76,5,182,35"/>
+<area shape="rect" id="node2" href="$_renderer_8hpp.html" title="Class ASGE::Renderer." alt="" coords="127,160,246,189"/>
+<area shape="rect" id="node5" href="$_sprite_8hpp.html" title="Class ASGE::Sprite, Enum ASGE::Sprite::FlipFlags, Enum ASGE::Sprite::SourceRectIndex." alt="" coords="24,83,120,112"/>
+<area shape="rect" id="node6" href="$_text_8hpp.html" title="Struct ASGE::Text." alt="" coords="144,83,229,112"/>
+<area shape="rect" id="node7" href="$_tile_8hpp.html" title="Class ASGE::Tile, Enum ASGE::Sprite::FlipFlags, Enum ASGE::Sprite::SourceRectIndex." alt="" coords="254,83,332,112"/>
+<area shape="rect" id="node3" href="$_game_8hpp.html" title="Class ASGE::Game." alt="" coords="139,237,234,267"/>
+<area shape="rect" id="node4" href="$_o_g_l_game_8hpp.html" title="Class ASGE::OGLGame." alt="" coords="123,315,250,344"/>
+</map>

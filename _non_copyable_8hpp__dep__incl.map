@@ -1,0 +1,14 @@
+<map id="NonCopyable.hpp" name="NonCopyable.hpp">
+<area shape="rect" id="node1" title="Class ASGE::NonCopyable." alt="" coords="134,5,283,35"/>
+<area shape="rect" id="node2" href="$_font_8hpp.html" title="Struct ASGE::Font." alt="" coords="137,160,224,189"/>
+<area shape="rect" id="node7" href="$_gamepad_8hpp.html" title="Struct ASGE::GamePadData." alt="" coords="5,83,127,112"/>
+<area shape="rect" id="node9" href="$_shader_8hpp.html" title="Namespace ASGE::SHADER_LIB, Class ASGE::SHADER_LIB::Shader." alt="" coords="203,83,305,112"/>
+<area shape="rect" id="node10" href="$_texture_8hpp.html" title="Class ASGE::Texture2D, Enum Class ASGE::SpriteSortMode." alt="" coords="329,83,437,112"/>
+<area shape="rect" id="node3" href="$_text_8hpp.html" title="Struct ASGE::Text." alt="" coords="138,237,223,267"/>
+<area shape="rect" id="node4" href="$_renderer_8hpp.html" title="Class ASGE::Renderer." alt="" coords="121,315,240,344"/>
+<area shape="rect" id="node5" href="$_game_8hpp.html" title="Class ASGE::Game." alt="" coords="77,392,172,421"/>
+<area shape="rect" id="node6" href="$_o_g_l_game_8hpp.html" title="Class ASGE::OGLGame." alt="" coords="61,469,188,499"/>
+<area shape="rect" id="node8" href="$_input_8hpp.html" title="Class ASGE::Input." alt="" coords="23,237,114,267"/>
+<area shape="rect" id="node11" href="$_render_target_8hpp.html" title="Class ASGE::RenderTarget." alt="" coords="419,160,571,189"/>
+<area shape="rect" id="node12" href="$_sprite_8hpp.html" title="Class ASGE::Sprite, Enum ASGE::Sprite::FlipFlags, Enum ASGE::Sprite::SourceRectIndex." alt="" coords="249,160,345,189"/>
+</map>

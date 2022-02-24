@@ -1,0 +1,11 @@
+<map id="GameSettings.hpp" name="GameSettings.hpp">
+<area shape="rect" id="node1" title="Struct ASGE::GameSettings, Enum ASGE::GameSettings::WindowMode, Enum ASGE::GameSettings::MagFilter,..." alt="" coords="5,5,160,35"/>
+<area shape="rect" id="node2" href="$_game_8hpp.html" title="Class ASGE::Game." alt="" coords="33,392,127,421"/>
+<area shape="rect" id="node4" href="$_renderer_8hpp.html" title="Class ASGE::Renderer." alt="" coords="71,315,190,344"/>
+<area shape="rect" id="node5" href="$_texture_8hpp.html" title="Class ASGE::Texture2D, Enum Class ASGE::SpriteSortMode." alt="" coords="161,83,269,112"/>
+<area shape="rect" id="node3" href="$_o_g_l_game_8hpp.html" title="Class ASGE::OGLGame." alt="" coords="17,469,143,499"/>
+<area shape="rect" id="node6" href="$_font_8hpp.html" title="Struct ASGE::Font." alt="" coords="171,160,258,189"/>
+<area shape="rect" id="node8" href="$_render_target_8hpp.html" title="Class ASGE::RenderTarget." alt="" coords="283,160,435,189"/>
+<area shape="rect" id="node9" href="$_sprite_8hpp.html" title="Class ASGE::Sprite, Enum ASGE::Sprite::FlipFlags, Enum ASGE::Sprite::SourceRectIndex." alt="" coords="459,160,555,189"/>
+<area shape="rect" id="node7" href="$_text_8hpp.html" title="Struct ASGE::Text." alt="" coords="171,237,256,267"/>
+</map>

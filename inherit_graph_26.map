@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_logging_1_1_logger_base.html" title="logger base class" alt="" coords="5,32,176,61"/>
+<area shape="rect" id="node2" href="$class_logging_1_1_file_logger.html" title="logger that writes to file" alt="" coords="237,5,399,35"/>
+<area shape="rect" id="node3" href="$class_logging_1_1_std_out_logger.html" title="logger that writes to standard out" alt="" coords="224,59,412,88"/>
+</map>

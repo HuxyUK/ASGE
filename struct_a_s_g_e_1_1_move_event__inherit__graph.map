@@ -1,0 +1,4 @@
+<map id="ASGE::MoveEvent" name="ASGE::MoveEvent">
+<area shape="rect" id="node1" title="a mouse movement event" alt="" coords="5,83,156,112"/>
+<area shape="rect" id="node2" href="$struct_a_s_g_e_1_1_event_data.html" title="event data used to signal input events" alt="" coords="9,5,153,35"/>
+</map>

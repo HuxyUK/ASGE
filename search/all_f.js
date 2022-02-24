@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['r_370',['r',['../struct_a_s_g_e_1_1_colour.html#a2fa204e5ff8b04e1c3288253db5b08dd',1,'ASGE::Colour']]],
+  ['read_371',['READ',['../struct_a_s_g_e_1_1_f_i_l_e_i_o_1_1_file.html#a0fae981cc7862fd5b4b220c3bd0cd24da3466fab4975481651940ed328aa990e4',1,'ASGE::FILEIO::File']]],
+  ['read_372',['read',['../struct_a_s_g_e_1_1_f_i_l_e_i_o_1_1_file.html#ac32152e1c01dd6860e74e6f625bb94de',1,'ASGE::FILEIO::File']]],
+  ['red_373',['RED',['../namespace_a_s_g_e_1_1_c_o_l_o_u_r_s.html#ae1147703dec22c33ca40d9ba69769295',1,'ASGE::COLOURS']]],
+  ['registerlogger_374',['RegisterLogger',['../namespace_logging.html#a83ac68651215db6c7d0b1afd999fe135',1,'Logging']]],
+  ['render_375',['render',['../class_a_s_g_e_1_1_renderer.html#ac86a4fbb65c9678ea644e208e87ac2ca',1,'ASGE::Renderer::render(ASGE::Texture2D &amp;texture, std::array&lt; float, 4 &gt; rect, const Point2D &amp;pos_xy, int width, int height, int16_t z_order)=0'],['../class_a_s_g_e_1_1_renderer.html#a33e9fabfca4eeee21bb4f14dfae70e95',1,'ASGE::Renderer::render(ASGE::Texture2D &amp;texture, const ASGE::Point2D &amp;pos_xy, int16_t z_order)'],['../class_a_s_g_e_1_1_game.html#aecf53104f8f9ced40d5d24c2ef5a6d2c',1,'ASGE::Game::render()'],['../class_a_s_g_e_1_1_renderer.html#ac0d6ee0de87057138bc4c182ba6e9985',1,'ASGE::Renderer::render(const ASGE::Sprite &amp;sprite)=0'],['../class_a_s_g_e_1_1_renderer.html#af5ecd6af347431315f3ddb2bc8c7cb19',1,'ASGE::Renderer::render(const ASGE::Tile &amp;tile, const ASGE::Point2D &amp;xy)=0'],['../class_a_s_g_e_1_1_renderer.html#ac9d0ddd804a765f91bd47224d4d8f252',1,'ASGE::Renderer::render(const ASGE::Text &amp;text)=0'],['../class_a_s_g_e_1_1_renderer.html#a4d0f3b2b24f298596032727370b9bde2',1,'ASGE::Renderer::render(ASGE::Text &amp;&amp;text)=0']]],
+  ['renderer_376',['Renderer',['../class_a_s_g_e_1_1_renderer.html',1,'ASGE::Renderer'],['../class_a_s_g_e_1_1_renderer.html#ad78460aeb9906bb9526c3704dec0e8ad',1,'ASGE::Renderer::Renderer()']]],
+  ['renderer_377',['renderer',['../class_a_s_g_e_1_1_game.html#af22a9d9cbcffb070bf2f8fee75904cbf',1,'ASGE::Game']]],
+  ['renderer_2ehpp_378',['Renderer.hpp',['../_renderer_8hpp.html',1,'']]],
+  ['rendertarget_379',['RenderTarget',['../class_a_s_g_e_1_1_render_target.html',1,'ASGE']]],
+  ['rendertarget_380',['renderTarget',['../class_a_s_g_e_1_1_renderer.html#aebbae0fcb8c066d2f8bc1b97e3920e58',1,'ASGE::Renderer::renderTarget()'],['../class_a_s_g_e_1_1_renderer.html#afc67dab1f554c11520f49e2fcb946484',1,'ASGE::Renderer::renderTarget() const']]],
+  ['rendertarget_2ehpp_381',['RenderTarget.hpp',['../_render_target_8hpp.html',1,'']]],
+  ['repeat_382',['REPEAT',['../class_a_s_g_e_1_1_texture2_d.html#aacf20a430c09f9f107e3a4695cd4aeeca5be68175be14dfaa080165456c2e9555',1,'ASGE::Texture2D']]],
+  ['resize_383',['resize',['../class_a_s_g_e_1_1_camera.html#af2b7ed22ff74098672c5570c3fe8e196',1,'ASGE::Camera']]],
+  ['resolution_384',['Resolution',['../class_a_s_g_e_1_1_resolution.html',1,'ASGE']]],
+  ['resolution_385',['resolution',['../class_a_s_g_e_1_1_renderer.html#a73561ae9b48e32678403502157770a9e',1,'ASGE::Renderer']]],
+  ['rgb_386',['RGB',['../class_a_s_g_e_1_1_texture2_d.html#af7841112f5f42d8bd299acd8e93e6fd7a331dfe6059d60b8207a491d3a8f349e5',1,'ASGE::Texture2D']]],
+  ['rgba_387',['RGBA',['../class_a_s_g_e_1_1_texture2_d.html#af7841112f5f42d8bd299acd8e93e6fd7a9cb259c799e93077d50f4dd12b2edc6c',1,'ASGE::Texture2D']]],
+  ['rosybrown_388',['ROSYBROWN',['../namespace_a_s_g_e_1_1_c_o_l_o_u_r_s.html#ae2ca994b3d87a51f5af15359f47d8f86',1,'ASGE::COLOURS']]],
+  ['rotation_389',['rotation',['../struct_a_s_g_e_1_1_tile.html#a913da8330cba8402d8d6514fe9dc376e',1,'ASGE::Tile']]],
+  ['rotationinradians_390',['rotationInRadians',['../class_a_s_g_e_1_1_sprite.html#a32450bd0452d4213b0e50f644a4d1feb',1,'ASGE::Sprite::rotationInRadians() const noexcept'],['../class_a_s_g_e_1_1_sprite.html#aec28f87e0bd20a870cb255fdfb1c68ea',1,'ASGE::Sprite::rotationInRadians(float rotation_radians)']]],
+  ['royalblue_391',['ROYALBLUE',['../namespace_a_s_g_e_1_1_c_o_l_o_u_r_s.html#a90af3f0438864c7b0062fc7821af7516',1,'ASGE::COLOURS']]],
+  ['run_392',['run',['../class_a_s_g_e_1_1_game.html#aea4ee6a7d6d10fa396686ea3fb26787a',1,'ASGE::Game']]]
+];

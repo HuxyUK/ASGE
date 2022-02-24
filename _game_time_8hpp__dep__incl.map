@@ -1,0 +1,8 @@
+<map id="GameTime.hpp" name="GameTime.hpp">
+<area shape="rect" id="node1" title="Struct ASGE::GameTime." alt="" coords="72,5,203,35"/>
+<area shape="rect" id="node2" href="$_camera_8hpp.html" title="Class ASGE::Camera, Struct ASGE::Camera::CameraView." alt="" coords="33,83,141,112"/>
+<area shape="rect" id="node4" href="$_game_8hpp.html" title="Class ASGE::Game." alt="" coords="90,315,185,344"/>
+<area shape="rect" id="node3" href="$_renderer_8hpp.html" title="Class ASGE::Renderer." alt="" coords="27,237,146,267"/>
+<area shape="rect" id="node6" href="$_resolution_8hpp_source.html" title=" " alt="" coords="22,160,151,189"/>
+<area shape="rect" id="node5" href="$_o_g_l_game_8hpp.html" title="Class ASGE::OGLGame." alt="" coords="74,392,201,421"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="ASGE::EventData" name="ASGE::EventData">
+<area shape="rect" id="node1" title="event data used to signal input events" alt="" coords="255,5,399,35"/>
+<area shape="rect" id="node2" href="$struct_a_s_g_e_1_1_click_event.html" title="a mouse click event" alt="" coords="5,83,149,112"/>
+<area shape="rect" id="node3" href="$struct_a_s_g_e_1_1_key_event.html" title="a key event" alt="" coords="173,83,312,112"/>
+<area shape="rect" id="node4" href="$struct_a_s_g_e_1_1_move_event.html" title="a mouse movement event" alt="" coords="337,83,487,112"/>
+<area shape="rect" id="node5" href="$struct_a_s_g_e_1_1_scroll_event.html" title="a mouse scrolling event" alt="" coords="511,83,662,112"/>
+</map>

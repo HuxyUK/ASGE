@@ -1,0 +1,4 @@
+<map id="ASGE::Game" name="ASGE::Game">
+<area shape="rect" id="node1" title="The core of the engine." alt="" coords="21,5,133,35"/>
+<area shape="rect" id="node2" href="$class_a_s_g_e_1_1_o_g_l_game.html" title="an OpenGL implementation of the Game engine." alt="" coords="5,83,148,112"/>
+</map>

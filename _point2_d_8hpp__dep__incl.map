@@ -1,0 +1,11 @@
+<map id="Point2D.hpp" name="Point2D.hpp">
+<area shape="rect" id="node1" title="Class ASGE::Point2D." alt="" coords="99,5,210,35"/>
+<area shape="rect" id="node2" href="$_camera_8hpp.html" title="Class ASGE::Camera, Struct ASGE::Camera::CameraView." alt="" coords="25,83,133,112"/>
+<area shape="rect" id="node7" href="$_sprite_bounds_8hpp.html" title="Struct ASGE::SpriteBounds." alt="" coords="157,83,307,112"/>
+<area shape="rect" id="node3" href="$_renderer_8hpp.html" title="Class ASGE::Renderer." alt="" coords="27,237,146,267"/>
+<area shape="rect" id="node6" href="$_resolution_8hpp_source.html" title=" " alt="" coords="22,160,151,189"/>
+<area shape="rect" id="node4" href="$_game_8hpp.html" title="Class ASGE::Game." alt="" coords="39,315,134,344"/>
+<area shape="rect" id="node5" href="$_o_g_l_game_8hpp.html" title="Class ASGE::OGLGame." alt="" coords="23,392,150,421"/>
+<area shape="rect" id="node8" href="$_sprite_8hpp.html" title="Class ASGE::Sprite, Enum ASGE::Sprite::FlipFlags, Enum ASGE::Sprite::SourceRectIndex." alt="" coords="176,160,272,189"/>
+<area shape="rect" id="node9" href="$_text_8hpp.html" title="Struct ASGE::Text." alt="" coords="296,160,381,189"/>
+</map>

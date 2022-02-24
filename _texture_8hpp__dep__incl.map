@@ -1,0 +1,10 @@
+<map id="Texture.hpp" name="Texture.hpp">
+<area shape="rect" id="node1" title="Class ASGE::Texture2D, Enum Class ASGE::SpriteSortMode." alt="" coords="132,5,240,35"/>
+<area shape="rect" id="node2" href="$_font_8hpp.html" title="Struct ASGE::Font." alt="" coords="5,83,92,112"/>
+<area shape="rect" id="node4" href="$_renderer_8hpp.html" title="Class ASGE::Renderer." alt="" coords="31,237,149,267"/>
+<area shape="rect" id="node7" href="$_render_target_8hpp.html" title="Class ASGE::RenderTarget." alt="" coords="167,83,319,112"/>
+<area shape="rect" id="node8" href="$_sprite_8hpp.html" title="Class ASGE::Sprite, Enum ASGE::Sprite::FlipFlags, Enum ASGE::Sprite::SourceRectIndex." alt="" coords="343,83,439,112"/>
+<area shape="rect" id="node3" href="$_text_8hpp.html" title="Struct ASGE::Text." alt="" coords="7,160,93,189"/>
+<area shape="rect" id="node5" href="$_game_8hpp.html" title="Class ASGE::Game." alt="" coords="43,315,137,344"/>
+<area shape="rect" id="node6" href="$_o_g_l_game_8hpp.html" title="Class ASGE::OGLGame." alt="" coords="27,392,153,421"/>
+</map>

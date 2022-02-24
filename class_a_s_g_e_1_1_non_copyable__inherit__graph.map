@@ -1,0 +1,5 @@
+<map id="ASGE::NonCopyable" name="ASGE::NonCopyable">
+<area shape="rect" id="node1" title="A class that can not be copied." alt="" coords="65,5,232,35"/>
+<area shape="rect" id="node2" href="$struct_a_s_g_e_1_1_font.html" title="A font used to render text." alt="" coords="5,83,108,112"/>
+<area shape="rect" id="node3" href="$class_a_s_g_e_1_1_s_h_a_d_e_r___l_i_b_1_1_shader.html" title="a shader instance. The shader is used in the rendering pipeline." alt="" coords="133,83,351,112"/>
+</map>

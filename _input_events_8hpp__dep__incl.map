@@ -1,0 +1,6 @@
+<map id="InputEvents.hpp" name="InputEvents.hpp">
+<area shape="rect" id="node1" title="Enum ASGE::EventType, Struct ASGE::EventData, Struct ASGE::KeyEvent, Struct ASGE::ClickEvent,..." alt="" coords="5,5,144,35"/>
+<area shape="rect" id="node2" href="$_input_8hpp.html" title="Class ASGE::Input." alt="" coords="29,83,120,112"/>
+<area shape="rect" id="node3" href="$_game_8hpp.html" title="Class ASGE::Game." alt="" coords="27,160,122,189"/>
+<area shape="rect" id="node4" href="$_o_g_l_game_8hpp.html" title="Class ASGE::OGLGame." alt="" coords="11,237,138,267"/>
+</map>

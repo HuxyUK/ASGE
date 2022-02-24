@@ -1,0 +1,4 @@
+<map id="ASGE::SpriteBounds" name="ASGE::SpriteBounds">
+<area shape="rect" id="node1" title="Four vertices defining a sprites bound." alt="" coords="5,152,172,181"/>
+<area shape="rect" id="node2" href="$struct_a_s_g_e_1_1_point2_d.html" title="A point in 2D space." alt="" coords="25,5,152,35"/>
+</map>

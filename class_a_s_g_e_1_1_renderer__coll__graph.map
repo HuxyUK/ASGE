@@ -1,0 +1,4 @@
+<map id="ASGE::Renderer" name="ASGE::Renderer">
+<area shape="rect" id="node1" title="The renderer used in the game." alt="" coords="21,100,158,129"/>
+<area shape="rect" id="node2" href="$class_a_s_g_e_1_1_render_target.html" title="RenderTarget is a simple class that describes a render destination." alt="" coords="5,5,173,35"/>
+</map>

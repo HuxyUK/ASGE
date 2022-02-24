@@ -1,0 +1,15 @@
+<map id="Text.hpp" name="Text.hpp">
+<area shape="rect" id="node1" title="Struct ASGE::Text." alt="" coords="224,5,309,35"/>
+<area shape="rect" id="node2" href="$_colours_8hpp.html" title="Struct ASGE::Colour, Namespace ASGE::COLOURS." alt="" coords="5,83,112,112"/>
+<area shape="rect" id="node4" href="$_font_8hpp.html" title="Struct ASGE::Font." alt="" coords="485,83,571,112"/>
+<area shape="rect" id="node8" title=" " alt="" coords="317,315,379,344"/>
+<area shape="rect" id="node12" href="$_sprite_bounds_8hpp.html" title="Struct ASGE::SpriteBounds." alt="" coords="136,83,285,112"/>
+<area shape="rect" id="node3" title=" " alt="" coords="191,315,249,344"/>
+<area shape="rect" id="node5" href="$_non_copyable_8hpp.html" title="Class ASGE::NonCopyable." alt="" coords="747,237,896,267"/>
+<area shape="rect" id="node6" href="$_texture_8hpp.html" title="Class ASGE::Texture2D, Enum Class ASGE::SpriteSortMode." alt="" coords="474,160,582,189"/>
+<area shape="rect" id="node11" title=" " alt="" coords="607,160,665,189"/>
+<area shape="rect" id="node7" href="$_game_settings_8hpp.html" title="Struct ASGE::GameSettings, Enum ASGE::GameSettings::WindowMode, Enum ASGE::GameSettings::MagFilter,..." alt="" coords="411,237,565,267"/>
+<area shape="rect" id="node9" href="$_pixel_buffer_8hpp.html" title="Class ASGE::PixelBuffer." alt="" coords="589,237,723,267"/>
+<area shape="rect" id="node10" title=" " alt="" coords="621,315,691,344"/>
+<area shape="rect" id="node13" href="$_point2_d_8hpp.html" title="Class ASGE::Point2D." alt="" coords="165,237,275,267"/>
+</map>

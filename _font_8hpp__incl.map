@@ -1,0 +1,11 @@
+<map id="Font.hpp" name="Font.hpp">
+<area shape="rect" id="node1" title="Struct ASGE::Font." alt="" coords="414,5,501,35"/>
+<area shape="rect" id="node2" href="$_non_copyable_8hpp.html" title="Class ASGE::NonCopyable." alt="" coords="5,160,155,189"/>
+<area shape="rect" id="node3" href="$_texture_8hpp.html" title="Class ASGE::Texture2D, Enum Class ASGE::SpriteSortMode." alt="" coords="262,83,370,112"/>
+<area shape="rect" id="node5" title=" " alt="" coords="439,237,502,267"/>
+<area shape="rect" id="node9" title=" " alt="" coords="565,83,624,112"/>
+<area shape="rect" id="node4" href="$_game_settings_8hpp.html" title="Struct ASGE::GameSettings, Enum ASGE::GameSettings::WindowMode, Enum ASGE::GameSettings::MagFilter,..." alt="" coords="336,160,491,189"/>
+<area shape="rect" id="node6" href="$_pixel_buffer_8hpp.html" title="Class ASGE::PixelBuffer." alt="" coords="179,160,312,189"/>
+<area shape="rect" id="node7" title=" " alt="" coords="165,237,224,267"/>
+<area shape="rect" id="node8" title=" " alt="" coords="249,237,319,267"/>
+</map>

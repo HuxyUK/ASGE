@@ -1,0 +1,8 @@
+<map id="SpriteBounds.hpp" name="SpriteBounds.hpp">
+<area shape="rect" id="node1" title="Struct ASGE::SpriteBounds." alt="" coords="36,5,185,35"/>
+<area shape="rect" id="node2" href="$_sprite_8hpp.html" title="Class ASGE::Sprite, Enum ASGE::Sprite::FlipFlags, Enum ASGE::Sprite::SourceRectIndex." alt="" coords="5,83,101,112"/>
+<area shape="rect" id="node3" href="$_text_8hpp.html" title="Struct ASGE::Text." alt="" coords="125,83,211,112"/>
+<area shape="rect" id="node4" href="$_renderer_8hpp.html" title="Class ASGE::Renderer." alt="" coords="109,160,227,189"/>
+<area shape="rect" id="node5" href="$_game_8hpp.html" title="Class ASGE::Game." alt="" coords="121,237,215,267"/>
+<area shape="rect" id="node6" href="$_o_g_l_game_8hpp.html" title="Class ASGE::OGLGame." alt="" coords="105,315,231,344"/>
+</map>

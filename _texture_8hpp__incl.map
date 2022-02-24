@@ -1,0 +1,9 @@
+<map id="Texture.hpp" name="Texture.hpp">
+<area shape="rect" id="node1" title="Class ASGE::Texture2D, Enum Class ASGE::SpriteSortMode." alt="" coords="205,5,313,35"/>
+<area shape="rect" id="node2" href="$_game_settings_8hpp.html" title="Struct ASGE::GameSettings, Enum ASGE::GameSettings::WindowMode, Enum ASGE::GameSettings::MagFilter,..." alt="" coords="5,83,160,112"/>
+<area shape="rect" id="node4" href="$_non_copyable_8hpp.html" title="Class ASGE::NonCopyable." alt="" coords="184,83,333,112"/>
+<area shape="rect" id="node5" href="$_pixel_buffer_8hpp.html" title="Class ASGE::PixelBuffer." alt="" coords="357,83,491,112"/>
+<area shape="rect" id="node3" title=" " alt="" coords="51,160,114,189"/>
+<area shape="rect" id="node6" title=" " alt="" coords="349,160,408,189"/>
+<area shape="rect" id="node7" title=" " alt="" coords="433,160,503,189"/>
+</map>

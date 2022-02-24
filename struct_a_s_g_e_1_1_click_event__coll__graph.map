@@ -1,0 +1,4 @@
+<map id="ASGE::ClickEvent" name="ASGE::ClickEvent">
+<area shape="rect" id="node1" title="a mouse click event" alt="" coords="5,83,149,112"/>
+<area shape="rect" id="node2" href="$struct_a_s_g_e_1_1_event_data.html" title="event data used to signal input events" alt="" coords="5,5,149,35"/>
+</map>

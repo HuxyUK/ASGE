@@ -1,0 +1,5 @@
+<map id="Logging::LoggerBase" name="Logging::LoggerBase">
+<area shape="rect" id="node1" title="logger base class" alt="" coords="101,5,272,35"/>
+<area shape="rect" id="node2" href="$class_logging_1_1_file_logger.html" title="logger that writes to file" alt="" coords="5,83,168,112"/>
+<area shape="rect" id="node3" href="$class_logging_1_1_std_out_logger.html" title="logger that writes to standard out" alt="" coords="193,83,381,112"/>
+</map>
