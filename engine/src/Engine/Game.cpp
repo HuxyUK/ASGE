@@ -108,7 +108,7 @@ int ASGE::Game::run()
      * and then even if the update is lagging.
      */
     auto accumulator = ms(tick_start - epoch.last_fixedstep_time);
-    if(accumulator > epoch.fixed_delta * 2)
+    if(accumulator > epoch.fixed_delta * 5)
     {
       Logging::WARN(
         "Fixed time-step lag is currently " +
