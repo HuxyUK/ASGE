@@ -54,7 +54,7 @@ bool ASGE::CGLSpriteRenderer::bindShader(GLuint shader_id, GLfloat distance) noe
 {
   shader_id == 0 ? shader_id = getBasicSpriteShaderID() : shader_id;
 
-  if(active_shader == nullptr || active_shader->getShaderID() != shader_id)
+  if(active_shader == nullptr || current_loaded_shader != shader_id)
   {
     auto iter = std::find(GLRenderer::shaders.begin(), GLRenderer::shaders.end(), shader_id);
     if (iter == GLRenderer::shaders.end())
@@ -64,6 +64,7 @@ bool ASGE::CGLSpriteRenderer::bindShader(GLuint shader_id, GLfloat distance) noe
 
     active_shader = &(*iter);
     active_shader->use();
+    current_loaded_shader = shader_id;
   }
 
   //TODO: move towards a more agnostic way of applying uniforms

@@ -59,6 +59,7 @@ namespace ASGE
     GLuint  vertex_buffer = 0;
     GLuint  VAO = 0;
     GLuint  current_loaded_texture = 0;
+    GLuint  current_loaded_shader = 0;
     GLuint  shader_data_location = 0;
     RenderState* active_render_state {nullptr};
     SHADER_LIB::GLShader* active_shader = nullptr;
