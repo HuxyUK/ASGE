@@ -73,11 +73,11 @@ class ASGENetGame : public ASGE::OGLGame
 
     if (auto gamepad_data = inputs->getGamePad(0); gamepad_data.is_connected)
     {
-      for( int i=0; i<gamepad_data.no_of_buttons; ++i)
+      for(auto& btn : gamepad_data.buttons)
       {
-        if(gamepad_data.buttons[i] == true)
+        if(btn)
         {
-          Logging::ERRORS("button event" + std::to_string(i));
+          Logging::ERRORS("button event");
         }
       }
     }
@@ -179,7 +179,7 @@ class ASGENetGame : public ASGE::OGLGame
 int main(int /*argc*/, char* /*argv*/[])
 {
   ASGE::GameSettings game_settings;
-  game_settings.window_title  = "ASGEGame";
+  game_settings.game_title    = "ASGEGame";
   game_settings.window_width  = 1024;
   game_settings.window_height = 768;
   game_settings.mode          = ASGE::GameSettings::WindowMode::WINDOWED;
